@@ -1,0 +1,25 @@
+id: ts-no-use-memo
+valid:
+  - |
+    function Component({ a, b }: Props) {
+      const value = compute(a, b);
+    }
+  - |
+    function Component({ items }: Props) {
+      const sorted = items.toSorted((a, b) => a.name.localeCompare(b.name));
+    }
+  - |
+    function Component({ data }: Props) {
+      const total = data.reduce((sum, item) => sum + item.value, 0);
+    }
+invalid:
+  - |
+    import { useMemo } from "react";
+    function Component({ a, b }: Props) {
+      const value = useMemo(() => compute(a, b), [a, b]);
+    }
+  - |
+    import { useMemo } from "react";
+    function Component({ items }: Props) {
+      const sorted = useMemo(() => items.toSorted(), [items]);
+    }

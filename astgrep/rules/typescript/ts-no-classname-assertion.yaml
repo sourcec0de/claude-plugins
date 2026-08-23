@@ -1,0 +1,23 @@
+id: ts-no-classname-assertion
+language: tsx
+severity: error
+files:
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
+message: >
+  Don't assert on className/Tailwind strings in a unit test. jsdom has no layout
+  engine, so a class assertion can't prove what it implies (that two elements don't
+  overlap, that something is visible) — it only re-states the implementation you
+  just typed, so it breaks on any harmless restyle while never catching the visual
+  bug it claims to guard. Capture visual state where it actually renders: a
+  Storybook story (caught by Chromatic) or a Playwright screenshot. In the unit
+  test, assert behavior instead — role, accessible name, visible text, or a
+  callback (getByRole, toHaveTextContent, toHaveBeenCalled). If an element's class
+  genuinely IS the contract, assert it via a role or test-id instead.
+rule:
+  any:
+    - pattern: $OBJ.getAttribute('class')
+    - pattern: $OBJ.getAttribute("class")
+    - pattern: $OBJ?.getAttribute('class')
+    - pattern: $OBJ?.getAttribute("class")
+    - pattern: $RECV.toHaveClass($$$ARGS)

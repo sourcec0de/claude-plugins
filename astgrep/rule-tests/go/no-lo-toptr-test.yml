@@ -1,0 +1,48 @@
+id: no-lo-toptr
+valid:
+  - |
+    package main
+    func main() {
+      x := new("hello")
+    }
+  - |
+    package main
+    func main() {
+      y := new(42)
+    }
+  - |
+    package main
+    func main() {
+      z := new(someVar)
+    }
+invalid:
+  - |
+    package main
+    func main() {
+      lo.ToPtr(123)
+    }
+  - |
+    package main
+    func main() {
+      lo.ToPtr(123, 123)
+    }
+  - |
+    package main
+    func main() {
+      var s = lo.ToPtr(123, 123)
+    }
+  - |
+    package main
+    var name = lo.ToPtr(345)
+  - |
+    package main
+    func main() {
+      lo.ToPtr(345)
+    }
+  - |
+    package main
+    var version = struct {
+      thing *int
+    }{
+      thing: lo.ToPtr(123),
+    }

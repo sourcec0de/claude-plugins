@@ -1,0 +1,27 @@
+id: ts-no-type-assertion
+language: tsx
+severity: error
+message: >
+  Type assertions (as T) are banned. They bypass the type system and hide bugs.
+  Instead use:
+  (1) Type guards: function isUser(x: unknown): x is User { return "id" in x; }
+  (2) Discriminated unions: if (shape.kind === "circle") { shape.radius }
+  (3) Zod for unknown data: const user = userSchema.parse(await res.json())
+  (4) typeof/instanceof narrowing: if (typeof x === "string") { x.toUpperCase() }
+  Note: "as const" is allowed.
+  See: https://www.typescriptlang.org/docs/handbook/2/narrowing.html
+rule:
+  kind: as_expression
+  all:
+    - not:
+        regex: as const
+    - not:
+        inside:
+          kind: return_statement
+          inside:
+            kind: function_declaration
+            has:
+              kind: type_predicate
+              stopBy: end
+            stopBy: end
+          stopBy: end

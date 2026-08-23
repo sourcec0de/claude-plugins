@@ -1,0 +1,131 @@
+id: limit-function-complexity
+snapshots:
+  ? |
+    func deepSelect() {
+        for {
+            select {
+            case <-ch:
+                switch val {
+                case 1:
+                    doSomething()
+                }
+            }
+        }
+    }
+  : labels:
+    - source: |-
+        switch val {
+                    case 1:
+                        doSomething()
+                    }
+      style: primary
+      start: 78
+      end: 154
+    - source: |-
+        for {
+                select {
+                case <-ch:
+                    switch val {
+                    case 1:
+                        doSomething()
+                    }
+                }
+            }
+      style: secondary
+      start: 24
+      end: 170
+    - source: |-
+        select {
+                case <-ch:
+                    switch val {
+                    case 1:
+                        doSomething()
+                    }
+                }
+      style: secondary
+      start: 38
+      end: 164
+  ? |
+    func extremelyDeep() {
+        if a {
+            if b {
+                if c {
+                    if d {
+                        doSomething()
+                    }
+                }
+            }
+        }
+    }
+  : labels:
+    - source: |-
+        if c {
+                        if d {
+                            doSomething()
+                        }
+                    }
+      style: primary
+      start: 61
+      end: 156
+    - source: |-
+        if a {
+                if b {
+                    if c {
+                        if d {
+                            doSomething()
+                        }
+                    }
+                }
+            }
+      style: secondary
+      start: 27
+      end: 172
+    - source: |-
+        if b {
+                    if c {
+                        if d {
+                            doSomething()
+                        }
+                    }
+                }
+      style: secondary
+      start: 42
+      end: 166
+  ? |
+    func threeLevels() {
+        if condition {
+            for i := 0; i < 10; i++ {
+                if i%2 == 0 {
+                    doSomething()
+                }
+            }
+        }
+    }
+  : labels:
+    - source: |-
+        if i%2 == 0 {
+                        doSomething()
+                    }
+      style: primary
+      start: 86
+      end: 143
+    - source: |-
+        if condition {
+                for i := 0; i < 10; i++ {
+                    if i%2 == 0 {
+                        doSomething()
+                    }
+                }
+            }
+      style: secondary
+      start: 25
+      end: 159
+    - source: |-
+        for i := 0; i < 10; i++ {
+                    if i%2 == 0 {
+                        doSomething()
+                    }
+                }
+      style: secondary
+      start: 48
+      end: 153

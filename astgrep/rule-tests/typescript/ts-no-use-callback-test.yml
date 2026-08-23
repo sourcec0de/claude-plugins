@@ -1,0 +1,27 @@
+id: ts-no-use-callback
+valid:
+  - |
+    function Component() {
+      const handler = () => doThing();
+    }
+  - |
+    function Component() {
+      function handleClick() {
+        dispatch({ type: "CLICK" });
+      }
+    }
+  - |
+    function Component({ onClick }: Props) {
+      return <button onClick={onClick} />;
+    }
+invalid:
+  - |
+    import { useCallback } from "react";
+    function Component() {
+      const handler = useCallback(() => doThing(), []);
+    }
+  - |
+    import { useCallback } from "react";
+    function Component({ id }: Props) {
+      const fetch = useCallback(() => loadData(id), [id]);
+    }

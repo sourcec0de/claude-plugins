@@ -1,0 +1,107 @@
+id: no-rm-rf
+snapshots:
+  ? |
+    rm -Rf old_backup
+  : labels:
+    - source: rm -Rf old_backup
+      style: primary
+      start: 0
+      end: 17
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+  ? |
+    rm -rf ./build
+  : labels:
+    - source: rm -rf ./build
+      style: primary
+      start: 0
+      end: 14
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+  ? |
+    rm -rf /
+  : labels:
+    - source: rm -rf /
+      style: primary
+      start: 0
+      end: 8
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+  ? |
+    rm -rf /tmp/test_dir
+  : labels:
+    - source: rm -rf /tmp/test_dir
+      style: primary
+      start: 0
+      end: 20
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+  ? |
+    rm -rf node_modules
+  : labels:
+    - source: rm -rf node_modules
+      style: primary
+      start: 0
+      end: 19
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+  ? |
+    rm -rf src/generated
+  : labels:
+    - source: rm -rf src/generated
+      style: primary
+      start: 0
+      end: 20
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+  ? |
+    rm -rfi protected_dir
+  : labels:
+    - source: rm -rfi protected_dir
+      style: primary
+      start: 0
+      end: 21
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2
+    - source: rm
+      style: secondary
+      start: 0
+      end: 2

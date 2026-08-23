@@ -1,0 +1,9 @@
+id: ts-no-use-callback
+language: tsx
+severity: error
+message: >
+  useCallback is banned. This codebase uses the React Compiler which
+  automatically memoizes functions. Manual useCallback is unnecessary
+  and adds complexity. Just define the function directly.
+rule:
+  pattern: useCallback($$$ARGS)

@@ -1,0 +1,23 @@
+id: ts-no-classname-assertion
+valid:
+  - |
+    expect(screen.getByText(/3 files unavailable/)).not.toBeNull();
+  - |
+    expect(onDismiss).toHaveBeenCalledOnce();
+  - |
+    expect(screen.queryByRole('progressbar')).toBeNull();
+  - |
+    expect(screen.getByRole('alert')).toHaveTextContent('boom');
+  - |
+    const node = el.getAttribute('data-testid');
+invalid:
+  - |
+    expect(layer?.getAttribute('class')).toContain('pr-10');
+  - |
+    expect(button.getAttribute('class')).toContain('rounded-full');
+  - |
+    expect(el.getAttribute("class")).not.toContain('pr-20');
+  - |
+    expect(el).toHaveClass('flex');
+  - |
+    expect(el).toHaveClass('pr-10', 'items-center');

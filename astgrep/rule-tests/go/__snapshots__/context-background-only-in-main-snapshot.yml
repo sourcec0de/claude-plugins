@@ -1,0 +1,30 @@
+id: context-background-only-in-main
+snapshots:
+  ? |
+    package main
+    func TestSomething(t *testing.T) {
+      doWork(context.Background())
+    }
+  : labels:
+    - source: context.Background()
+      style: primary
+      start: 57
+      end: 77
+  ? |
+    package main
+    func misc() {
+      context.Background()
+    }
+  : labels:
+    - source: context.Background()
+      style: primary
+      start: 29
+      end: 49
+  ? |
+    package main
+    var globalCtx = context.Background()
+  : labels:
+    - source: context.Background()
+      style: primary
+      start: 29
+      end: 49

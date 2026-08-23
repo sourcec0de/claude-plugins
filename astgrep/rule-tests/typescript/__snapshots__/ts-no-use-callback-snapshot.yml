@@ -1,0 +1,22 @@
+id: ts-no-use-callback
+snapshots:
+  ? |
+    import { useCallback } from "react";
+    function Component() {
+      const handler = useCallback(() => doThing(), []);
+    }
+  : labels:
+    - source: useCallback(() => doThing(), [])
+      style: primary
+      start: 78
+      end: 110
+  ? |
+    import { useCallback } from "react";
+    function Component({ id }: Props) {
+      const fetch = useCallback(() => loadData(id), [id]);
+    }
+  : labels:
+    - source: useCallback(() => loadData(id), [id])
+      style: primary
+      start: 89
+      end: 126

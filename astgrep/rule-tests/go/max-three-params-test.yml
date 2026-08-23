@@ -1,0 +1,58 @@
+id: max-three-params
+valid:
+  - |
+    func NoParams() {}
+  - |
+    func OneParam(a string) {}
+  - |
+    func TwoParams(a string, b int) {}
+  - |
+    func ThreeParams(a string, b int, c bool) {}
+  - |
+    func WithCtx(ctx context.Context, params GreetParams) {}
+  - |
+    func (s *Service) Method(a string, b int) {}
+  - |
+    func (s *Service) MethodThree(a string, b int, c bool) {}
+  - |
+    func (s Service) ValueReceiver(ctx context.Context, id string) {}
+  - |
+    func MultilineThree(
+        ctx context.Context,
+        name string,
+        count int,
+    ) error {
+        return nil
+    }
+invalid:
+  - |
+    func FourParams(a string, b int, c bool, d float64) {}
+  - |
+    func Grouped(a, b, c, d string) {}
+  - |
+    func FiveParams(a string, b int, c bool, d float64, e string) {}
+  - |
+    func (s *Service) BadMethod(a string, b int, c bool, d float64) {}
+  - |
+    func (s Service) AlsoBad(a, b, c, d string) {}
+  - |
+    func (s *Service) TooMany(ctx context.Context, a string, b int, c bool) {}
+  - |
+    func MultilineFour(
+        ctx context.Context,
+        params MiddlewareParams,
+        token string,
+        kind TokenKind,
+    ) error {
+        return nil
+    }
+  - |
+    func MultilineFive(
+        ctx context.Context,
+        params MiddlewareParams,
+        token string,
+        kind TokenKind,
+        extra bool,
+    ) error {
+        return nil
+    }

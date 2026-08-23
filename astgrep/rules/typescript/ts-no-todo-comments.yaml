@@ -1,0 +1,10 @@
+id: ts-no-todo-comments
+language: tsx
+severity: error
+message: >
+  TODO/FIXME/HACK/XXX comments are banned in committed code. Finish the
+  work or create a tracked issue. Committed placeholders rot and signal
+  incomplete implementation.
+rule:
+  kind: comment
+  regex: (TODO|FIXME|HACK|XXX)

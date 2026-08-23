@@ -1,0 +1,60 @@
+id: ts-no-todo-comments
+snapshots:
+  ? |
+    /* FIXME: this entire component needs a rewrite */
+    function Widget(): JSX.Element { return <div />; }
+  : labels:
+    - source: '/* FIXME: this entire component needs a rewrite */'
+      style: primary
+      start: 0
+      end: 50
+  ? |
+    // FIXME: this is broken
+    function broken(): void {}
+  : labels:
+    - source: '// FIXME: this is broken'
+      style: primary
+      start: 0
+      end: 24
+  ? |
+    // HACK: temporary workaround
+    function workaround(): void {}
+  : labels:
+    - source: '// HACK: temporary workaround'
+      style: primary
+      start: 0
+      end: 29
+  ? |
+    // TODO(jqualls): come back to this
+    function deferred(): void {}
+  : labels:
+    - source: '// TODO(jqualls): come back to this'
+      style: primary
+      start: 0
+      end: 35
+  ? |
+    // TODO: implement this
+    function process(): void {}
+  : labels:
+    - source: '// TODO: implement this'
+      style: primary
+      start: 0
+      end: 23
+  ? |
+    // XXX: needs refactoring
+    function messy(): void {}
+  : labels:
+    - source: '// XXX: needs refactoring'
+      style: primary
+      start: 0
+      end: 25
+  ? |
+    function partial(): void {
+      // TODO: handle error case
+      doThing();
+    }
+  : labels:
+    - source: '// TODO: handle error case'
+      style: primary
+      start: 29
+      end: 55

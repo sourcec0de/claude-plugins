@@ -1,0 +1,9 @@
+id: sql-uppercase-keywords
+language: go
+severity: error
+message: >
+  SQL keywords must be lowercase. Use select/from/where/insert/update/delete
+  instead of uppercase equivalents.
+rule:
+  kind: interpreted_string_literal
+  regex: \b(SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|JOIN|ORDER|GROUP|HAVING|INTO|VALUES|SET|CREATE|ALTER|DROP|TABLE|INDEX)\b

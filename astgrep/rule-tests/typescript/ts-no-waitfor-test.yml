@@ -1,0 +1,23 @@
+id: ts-no-waitfor
+valid:
+  - |
+    await expect(page.getByText('hello')).toBeVisible()
+  - |
+    await expect(page.getByRole('button')).toBeVisible()
+  - |
+    await expect(page.locator('.modal')).toBeHidden()
+  - |
+    const locator = page.getByText('hello')
+  - |
+    await page.click('button')
+invalid:
+  - |
+    await page.getByText('hello').waitFor()
+  - |
+    await page.getByRole('button', { name: 'Submit' }).waitFor()
+  - |
+    await page.getByText('hello').waitFor({ state: 'visible' })
+  - |
+    await page.locator('.modal').waitFor({ state: 'hidden' })
+  - |
+    await page.getByTestId('loading').waitFor({ timeout: 5000 })

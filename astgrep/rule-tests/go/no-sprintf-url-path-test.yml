@@ -1,0 +1,65 @@
+id: no-sprintf-url-path
+valid:
+  - |
+    package main
+    import "net/url"
+    func main() {
+      endpoint, _ := url.JoinPath(base, "api/v1/sandboxes")
+    }
+  - |
+    package main
+    import "net/url"
+    func main() {
+      u, _ := url.Parse(base)
+      endpoint := u.JoinPath("api/v1/sandboxes")
+    }
+  - |
+    package main
+    import "net/url"
+    func main() {
+      u := &url.URL{Scheme: "http", Host: addr}
+      endpoint := u.JoinPath("api/v1/sandboxes")
+    }
+  - |
+    package main
+    import "fmt"
+    func main() {
+      msg := fmt.Sprintf("hello %s", name)
+    }
+  - |
+    package main
+    import "fmt"
+    func main() {
+      msg := fmt.Sprintf("count: %d", n)
+    }
+  - |
+    package main
+    import "fmt"
+    func main() {
+      msg := fmt.Sprintf("error: %v", err)
+    }
+invalid:
+  - |
+    package main
+    import "fmt"
+    func main() {
+      u := fmt.Sprintf("%s/api/v1/sandboxes", base)
+    }
+  - |
+    package main
+    import "fmt"
+    func main() {
+      u := fmt.Sprintf("http://%s/path", host)
+    }
+  - |
+    package main
+    import "fmt"
+    func main() {
+      u := fmt.Sprintf("%s/health", base)
+    }
+  - |
+    package main
+    import "fmt"
+    func main() {
+      http.Post(fmt.Sprintf("%s/api/v1/sandboxes", base), "application/json", nil)
+    }

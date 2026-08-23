@@ -1,0 +1,19 @@
+id: no-rm-rf
+language: bash
+severity: error
+message: >
+  rm -rf is banned. Recursive forced deletion is destructive and irreversible.
+  Delete specific files individually with rm, or ask the user for guidance
+  on cleanup operations.
+rule:
+  kind: command
+  all:
+    - has:
+        field: name
+        kind: command_name
+        has:
+          kind: word
+          pattern: rm
+          stopBy: end
+        stopBy: end
+    - regex: rm\s+-(r|R)f|rm\s+-f(r|R)|rm\s+-(r|R)fi|rm\s+-fi(r|R)

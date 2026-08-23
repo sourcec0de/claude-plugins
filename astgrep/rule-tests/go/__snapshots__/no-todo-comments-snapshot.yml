@@ -1,0 +1,60 @@
+id: no-todo-comments
+snapshots:
+  ? |
+    // FIXME: race condition under load
+    func unsafe() {}
+  : labels:
+    - source: '// FIXME: race condition under load'
+      style: primary
+      start: 0
+      end: 35
+  ? |
+    // FIXME: this is broken
+    func broken() {}
+  : labels:
+    - source: '// FIXME: this is broken'
+      style: primary
+      start: 0
+      end: 24
+  ? |
+    // HACK: temporary workaround
+    func workaround() {}
+  : labels:
+    - source: '// HACK: temporary workaround'
+      style: primary
+      start: 0
+      end: 29
+  ? |
+    // TODO(jqualls): come back to this
+    func deferred() {}
+  : labels:
+    - source: '// TODO(jqualls): come back to this'
+      style: primary
+      start: 0
+      end: 35
+  ? |
+    // TODO: implement this
+    func process() {}
+  : labels:
+    - source: '// TODO: implement this'
+      style: primary
+      start: 0
+      end: 23
+  ? |
+    // XXX: needs refactoring
+    func messy() {}
+  : labels:
+    - source: '// XXX: needs refactoring'
+      style: primary
+      start: 0
+      end: 25
+  ? |
+    func partial() {
+      // TODO: handle error case
+      doThing()
+    }
+  : labels:
+    - source: '// TODO: handle error case'
+      style: primary
+      start: 19
+      end: 45

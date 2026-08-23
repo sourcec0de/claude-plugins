@@ -1,0 +1,35 @@
+id: sql-uppercase-keywords
+valid:
+  - |
+    var q = "select id, name from users where active = true"
+  - |
+    var q = "insert into users (name) values ($1)"
+  - |
+    var q = "update users set name = $1 where id = $2"
+  - |
+    var q = "delete from users where id = $1"
+  - |
+    var q = "select u.id from users u join roles r on u.role_id = r.id"
+  - |
+    var q = "select count(*) from users group by status having count(*) > 1 order by status"
+invalid:
+  - |
+    var q = "SELECT id FROM users"
+  - |
+    var q = "SELECT id, name FROM users WHERE active = true"
+  - |
+    var q = "INSERT INTO users (name) VALUES ($1)"
+  - |
+    var q = "UPDATE users SET name = $1 WHERE id = $2"
+  - |
+    var q = "DELETE FROM users WHERE id = $1"
+  - |
+    var q = "SELECT u.id FROM users u JOIN roles r ON u.role_id = r.id"
+  - |
+    var q = "CREATE TABLE users (id int)"
+  - |
+    var q = "ALTER TABLE users ADD COLUMN email text"
+  - |
+    var q = "DROP TABLE users"
+  - |
+    var q = "SELECT count(*) FROM users GROUP BY status HAVING count(*) > 1 ORDER BY status"

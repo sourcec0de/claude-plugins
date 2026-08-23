@@ -1,0 +1,47 @@
+id: ts-no-any
+valid:
+  - |
+    function greet(name: string): string { return name; }
+  - |
+    function process(data: unknown): void {}
+  - |
+    const items: Array<string> = [];
+  - |
+    function parse(input: Record<string, unknown>): void {}
+  - |
+    type Props = { name: string; age: number };
+  - |
+    function handle(err: Error): void { throw err; }
+  - |
+    const map = new Map<string, number>();
+  - |
+    async function fetch(): Promise<Response> { return new Response(); }
+  - |
+    interface Service { run(ctx: Context): void; }
+  - |
+    function id<T>(x: T): T { return x; }
+  - |
+    type Callback = (event: MouseEvent) => void;
+invalid:
+  - |
+    function greet(name: any): any { return name; }
+  - |
+    const data: any = fetchData();
+  - |
+    function process(items: Array<any>): void {}
+  - |
+    const handler = (e: any) => {};
+  - |
+    type Props = { data: any };
+  - |
+    function merge(...args: any[]): void {}
+  - |
+    const ref = useRef<any>(null);
+  - |
+    async function load(): Promise<any> { return fetch("/api"); }
+  - |
+    interface Sloppy { handle(input: any): any; }
+  - |
+    const cache = new Map<string, any>();
+  - |
+    function wrap(fn: (...args: any[]) => any): void {}

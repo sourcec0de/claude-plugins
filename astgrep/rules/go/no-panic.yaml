@@ -1,0 +1,9 @@
+id: no-panic
+language: go
+severity: error
+message: >
+  panic() is banned. Return an error instead and let the caller decide
+  how to handle it. Functions that cannot fail should be restructured
+  so the precondition is enforced by the type system or checked at startup.
+rule:
+  pattern: panic($$$ARGS)

@@ -1,0 +1,14 @@
+id: ts-no-if-in-switch
+language: tsx
+severity: error
+message: >
+  if statement inside a switch case adds complexity. Each case should be a
+  simple, direct action. Extract the conditional logic into its own function:
+  case "delete": return handleDelete(ctx, req);
+  where handleDelete contains the guard clauses and logic. This keeps each
+  case a single function call and moves complexity into testable units.
+rule:
+  kind: if_statement
+  inside:
+    kind: switch_case
+    stopBy: end

@@ -1,0 +1,12 @@
+id: ts-no-use-effect
+language: tsx
+severity: warning
+message: >
+  useEffect is almost certainly the wrong choice. Components in this codebase
+  are dumb — they receive props and dispatch actions, they do not manage side
+  effects. useEffect is a common source of race conditions, stale closures, and
+  cascading re-renders. Before using it, ask: should this be a reducer dispatch,
+  a useMemo, a useCallback, a loader, or an action? If you truly need a
+  lifecycle side effect (e.g. third-party DOM integration), get explicit approval.
+rule:
+  pattern: useEffect($$$ARGS)

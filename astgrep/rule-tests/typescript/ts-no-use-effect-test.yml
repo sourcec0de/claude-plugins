@@ -1,0 +1,46 @@
+id: ts-no-use-effect
+valid:
+  - |
+    import { useReducer } from "react";
+    function Component() {
+      const [state, dispatch] = useReducer(reducer, initialState);
+      dispatch({ type: "FETCH" });
+    }
+  - |
+    import { useMemo } from "react";
+    function Component() {
+      const value = useMemo(() => compute(a, b), [a, b]);
+    }
+  - |
+    import { useCallback } from "react";
+    function Component() {
+      const handler = useCallback(() => doThing(), []);
+    }
+  - |
+    import { useState } from "react";
+    function Component() {
+      const [count, setCount] = useState(0);
+    }
+invalid:
+  - |
+    import { useEffect } from "react";
+    function Component() {
+      useEffect(() => {
+        fetchData();
+      }, []);
+    }
+  - |
+    import { useEffect } from "react";
+    function Component() {
+      useEffect(() => {
+        setLoading(true);
+      }, [id]);
+    }
+  - |
+    import { useEffect, useState } from "react";
+    function Component() {
+      const [data, setData] = useState(null);
+      useEffect(() => {
+        fetch("/api").then(r => r.json()).then(setData);
+      }, []);
+    }

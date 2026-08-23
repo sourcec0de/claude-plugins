@@ -1,0 +1,27 @@
+id: context-background-only-in-main
+valid:
+  - |
+    package main
+    func main() {
+      ctx := context.Background()
+      doWork(ctx)
+    }
+  - |
+    package main
+    func main() {
+      conn.Close(context.Background())
+    }
+invalid:
+  - |
+    package main
+    func misc() {
+      context.Background()
+    }
+  - |
+    package main
+    var globalCtx = context.Background()
+  - |
+    package main
+    func TestSomething(t *testing.T) {
+      doWork(context.Background())
+    }

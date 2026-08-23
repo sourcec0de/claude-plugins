@@ -1,0 +1,56 @@
+id: ts-no-else-after-return
+valid:
+  - |
+    function guard(x: number): string {
+      if (x < 0) {
+        return "negative";
+      }
+      console.log("processing");
+      return "non-negative";
+    }
+  - |
+    function multiGuard(x: number): string {
+      if (x < 0) {
+        return "negative";
+      }
+      if (x === 0) {
+        return "zero";
+      }
+      return "positive";
+    }
+  - |
+    function elseIfNoReturn(x: number) {
+      if (x > 0) {
+        console.log("positive");
+      } else {
+        console.log("not positive");
+      }
+    }
+invalid:
+  - |
+    function bad(x: number): string {
+      if (x < 0) {
+        return "negative";
+      } else {
+        return "non-negative";
+      }
+    }
+  - |
+    function alsoBad(err: Error | null): string {
+      if (err) {
+        return err.message;
+      } else {
+        console.log("ok");
+        return "success";
+      }
+    }
+  - |
+    function withWork(x: number): string {
+      if (x < 0) {
+        return "negative";
+      } else {
+        doSomething();
+        doMore();
+        return "done";
+      }
+    }

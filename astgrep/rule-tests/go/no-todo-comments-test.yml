@@ -1,0 +1,47 @@
+id: no-todo-comments
+valid:
+  - |
+    func process() error {
+      return handle()
+    }
+  - |
+    func validate(input string) error {
+      if input == "" {
+        return fmt.Errorf("input required")
+      }
+      return nil
+    }
+  - |
+    var todoTable = "todos"
+  - |
+    func ListTodos() []Todo {
+      return nil
+    }
+  - |
+    func fixedPoint(x float64) float64 {
+      return math.Round(x)
+    }
+invalid:
+  - |
+    // TODO: implement this
+    func process() {}
+  - |
+    // FIXME: this is broken
+    func broken() {}
+  - |
+    // HACK: temporary workaround
+    func workaround() {}
+  - |
+    // XXX: needs refactoring
+    func messy() {}
+  - |
+    func partial() {
+      // TODO: handle error case
+      doThing()
+    }
+  - |
+    // TODO(jqualls): come back to this
+    func deferred() {}
+  - |
+    // FIXME: race condition under load
+    func unsafe() {}

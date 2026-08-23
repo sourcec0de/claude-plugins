@@ -1,0 +1,48 @@
+id: no-default-then-reassign
+valid:
+  - |
+    package main
+    func main() {
+      wsScheme := selectWebSocketScheme(base.Scheme)
+      _ = wsScheme
+    }
+  - |
+    package main
+    func main() {
+      count := 0
+      if ready {
+        doWork()
+      }
+      _ = count
+    }
+  - |
+    package main
+    func main() {
+      name := "default"
+      fmt.Println(name)
+    }
+invalid:
+  - |
+    package main
+    func main() {
+      wsScheme := "ws"
+      if strings.HasPrefix(base.Scheme, "https") {
+        wsScheme = "wss"
+      }
+    }
+  - |
+    package main
+    func main() {
+      mode := "read"
+      if isAdmin {
+        mode = "write"
+      }
+    }
+  - |
+    package main
+    func main() {
+      timeout := 30
+      if config.Fast {
+        timeout = 5
+      }
+    }

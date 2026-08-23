@@ -1,0 +1,58 @@
+id: no-fmt-println
+valid:
+  - |
+    package test
+    func process() {
+      log.Info("processing")
+    }
+  - |
+    package test
+    func handle() error {
+      return fmt.Errorf("failed: %w", err)
+    }
+  - |
+    package test
+    func format() string {
+      return fmt.Sprintf("value: %d", v)
+    }
+  - |
+    package test
+    func stringer() string {
+      return fmt.Stringer.String()
+    }
+  - |
+    package test
+    func wrap() error {
+      return fmt.Errorf("wrapping: %w", err)
+    }
+invalid:
+  - |
+    package test
+    func debug() {
+      fmt.Println("got here")
+    }
+  - |
+    package test
+    func process() {
+      fmt.Printf("value: %d\n", v)
+    }
+  - |
+    package test
+    func trace() {
+      fmt.Print("starting")
+    }
+  - |
+    package test
+    func dump() {
+      fmt.Fprintf(os.Stdout, "result: %v\n", result)
+    }
+  - |
+    package test
+    func log() {
+      fmt.Fprintln(os.Stderr, "error occurred")
+    }
+  - |
+    package test
+    func (s *Service) Run() {
+      fmt.Println("service starting on port", s.port)
+    }

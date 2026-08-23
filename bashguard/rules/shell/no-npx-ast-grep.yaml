@@ -1,0 +1,23 @@
+id: no-npx-ast-grep
+language: bash
+severity: error
+message: >
+  Do not use npx @ast-grep/cli. ast-grep is already installed in $PATH.
+  Run it directly: ast-grep scan, ast-grep test, etc.
+  If ast-grep is not found, ask the user to install it.
+rule:
+  kind: command
+  all:
+    - has:
+        field: name
+        kind: command_name
+        has:
+          kind: word
+          pattern: npx
+          stopBy: end
+        stopBy: end
+    - has:
+        field: argument
+        kind: word
+        regex: '@ast-grep/cli'
+        stopBy: end

@@ -1,0 +1,93 @@
+id: ts-limit-function-complexity
+valid:
+  - |
+    function flatLogic() {
+      if (condition) {
+        doSomething()
+      }
+    }
+  - |
+    function twoLevels() {
+      for (let i = 0; i < 10; i++) {
+        if (i % 2 === 0) {
+          doSomething()
+        }
+      }
+    }
+  - |
+    function closureReset() {
+      if (condition) {
+        for (const item of items) {
+          const fn = () => {
+            if (true) {
+              doSomething()
+            }
+          }
+        }
+      }
+    }
+  - |
+    function switchAndForOf() {
+      switch (val) {
+        case 1:
+          for (const item of items) {
+            doSomething()
+          }
+      }
+    }
+  - |
+    function methodClosureReset() {
+      if (condition) {
+        for (const item of items) {
+          obj.method = function() {
+            if (true) {
+              doSomething()
+            }
+          }
+        }
+      }
+    }
+invalid:
+  - |
+    function threeLevels() {
+      if (condition) {
+        for (let i = 0; i < 10; i++) {
+          if (i % 2 === 0) {
+            doSomething()
+          }
+        }
+      }
+    }
+  - |
+    function deepSwitch() {
+      for (const item of items) {
+        switch (item.type) {
+          case "a":
+            if (item.value) {
+              doSomething()
+            }
+        }
+      }
+    }
+  - |
+    function extremelyDeep() {
+      if (a) {
+        if (b) {
+          if (c) {
+            if (d) {
+              doSomething()
+            }
+          }
+        }
+      }
+    }
+  - |
+    const handler = () => {
+      if (a) {
+        for (const x of items) {
+          if (x) {
+            doSomething()
+          }
+        }
+      }
+    }

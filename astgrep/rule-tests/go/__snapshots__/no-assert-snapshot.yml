@@ -1,0 +1,111 @@
+id: no-assert
+snapshots:
+  ? |
+    package test
+    func TestContains(t *testing.T) {
+      assert.Contains(t, haystack, needle)
+    }
+  : labels:
+    - source: assert.Contains(t, haystack, needle)
+      style: primary
+      start: 49
+      end: 85
+    - source: assert
+      style: secondary
+      start: 49
+      end: 55
+    - source: assert.Contains
+      style: secondary
+      start: 49
+      end: 64
+  ? |
+    package test
+    func TestError(t *testing.T) {
+      assert.NoError(t, err)
+    }
+  : labels:
+    - source: assert.NoError(t, err)
+      style: primary
+      start: 46
+      end: 68
+    - source: assert
+      style: secondary
+      start: 46
+      end: 52
+    - source: assert.NoError
+      style: secondary
+      start: 46
+      end: 60
+  ? |
+    package test
+    func TestMultiple(t *testing.T) {
+      assert.Equal(t, 1, result)
+      assert.NoError(t, err)
+    }
+  : labels:
+    - source: assert.Equal(t, 1, result)
+      style: primary
+      start: 49
+      end: 75
+    - source: assert
+      style: secondary
+      start: 49
+      end: 55
+    - source: assert.Equal
+      style: secondary
+      start: 49
+      end: 61
+  ? |
+    package test
+    func TestNil(t *testing.T) {
+      assert.Nil(t, value)
+    }
+  : labels:
+    - source: assert.Nil(t, value)
+      style: primary
+      start: 44
+      end: 64
+    - source: assert
+      style: secondary
+      start: 44
+      end: 50
+    - source: assert.Nil
+      style: secondary
+      start: 44
+      end: 54
+  ? |
+    package test
+    func TestSomething(t *testing.T) {
+      assert.Equal(t, expected, actual)
+    }
+  : labels:
+    - source: assert.Equal(t, expected, actual)
+      style: primary
+      start: 50
+      end: 83
+    - source: assert
+      style: secondary
+      start: 50
+      end: 56
+    - source: assert.Equal
+      style: secondary
+      start: 50
+      end: 62
+  ? |
+    package test
+    func TestTrue(t *testing.T) {
+      assert.True(t, ok)
+    }
+  : labels:
+    - source: assert.True(t, ok)
+      style: primary
+      start: 45
+      end: 63
+    - source: assert
+      style: secondary
+      start: 45
+      end: 51
+    - source: assert.True
+      style: secondary
+      start: 45
+      end: 56

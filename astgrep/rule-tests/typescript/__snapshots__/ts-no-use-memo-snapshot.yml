@@ -1,0 +1,22 @@
+id: ts-no-use-memo
+snapshots:
+  ? |
+    import { useMemo } from "react";
+    function Component({ a, b }: Props) {
+      const value = useMemo(() => compute(a, b), [a, b]);
+    }
+  : labels:
+    - source: useMemo(() => compute(a, b), [a, b])
+      style: primary
+      start: 87
+      end: 123
+  ? |
+    import { useMemo } from "react";
+    function Component({ items }: Props) {
+      const sorted = useMemo(() => items.toSorted(), [items]);
+    }
+  : labels:
+    - source: useMemo(() => items.toSorted(), [items])
+      style: primary
+      start: 89
+      end: 129

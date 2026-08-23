@@ -1,0 +1,59 @@
+id: no-assert
+valid:
+  - |
+    package test
+    func TestSomething(t *testing.T) {
+      require.Equal(t, expected, actual)
+    }
+  - |
+    package test
+    func TestError(t *testing.T) {
+      require.NoError(t, err)
+    }
+  - |
+    package test
+    func TestNil(t *testing.T) {
+      require.Nil(t, value)
+    }
+  - |
+    package test
+    func TestTrue(t *testing.T) {
+      require.True(t, ok)
+    }
+  - |
+    package test
+    func TestContains(t *testing.T) {
+      require.Contains(t, haystack, needle)
+    }
+invalid:
+  - |
+    package test
+    func TestSomething(t *testing.T) {
+      assert.Equal(t, expected, actual)
+    }
+  - |
+    package test
+    func TestError(t *testing.T) {
+      assert.NoError(t, err)
+    }
+  - |
+    package test
+    func TestNil(t *testing.T) {
+      assert.Nil(t, value)
+    }
+  - |
+    package test
+    func TestTrue(t *testing.T) {
+      assert.True(t, ok)
+    }
+  - |
+    package test
+    func TestMultiple(t *testing.T) {
+      assert.Equal(t, 1, result)
+      assert.NoError(t, err)
+    }
+  - |
+    package test
+    func TestContains(t *testing.T) {
+      assert.Contains(t, haystack, needle)
+    }

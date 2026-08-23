@@ -1,0 +1,56 @@
+id: no-else-after-return
+valid:
+  - |
+    func Guard(x int) string {
+      if x < 0 {
+        return "negative"
+      }
+      fmt.Println("processing")
+      return "non-negative"
+    }
+  - |
+    func MultiGuard(x int) string {
+      if x < 0 {
+        return "negative"
+      }
+      if x == 0 {
+        return "zero"
+      }
+      return "positive"
+    }
+  - |
+    func ElseIfNoReturn(x int) {
+      if x > 0 {
+        fmt.Println("positive")
+      } else {
+        fmt.Println("not positive")
+      }
+    }
+invalid:
+  - |
+    func Bad(x int) string {
+      if x < 0 {
+        return "negative"
+      } else {
+        return "non-negative"
+      }
+    }
+  - |
+    func AlsoBad(err error) string {
+      if err != nil {
+        return err.Error()
+      } else {
+        fmt.Println("ok")
+        return "success"
+      }
+    }
+  - |
+    func WithWork(x int) string {
+      if x < 0 {
+        return "negative"
+      } else {
+        doSomething()
+        doMore()
+        return "done"
+      }
+    }

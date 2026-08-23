@@ -1,0 +1,23 @@
+id: context-background-only-in-main
+language: go
+severity: warning
+message: >
+  Found context.Background() outside of the main function.
+  Background returns a non-nil, empty Context. It is never canceled, has no
+  values, and has no deadline. It is typically used by the main function,
+  initialization, and as the top-level Context for incoming requests.
+  If you're in a test use t.Context().
+  If you're inside a downstream function accept context as an argument from a parent call.
+note: >
+  Background returns a non-nil, empty [Context]. It is never canceled, has no
+  values, and has no deadline. It is typically used by the main function,
+  initialization, and as the top-level Context for incoming requests.
+
+  If you're in a test use `t.Context()`
+  If you're inside a downstream function accept as an argument from a parent call
+rule:
+  pattern: context.Background()
+  not:
+    inside:
+      pattern: func main() { $$$ }
+      stopBy: end

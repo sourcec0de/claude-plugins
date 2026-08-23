@@ -1,0 +1,73 @@
+id: no-panic
+snapshots:
+  ? |
+    func (s *Service) Run() {
+      if s.handler == nil {
+        panic("handler not set")
+      }
+      s.handler.Serve()
+    }
+  : labels:
+    - source: panic("handler not set")
+      style: primary
+      start: 54
+      end: 78
+  ? |
+    func init() {
+      if db == nil {
+        panic("db not initialized")
+      }
+    }
+  : labels:
+    - source: panic("db not initialized")
+      style: primary
+      start: 35
+      end: 62
+  ? |
+    func mustConnect() *sql.DB {
+      db, err := sql.Open("postgres", dsn)
+      if err != nil {
+        panic(fmt.Sprintf("connect failed: %v", err))
+      }
+      return db
+    }
+  : labels:
+    - source: 'panic(fmt.Sprintf("connect failed: %v", err))'
+      style: primary
+      start: 90
+      end: 135
+  ? |
+    func mustParse(s string) int {
+      v, err := strconv.Atoi(s)
+      if err != nil {
+        panic(err)
+      }
+      return v
+    }
+  : labels:
+    - source: panic(err)
+      style: primary
+      start: 81
+      end: 91
+  ? |
+    func newService() *Service {
+      cfg := loadConfig()
+      if cfg == nil {
+        panic("nil config")
+      }
+      return &Service{cfg: cfg}
+    }
+  : labels:
+    - source: panic("nil config")
+      style: primary
+      start: 73
+      end: 92
+  ? |
+    func process() {
+      panic("something went wrong")
+    }
+  : labels:
+    - source: panic("something went wrong")
+      style: primary
+      start: 19
+      end: 48

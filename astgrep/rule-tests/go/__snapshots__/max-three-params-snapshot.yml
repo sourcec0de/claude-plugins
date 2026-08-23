@@ -1,0 +1,126 @@
+id: max-three-params
+snapshots:
+  ? |
+    func (s *Service) BadMethod(a string, b int, c bool, d float64) {}
+  : labels:
+    - source: (a string, b int, c bool, d float64)
+      style: primary
+      start: 27
+      end: 63
+    - source: d float64
+      style: secondary
+      start: 53
+      end: 62
+  ? |
+    func (s *Service) TooMany(ctx context.Context, a string, b int, c bool) {}
+  : labels:
+    - source: (ctx context.Context, a string, b int, c bool)
+      style: primary
+      start: 25
+      end: 71
+    - source: c bool
+      style: secondary
+      start: 64
+      end: 70
+  ? |
+    func (s Service) AlsoBad(a, b, c, d string) {}
+  : labels:
+    - source: (a, b, c, d string)
+      style: primary
+      start: 24
+      end: 43
+    - source: d
+      style: secondary
+      start: 34
+      end: 35
+    - source: a, b, c, d string
+      style: secondary
+      start: 25
+      end: 42
+  ? |
+    func FiveParams(a string, b int, c bool, d float64, e string) {}
+  : labels:
+    - source: (a string, b int, c bool, d float64, e string)
+      style: primary
+      start: 15
+      end: 61
+    - source: d float64
+      style: secondary
+      start: 41
+      end: 50
+  ? |
+    func FourParams(a string, b int, c bool, d float64) {}
+  : labels:
+    - source: (a string, b int, c bool, d float64)
+      style: primary
+      start: 15
+      end: 51
+    - source: d float64
+      style: secondary
+      start: 41
+      end: 50
+  ? |
+    func Grouped(a, b, c, d string) {}
+  : labels:
+    - source: (a, b, c, d string)
+      style: primary
+      start: 12
+      end: 31
+    - source: d
+      style: secondary
+      start: 22
+      end: 23
+    - source: a, b, c, d string
+      style: secondary
+      start: 13
+      end: 30
+  ? |
+    func MultilineFive(
+        ctx context.Context,
+        params MiddlewareParams,
+        token string,
+        kind TokenKind,
+        extra bool,
+    ) error {
+        return nil
+    }
+  : labels:
+    - source: |-
+        (
+            ctx context.Context,
+            params MiddlewareParams,
+            token string,
+            kind TokenKind,
+            extra bool,
+        )
+      style: primary
+      start: 18
+      end: 129
+    - source: kind TokenKind
+      style: secondary
+      start: 96
+      end: 110
+  ? |
+    func MultilineFour(
+        ctx context.Context,
+        params MiddlewareParams,
+        token string,
+        kind TokenKind,
+    ) error {
+        return nil
+    }
+  : labels:
+    - source: |-
+        (
+            ctx context.Context,
+            params MiddlewareParams,
+            token string,
+            kind TokenKind,
+        )
+      style: primary
+      start: 18
+      end: 113
+    - source: kind TokenKind
+      style: secondary
+      start: 96
+      end: 110

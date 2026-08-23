@@ -1,0 +1,39 @@
+id: no-go-build-output
+valid:
+  - |
+    go build ./...
+  - |
+    go build -o /dev/null ./cmd/server
+  - |
+    go build -o /dev/null ./...
+  - |
+    go build -o /dev/null -v ./src/backend/...
+  - |
+    go test ./...
+  - |
+    go vet ./...
+  - |
+    go run ./src/controlplane/cmd/launch/
+invalid:
+  - |
+    go build ./cmd/server/...
+  - |
+    go build ./src/backend/cmd/sqlcenum/...
+  - |
+    go build -v ./src/backend/...
+  - |
+    go build -o server ./cmd/server
+  - |
+    go build -o ./bin/app ./cmd/app
+  - |
+    go build -o mybin .
+  - |
+    go build -o /tmp/test ./cmd/test
+  - |
+    go build ./src/backend/cmd/sqlcenum
+  - |
+    go build ./cmd/server
+  - |
+    go build .
+  - |
+    go build -v ./cmd/app

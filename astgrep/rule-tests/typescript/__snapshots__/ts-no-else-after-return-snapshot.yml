@@ -1,0 +1,62 @@
+id: ts-no-else-after-return
+snapshots:
+  ? |
+    function alsoBad(err: Error | null): string {
+      if (err) {
+        return err.message;
+      } else {
+        console.log("ok");
+        return "success";
+      }
+    }
+  : labels:
+    - source: |-
+        if (err) {
+            return err.message;
+          } else {
+            console.log("ok");
+            return "success";
+          }
+      style: primary
+      start: 48
+      end: 142
+  ? |
+    function bad(x: number): string {
+      if (x < 0) {
+        return "negative";
+      } else {
+        return "non-negative";
+      }
+    }
+  : labels:
+    - source: |-
+        if (x < 0) {
+            return "negative";
+          } else {
+            return "non-negative";
+          }
+      style: primary
+      start: 36
+      end: 113
+  ? |
+    function withWork(x: number): string {
+      if (x < 0) {
+        return "negative";
+      } else {
+        doSomething();
+        doMore();
+        return "done";
+      }
+    }
+  : labels:
+    - source: |-
+        if (x < 0) {
+            return "negative";
+          } else {
+            doSomething();
+            doMore();
+            return "done";
+          }
+      style: primary
+      start: 41
+      end: 143

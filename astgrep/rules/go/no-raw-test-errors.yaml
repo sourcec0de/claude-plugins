@@ -1,0 +1,24 @@
+id: no-raw-test-errors
+language: go
+severity: error
+message: >
+  Raw t.Error, t.Errorf, t.Fatal, and t.Fatalf are banned. Use testify
+  require.* methods instead (e.g., require.Equal, require.NoError,
+  require.True). Testify provides better error messages and consistent
+  test patterns.
+rule:
+  kind: call_expression
+  has:
+    kind: selector_expression
+    all:
+      - has:
+          field: operand
+          kind: identifier
+          regex: '^t$'
+          stopBy: end
+      - has:
+          field: field
+          kind: field_identifier
+          regex: '^(Error|Errorf|Fatal|Fatalf)$'
+          stopBy: end
+    stopBy: end

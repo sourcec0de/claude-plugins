@@ -1,0 +1,17 @@
+id: no-cd
+valid:
+  - |
+    terraform -chdir=/path/to/dir plan
+  - |
+    git -C /path/to/repo status
+  - |
+    ls /some/absolute/path
+  - |
+    go test ./src/...
+invalid:
+  - |
+    cd /path && terraform plan
+  - |
+    cd src/infrastructure/terraform && terraform plan
+  - |
+    cd /tmp

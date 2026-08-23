@@ -1,0 +1,25 @@
+id: no-sed
+valid:
+  - |
+    echo "hello"
+  - |
+    grep -r "pattern" src/
+  - |
+    cat file.txt
+  - |
+    git status
+  - |
+    go test ./...
+  - |
+    pnpm run lint
+invalid:
+  - |
+    sed -i 's/old/new/g' file.txt
+  - |
+    sed 's/foo/bar/' input.txt > output.txt
+  - |
+    sed -e 's/pattern/replacement/' file.go
+  - |
+    cat file.txt | sed 's/old/new/'
+  - |
+    sed -n '5,10p' file.txt

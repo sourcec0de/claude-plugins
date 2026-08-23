@@ -1,0 +1,19 @@
+id: no-sed
+language: bash
+severity: error
+message: >
+  sed is banned. It bypasses file write permissions and sidesteps the static
+  analysis PreToolUse hook. If the static analyzer is blocking your edit, fix
+  the code to pass the rules — do not circumvent the system. Every file you
+  touch should be improved, even if the violation predates your change.
+  Use the Edit tool to make changes through the proper permission system.
+rule:
+  kind: command
+  has:
+    field: name
+    kind: command_name
+    has:
+      kind: word
+      pattern: sed
+      stopBy: end
+    stopBy: end

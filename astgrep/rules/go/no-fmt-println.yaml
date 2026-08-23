@@ -1,0 +1,17 @@
+id: no-fmt-println
+language: go
+severity: error
+message: >
+  fmt print functions (Println, Printf, Print, Fprintf, Fprintln) are banned.
+  They are debug leftovers that should not ship.
+  DO NOT use loggers or print methods for debugging. Ask the user for guidance.
+rule:
+  kind: call_expression
+  has:
+    kind: selector_expression
+    has:
+      field: operand
+      pattern: fmt
+      stopBy: end
+    regex: fmt\.(Println|Printf|Print|Fprintf|Fprintln)
+    stopBy: end

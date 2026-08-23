@@ -1,0 +1,258 @@
+id: ts-storybook-gallery-snapshot
+snapshots:
+  ? |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {} }
+    export const Big: Story = { render: () => null }
+  : labels:
+    - source: 'export const Big: Story = { render: () => null }'
+      style: primary
+      start: 76
+      end: 124
+    - source: Big
+      style: secondary
+      start: 89
+      end: 92
+    - source: 'Big: Story = { render: () => null }'
+      style: secondary
+      start: 89
+      end: 124
+    - source: '{ render: () => null }'
+      style: secondary
+      start: 102
+      end: 124
+    - source: Story
+      style: secondary
+      start: 55
+      end: 60
+    - source: Story
+      style: secondary
+      start: 55
+      end: 60
+    - source: 'Base: Story = { args: {} }'
+      style: secondary
+      start: 49
+      end: 75
+    - source: 'const Base: Story = { args: {} }'
+      style: secondary
+      start: 43
+      end: 75
+    - source: 'export const Base: Story = { args: {} }'
+      style: secondary
+      start: 36
+      end: 75
+    - source: Story
+      style: secondary
+      start: 94
+      end: 99
+    - source: Story
+      style: secondary
+      start: 94
+      end: 99
+    - source: 'Big: Story = { render: () => null }'
+      style: secondary
+      start: 89
+      end: 124
+    - source: 'const Big: Story = { render: () => null }'
+      style: secondary
+      start: 83
+      end: 124
+  ? |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {} }
+    export const Disabled: Story = { args: { disabled: true } }
+  : labels:
+    - source: 'export const Disabled: Story = { args: { disabled: true } }'
+      style: primary
+      start: 76
+      end: 135
+    - source: Disabled
+      style: secondary
+      start: 89
+      end: 97
+    - source: 'Disabled: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 89
+      end: 135
+    - source: '{ args: { disabled: true } }'
+      style: secondary
+      start: 107
+      end: 135
+    - source: Story
+      style: secondary
+      start: 55
+      end: 60
+    - source: Story
+      style: secondary
+      start: 55
+      end: 60
+    - source: 'Base: Story = { args: {} }'
+      style: secondary
+      start: 49
+      end: 75
+    - source: 'const Base: Story = { args: {} }'
+      style: secondary
+      start: 43
+      end: 75
+    - source: 'export const Base: Story = { args: {} }'
+      style: secondary
+      start: 36
+      end: 75
+    - source: Story
+      style: secondary
+      start: 99
+      end: 104
+    - source: Story
+      style: secondary
+      start: 99
+      end: 104
+    - source: 'Disabled: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 89
+      end: 135
+    - source: 'const Disabled: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 83
+      end: 135
+  ? |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {}, play: async () => {} }
+    export const Disabled: Story = { args: { disabled: true } }
+    export const Invalid: Story = { args: { invalid: true } }
+  : labels:
+    - source: 'export const Disabled: Story = { args: { disabled: true } }'
+      style: primary
+      start: 98
+      end: 157
+    - source: Disabled
+      style: secondary
+      start: 111
+      end: 119
+    - source: 'Disabled: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 111
+      end: 157
+    - source: '{ args: { disabled: true } }'
+      style: secondary
+      start: 129
+      end: 157
+    - source: Story
+      style: secondary
+      start: 55
+      end: 60
+    - source: Story
+      style: secondary
+      start: 55
+      end: 60
+    - source: 'Base: Story = { args: {}, play: async () => {} }'
+      style: secondary
+      start: 49
+      end: 97
+    - source: 'const Base: Story = { args: {}, play: async () => {} }'
+      style: secondary
+      start: 43
+      end: 97
+    - source: 'export const Base: Story = { args: {}, play: async () => {} }'
+      style: secondary
+      start: 36
+      end: 97
+    - source: Story
+      style: secondary
+      start: 121
+      end: 126
+    - source: Story
+      style: secondary
+      start: 121
+      end: 126
+    - source: 'Disabled: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 111
+      end: 157
+    - source: 'const Disabled: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 105
+      end: 157
+  ? |
+    type Story = StoryObj<typeof Thing>
+    export const BaseStates: Story = {
+      render: () => (
+        <StoryGallery>
+          <GalleryCell label="a"><Thing /></GalleryCell>
+        </StoryGallery>
+      ),
+    }
+    export const Lonely: Story = { args: { disabled: true } }
+  : labels:
+    - source: 'export const Lonely: Story = { args: { disabled: true } }'
+      style: primary
+      start: 188
+      end: 245
+    - source: Lonely
+      style: secondary
+      start: 201
+      end: 207
+    - source: 'Lonely: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 201
+      end: 245
+    - source: '{ args: { disabled: true } }'
+      style: secondary
+      start: 217
+      end: 245
+    - source: Story
+      style: secondary
+      start: 61
+      end: 66
+    - source: Story
+      style: secondary
+      start: 61
+      end: 66
+    - source: |-
+        BaseStates: Story = {
+          render: () => (
+            <StoryGallery>
+              <GalleryCell label="a"><Thing /></GalleryCell>
+            </StoryGallery>
+          ),
+        }
+      style: secondary
+      start: 49
+      end: 187
+    - source: |-
+        const BaseStates: Story = {
+          render: () => (
+            <StoryGallery>
+              <GalleryCell label="a"><Thing /></GalleryCell>
+            </StoryGallery>
+          ),
+        }
+      style: secondary
+      start: 43
+      end: 187
+    - source: |-
+        export const BaseStates: Story = {
+          render: () => (
+            <StoryGallery>
+              <GalleryCell label="a"><Thing /></GalleryCell>
+            </StoryGallery>
+          ),
+        }
+      style: secondary
+      start: 36
+      end: 187
+    - source: Story
+      style: secondary
+      start: 209
+      end: 214
+    - source: Story
+      style: secondary
+      start: 209
+      end: 214
+    - source: 'Lonely: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 201
+      end: 245
+    - source: 'const Lonely: Story = { args: { disabled: true } }'
+      style: secondary
+      start: 195
+      end: 245

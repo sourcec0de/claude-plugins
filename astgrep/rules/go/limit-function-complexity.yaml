@@ -1,0 +1,29 @@
+id: limit-function-complexity
+language: go
+severity: warning
+message: >
+  Logic should never be 3 levels deep, 2 at most. Consider extracting
+  this nested logic into a separate function.
+utils:
+  control-flow:
+    any:
+      - kind: if_statement
+      - kind: for_statement
+      - kind: expression_switch_statement
+      - kind: type_switch_statement
+      - kind: select_statement
+  function-boundary:
+    any:
+      - kind: function_declaration
+      - kind: method_declaration
+      - kind: func_literal
+rule:
+  matches: control-flow
+  inside:
+    matches: control-flow
+    stopBy:
+      matches: function-boundary
+    inside:
+      matches: control-flow
+      stopBy:
+        matches: function-boundary

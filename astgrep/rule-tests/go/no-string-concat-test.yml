@@ -1,0 +1,64 @@
+id: no-string-concat
+valid:
+  - |
+    package main
+    import "fmt"
+    func main() {
+      msg := fmt.Sprintf("hello %s", name)
+    }
+  - |
+    package main
+    func main() {
+      total := a + b
+    }
+  - |
+    package main
+    func main() {
+      s := "hello"
+    }
+  - |
+    package main
+    func main() {
+      total := 1 + 2 + 3
+    }
+  - |
+    package main
+    func main() {
+      if scheme == "https" {
+        doWork()
+      }
+    }
+  - |
+    package main
+    func main() {
+      if name != "admin" {
+        deny()
+      }
+    }
+invalid:
+  - |
+    package main
+    func main() {
+      msg := "hello " + name
+    }
+  - |
+    package main
+    func main() {
+      msg := name + " world"
+    }
+  - |
+    package main
+    func main() {
+      msg := "hello " + name + "!"
+    }
+  - |
+    package main
+    import "log"
+    func main() {
+      log.Println("error: " + err.Error())
+    }
+  - |
+    package main
+    func main() {
+      msg := "foo" + "bar"
+    }

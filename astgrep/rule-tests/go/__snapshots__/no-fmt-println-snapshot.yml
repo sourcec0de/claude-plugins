@@ -1,0 +1,110 @@
+id: no-fmt-println
+snapshots:
+  ? |
+    package test
+    func (s *Service) Run() {
+      fmt.Println("service starting on port", s.port)
+    }
+  : labels:
+    - source: fmt.Println("service starting on port", s.port)
+      style: primary
+      start: 41
+      end: 88
+    - source: fmt
+      style: secondary
+      start: 41
+      end: 44
+    - source: fmt.Println
+      style: secondary
+      start: 41
+      end: 52
+  ? |
+    package test
+    func debug() {
+      fmt.Println("got here")
+    }
+  : labels:
+    - source: fmt.Println("got here")
+      style: primary
+      start: 30
+      end: 53
+    - source: fmt
+      style: secondary
+      start: 30
+      end: 33
+    - source: fmt.Println
+      style: secondary
+      start: 30
+      end: 41
+  ? |
+    package test
+    func dump() {
+      fmt.Fprintf(os.Stdout, "result: %v\n", result)
+    }
+  : labels:
+    - source: 'fmt.Fprintf(os.Stdout, "result: %v\n", result)'
+      style: primary
+      start: 29
+      end: 75
+    - source: fmt
+      style: secondary
+      start: 29
+      end: 32
+    - source: fmt.Fprintf
+      style: secondary
+      start: 29
+      end: 40
+  ? |
+    package test
+    func log() {
+      fmt.Fprintln(os.Stderr, "error occurred")
+    }
+  : labels:
+    - source: fmt.Fprintln(os.Stderr, "error occurred")
+      style: primary
+      start: 28
+      end: 69
+    - source: fmt
+      style: secondary
+      start: 28
+      end: 31
+    - source: fmt.Fprintln
+      style: secondary
+      start: 28
+      end: 40
+  ? |
+    package test
+    func process() {
+      fmt.Printf("value: %d\n", v)
+    }
+  : labels:
+    - source: 'fmt.Printf("value: %d\n", v)'
+      style: primary
+      start: 32
+      end: 60
+    - source: fmt
+      style: secondary
+      start: 32
+      end: 35
+    - source: fmt.Printf
+      style: secondary
+      start: 32
+      end: 42
+  ? |
+    package test
+    func trace() {
+      fmt.Print("starting")
+    }
+  : labels:
+    - source: fmt.Print("starting")
+      style: primary
+      start: 30
+      end: 51
+    - source: fmt
+      style: secondary
+      start: 30
+      end: 33
+    - source: fmt.Print
+      style: secondary
+      start: 30
+      end: 39

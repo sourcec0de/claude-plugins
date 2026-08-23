@@ -1,0 +1,97 @@
+id: ts-no-waitfor
+snapshots:
+  ? |
+    await page.getByRole('button', { name: 'Submit' }).waitFor()
+  : labels:
+    - source: 'await page.getByRole(''button'', { name: ''Submit'' }).waitFor()'
+      style: primary
+      start: 0
+      end: 60
+    - source: waitFor
+      style: secondary
+      start: 51
+      end: 58
+    - source: 'page.getByRole(''button'', { name: ''Submit'' }).waitFor'
+      style: secondary
+      start: 6
+      end: 58
+    - source: 'page.getByRole(''button'', { name: ''Submit'' }).waitFor()'
+      style: secondary
+      start: 6
+      end: 60
+  ? |
+    await page.getByTestId('loading').waitFor({ timeout: 5000 })
+  : labels:
+    - source: 'await page.getByTestId(''loading'').waitFor({ timeout: 5000 })'
+      style: primary
+      start: 0
+      end: 60
+    - source: waitFor
+      style: secondary
+      start: 34
+      end: 41
+    - source: page.getByTestId('loading').waitFor
+      style: secondary
+      start: 6
+      end: 41
+    - source: 'page.getByTestId(''loading'').waitFor({ timeout: 5000 })'
+      style: secondary
+      start: 6
+      end: 60
+  ? |
+    await page.getByText('hello').waitFor()
+  : labels:
+    - source: await page.getByText('hello').waitFor()
+      style: primary
+      start: 0
+      end: 39
+    - source: waitFor
+      style: secondary
+      start: 30
+      end: 37
+    - source: page.getByText('hello').waitFor
+      style: secondary
+      start: 6
+      end: 37
+    - source: page.getByText('hello').waitFor()
+      style: secondary
+      start: 6
+      end: 39
+  ? |
+    await page.getByText('hello').waitFor({ state: 'visible' })
+  : labels:
+    - source: 'await page.getByText(''hello'').waitFor({ state: ''visible'' })'
+      style: primary
+      start: 0
+      end: 59
+    - source: waitFor
+      style: secondary
+      start: 30
+      end: 37
+    - source: page.getByText('hello').waitFor
+      style: secondary
+      start: 6
+      end: 37
+    - source: 'page.getByText(''hello'').waitFor({ state: ''visible'' })'
+      style: secondary
+      start: 6
+      end: 59
+  ? |
+    await page.locator('.modal').waitFor({ state: 'hidden' })
+  : labels:
+    - source: 'await page.locator(''.modal'').waitFor({ state: ''hidden'' })'
+      style: primary
+      start: 0
+      end: 57
+    - source: waitFor
+      style: secondary
+      start: 29
+      end: 36
+    - source: page.locator('.modal').waitFor
+      style: secondary
+      start: 6
+      end: 36
+    - source: 'page.locator(''.modal'').waitFor({ state: ''hidden'' })'
+      style: secondary
+      start: 6
+      end: 57

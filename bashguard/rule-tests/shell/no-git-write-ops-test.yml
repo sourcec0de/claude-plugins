@@ -1,0 +1,45 @@
+id: no-git-write-ops
+valid:
+  - |
+    git status
+  - |
+    git log --oneline
+  - |
+    git diff HEAD
+  - |
+    git show HEAD
+  - |
+    but commit -m "chore: init"
+  - |
+    but push origin main
+  - |
+    but branch new feature/foo
+invalid:
+  - |
+    git commit -m "chore: init"
+  - |
+    git commit -am "fix: something"
+  - |
+    git push origin main
+  - |
+    git add -A
+  - |
+    git stash
+  - |
+    git checkout -b feature/foo
+  - |
+    git branch -D main
+  - |
+    git reset --hard HEAD
+  - |
+    git rebase main
+  - |
+    git merge feature/foo
+  - |
+    git pull origin main
+  - |
+    git clean -fd
+  - |
+    git cherry-pick abc123
+  - |
+    git bisect start

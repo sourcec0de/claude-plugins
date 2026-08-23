@@ -1,0 +1,76 @@
+id: no-filepath-isabs-on-url
+snapshots:
+  ? |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(redirectURL) {
+        return errBad
+      }
+    }
+  : labels:
+    - source: filepath.IsAbs(redirectURL)
+      style: primary
+      start: 56
+      end: 83
+  ? |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(req.CallbackURL) {
+        return errBad
+      }
+    }
+  : labels:
+    - source: filepath.IsAbs(req.CallbackURL)
+      style: primary
+      start: 56
+      end: 87
+  ? |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(state.OnError) {
+        err = spec.ErrInvalidOnErrorURL
+      }
+    }
+  : labels:
+    - source: filepath.IsAbs(state.OnError)
+      style: primary
+      start: 56
+      end: 85
+  ? |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(state.OnSuccess) {
+        err = spec.ErrInvalidOnSuccessURL
+      }
+    }
+  : labels:
+    - source: filepath.IsAbs(state.OnSuccess)
+      style: primary
+      start: 56
+      end: 87
+  ? |
+    package main
+    import "path/filepath"
+    func main() {
+      ok := filepath.IsAbs(nextURL)
+    }
+  : labels:
+    - source: filepath.IsAbs(nextURL)
+      style: primary
+      start: 58
+      end: 81
+  ? |
+    package main
+    import "path/filepath"
+    func main() {
+      ok := filepath.IsAbs(returnTo)
+    }
+  : labels:
+    - source: filepath.IsAbs(returnTo)
+      style: primary
+      start: 58
+      end: 82

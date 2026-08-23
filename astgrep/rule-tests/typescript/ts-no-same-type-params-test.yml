@@ -1,0 +1,29 @@
+id: ts-no-same-type-params
+valid:
+  - |
+    function greet(name: string, age: number) {}
+  - |
+    function mix(a: string, b: number, c: boolean) {}
+  - |
+    function single(name: string) {}
+  - |
+    function noParams() {}
+  - |
+    const arrow = (a: string, b: number) => {}
+  - |
+    class Service {
+      method(a: string, b: number) {}
+    }
+invalid:
+  - |
+    function bad(name: string, other: string) {}
+  - |
+    function badNum(a: number, b: number) {}
+  - |
+    function badBool(a: boolean, b: boolean) {}
+  - |
+    const arrow = (x: string, y: string) => {}
+  - |
+    class Service {
+      bad(a: string, b: string) {}
+    }

@@ -1,0 +1,18 @@
+id: no-assert
+language: go
+severity: error
+message: >
+  assert.* is banned in tests. Use require.* instead. assert allows the test
+  to continue after a failure, which causes cascading errors and misleading
+  output. require stops the test immediately on failure, making the root cause
+  obvious. Replace assert.Equal with require.Equal, assert.NoError with
+  require.NoError, etc.
+rule:
+  kind: call_expression
+  has:
+    kind: selector_expression
+    has:
+      field: operand
+      pattern: assert
+      stopBy: end
+    stopBy: end

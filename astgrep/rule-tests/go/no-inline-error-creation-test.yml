@@ -1,0 +1,41 @@
+id: no-inline-error-creation
+valid:
+  - |
+    package main
+    func doWork() error {
+      return ErrNotFound
+    }
+  - |
+    package main
+    func doWork() error {
+      return errors.Join(ErrNotFound, err)
+    }
+  - |
+    package main
+    var ErrNotFound = errors.New("not found")
+invalid:
+  - |
+    package main
+    func doWork() error {
+      return fmt.Errorf("something failed")
+    }
+  - |
+    package main
+    func doWork() error {
+      return fmt.Errorf("wrap: %w", ErrNotFound)
+    }
+  - |
+    package main
+    func doWork() error {
+      return errors.New("not found")
+    }
+  - |
+    package main
+    func doWork() error {
+      return errors.Errorf("bad input: %v", x)
+    }
+  - |
+    package main
+    func doWork() error {
+      return errors.Error("bad")
+    }

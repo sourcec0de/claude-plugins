@@ -1,0 +1,15 @@
+id: ts-max-three-params
+language: tsx
+severity: error
+message: >
+  Function has more than 3 parameters. Use a params object instead.
+  Example: function greet(params: GreetParams) {}
+rule:
+  any:
+    - kind: function_declaration
+    - kind: method_definition
+    - kind: arrow_function
+  has:
+    kind: formal_parameters
+    regex: ',.*,.*,'
+    stopBy: end

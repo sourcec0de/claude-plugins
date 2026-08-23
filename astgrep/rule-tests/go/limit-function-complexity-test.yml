@@ -1,0 +1,73 @@
+id: limit-function-complexity
+valid:
+  - |
+    func flatLogic() {
+        if condition {
+            doSomething()
+        }
+    }
+  - |
+    func twoLevels() {
+        for i := 0; i < 10; i++ {
+            if i%2 == 0 {
+                doSomething()
+            }
+        }
+    }
+  - |
+    func closureReset() {
+        if condition {
+            for {
+                go func() {
+                    if true {
+                        doSomething()
+                    }
+                }()
+            }
+        }
+    }
+  - |
+    func switchAndSelect() {
+        select {
+        case <-ch:
+            switch val {
+            case 1:
+                doSomething()
+            }
+        }
+    }
+invalid:
+  - |
+    func threeLevels() {
+        if condition {
+            for i := 0; i < 10; i++ {
+                if i%2 == 0 {
+                    doSomething()
+                }
+            }
+        }
+    }
+  - |
+    func deepSelect() {
+        for {
+            select {
+            case <-ch:
+                switch val {
+                case 1:
+                    doSomething()
+                }
+            }
+        }
+    }
+  - |
+    func extremelyDeep() {
+        if a {
+            if b {
+                if c {
+                    if d {
+                        doSomething()
+                    }
+                }
+            }
+        }
+    }

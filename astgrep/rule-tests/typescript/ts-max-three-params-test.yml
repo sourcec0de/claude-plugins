@@ -1,0 +1,39 @@
+id: ts-max-three-params
+valid:
+  - |
+    function noParams() {}
+  - |
+    function oneParam(a: string) {}
+  - |
+    function twoParams(a: string, b: number) {}
+  - |
+    function threeParams(a: string, b: number, c: boolean) {}
+  - |
+    function withParams(params: GreetParams) {}
+  - |
+    const arrow = (a: string, b: number) => {}
+  - |
+    const threeArrow = (a: string, b: number, c: boolean) => {}
+  - |
+    class Service {
+      method(a: string, b: number) {}
+    }
+  - |
+    class Service {
+      methodThree(a: string, b: number, c: boolean) {}
+    }
+invalid:
+  - |
+    function fourParams(a: string, b: number, c: boolean, d: string) {}
+  - |
+    function fiveParams(a: string, b: number, c: boolean, d: string, e: number) {}
+  - |
+    const arrow = (a: string, b: number, c: boolean, d: string) => {}
+  - |
+    class Service {
+      badMethod(a: string, b: number, c: boolean, d: string) {}
+    }
+  - |
+    class Service {
+      alsoTooMany(ctx: Context, a: string, b: number, c: boolean) {}
+    }

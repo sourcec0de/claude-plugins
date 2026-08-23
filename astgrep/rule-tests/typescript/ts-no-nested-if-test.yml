@@ -1,0 +1,52 @@
+id: ts-no-nested-if
+valid:
+  - |
+    function handle(x: number, y: number): string {
+      if (x <= 0) {
+        return "nope";
+      }
+      if (y > 0) {
+        return "both positive";
+      }
+      return "only x";
+    }
+  - |
+    function validate(err: Error | null) {
+      if (!err) {
+        return;
+      }
+      throw err;
+    }
+  - |
+    function ternary(x: number) {
+      const val = x > 0 ? "pos" : "neg";
+    }
+invalid:
+  - |
+    function handle(x: number, y: number): string {
+      if (x > 0) {
+        if (y > 0) {
+          return "both";
+        }
+        return "only x";
+      }
+      return "nope";
+    }
+  - |
+    function deep(a: boolean, b: boolean) {
+      if (a) {
+        if (b) {
+          console.log("nested");
+        }
+      }
+    }
+  - |
+    function withElse(x: number) {
+      if (x > 0) {
+        if (x < 100) {
+          console.log("in range");
+        } else {
+          console.log("too big");
+        }
+      }
+    }

@@ -1,0 +1,72 @@
+id: sql-uppercase-keywords
+snapshots:
+  ? |
+    var q = "ALTER TABLE users ADD COLUMN email text"
+  : labels:
+    - source: '"ALTER TABLE users ADD COLUMN email text"'
+      style: primary
+      start: 8
+      end: 49
+  ? |
+    var q = "CREATE TABLE users (id int)"
+  : labels:
+    - source: '"CREATE TABLE users (id int)"'
+      style: primary
+      start: 8
+      end: 37
+  ? |
+    var q = "DELETE FROM users WHERE id = $1"
+  : labels:
+    - source: '"DELETE FROM users WHERE id = $1"'
+      style: primary
+      start: 8
+      end: 41
+  ? |
+    var q = "DROP TABLE users"
+  : labels:
+    - source: '"DROP TABLE users"'
+      style: primary
+      start: 8
+      end: 26
+  ? |
+    var q = "INSERT INTO users (name) VALUES ($1)"
+  : labels:
+    - source: '"INSERT INTO users (name) VALUES ($1)"'
+      style: primary
+      start: 8
+      end: 46
+  ? |
+    var q = "SELECT count(*) FROM users GROUP BY status HAVING count(*) > 1 ORDER BY status"
+  : labels:
+    - source: '"SELECT count(*) FROM users GROUP BY status HAVING count(*) > 1 ORDER BY status"'
+      style: primary
+      start: 8
+      end: 88
+  ? |
+    var q = "SELECT id FROM users"
+  : labels:
+    - source: '"SELECT id FROM users"'
+      style: primary
+      start: 8
+      end: 30
+  ? |
+    var q = "SELECT id, name FROM users WHERE active = true"
+  : labels:
+    - source: '"SELECT id, name FROM users WHERE active = true"'
+      style: primary
+      start: 8
+      end: 56
+  ? |
+    var q = "SELECT u.id FROM users u JOIN roles r ON u.role_id = r.id"
+  : labels:
+    - source: '"SELECT u.id FROM users u JOIN roles r ON u.role_id = r.id"'
+      style: primary
+      start: 8
+      end: 67
+  ? |
+    var q = "UPDATE users SET name = $1 WHERE id = $2"
+  : labels:
+    - source: '"UPDATE users SET name = $1 WHERE id = $2"'
+      style: primary
+      start: 8
+      end: 50

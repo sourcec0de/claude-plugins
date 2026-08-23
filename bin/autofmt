@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Thin wrapper so `autofmt` is invokable as a bare command: a plugin's
+# bin/ directory is prepended to the Bash tool's PATH while it is enabled.
+set -euo pipefail
+exec "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/run.sh" autofmt "$@"

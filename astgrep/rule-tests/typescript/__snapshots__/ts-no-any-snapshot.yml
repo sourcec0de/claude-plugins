@@ -1,0 +1,79 @@
+id: ts-no-any
+snapshots:
+  ? |
+    async function load(): Promise<any> { return fetch("/api"); }
+  : labels:
+    - source: any
+      style: primary
+      start: 31
+      end: 34
+  ? |
+    const cache = new Map<string, any>();
+  : labels:
+    - source: any
+      style: primary
+      start: 30
+      end: 33
+  ? |
+    const data: any = fetchData();
+  : labels:
+    - source: any
+      style: primary
+      start: 12
+      end: 15
+  ? |
+    const handler = (e: any) => {};
+  : labels:
+    - source: any
+      style: primary
+      start: 20
+      end: 23
+  ? |
+    const ref = useRef<any>(null);
+  : labels:
+    - source: any
+      style: primary
+      start: 19
+      end: 22
+  ? |
+    function greet(name: any): any { return name; }
+  : labels:
+    - source: any
+      style: primary
+      start: 21
+      end: 24
+  ? |
+    function merge(...args: any[]): void {}
+  : labels:
+    - source: any
+      style: primary
+      start: 24
+      end: 27
+  ? |
+    function process(items: Array<any>): void {}
+  : labels:
+    - source: any
+      style: primary
+      start: 30
+      end: 33
+  ? |
+    function wrap(fn: (...args: any[]) => any): void {}
+  : labels:
+    - source: any
+      style: primary
+      start: 28
+      end: 31
+  ? |
+    interface Sloppy { handle(input: any): any; }
+  : labels:
+    - source: any
+      style: primary
+      start: 33
+      end: 36
+  ? |
+    type Props = { data: any };
+  : labels:
+    - source: any
+      style: primary
+      start: 21
+      end: 24

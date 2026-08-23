@@ -1,0 +1,48 @@
+id: no-fatal-outside-main
+valid:
+  - |
+    package main
+    func main() {
+      log.Fatal("startup failed")
+    }
+  - |
+    package main
+    func main() {
+      log.Fatalf("config error: %v", err)
+    }
+  - |
+    package main
+    func main() {
+      os.Exit(1)
+    }
+  - |
+    package main
+    func TestMain(m *testing.M) {
+      os.Exit(testscript.RunMain(m, map[string]func() int{}))
+    }
+  - |
+    package main
+    func doWork() error {
+      return fmt.Errorf("something failed")
+    }
+invalid:
+  - |
+    package main
+    func setup() {
+      log.Fatal("bad")
+    }
+  - |
+    package main
+    func handler() {
+      log.Fatalf("error: %v", err)
+    }
+  - |
+    package main
+    func cleanup() {
+      os.Exit(1)
+    }
+  - |
+    package main
+    func init() {
+      log.Fatal("init failed")
+    }

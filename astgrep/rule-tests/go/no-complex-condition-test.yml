@@ -1,0 +1,88 @@
+id: no-complex-condition
+valid:
+  - |
+    func charge() int {
+      if isSummer() {
+        return summerCharge()
+      }
+      return regularCharge()
+    }
+  - |
+    func process(err error) {
+      if err != nil {
+        return
+      }
+    }
+  - |
+    func check(x int) bool {
+      return x > 0
+    }
+  - |
+    func validate(name string) error {
+      if name == "" {
+        return fmt.Errorf("empty")
+      }
+      return nil
+    }
+  - |
+    func toggle(enabled bool) {
+      if !enabled {
+        return
+      }
+    }
+  - |
+    func charge() int {
+      if !aDate.IsBefore(plan.SummerStart) && !aDate.IsAfter(plan.SummerEnd) {
+        return quantity * plan.SummerRate
+      }
+      return quantity * plan.RegularRate
+    }
+  - |
+    func eligible(age int, citizen bool) bool {
+      if age >= 18 && citizen {
+        return true
+      }
+      return false
+    }
+  - |
+    func checkName(u User) {
+      if u.Name != "" && len(u.Name) > 0 {
+        process(u.Name)
+      }
+    }
+  - |
+    func access(user User) bool {
+      if user.IsAdmin || user.IsSuperAdmin || user.HasPermission("write") {
+        return true
+      }
+      return false
+    }
+  - |
+    func complex(a bool, b bool, c bool) bool {
+      if a && b || c {
+        return true
+      }
+      return false
+    }
+invalid:
+  - |
+    func validate(req Request) error {
+      if req.Name != "" && req.Email != "" && req.Age > 0 && req.Phone != "" {
+        return nil
+      }
+      return fmt.Errorf("invalid")
+    }
+  - |
+    func check(a bool, b bool, c bool, d bool) bool {
+      if a && b && c && d {
+        return true
+      }
+      return false
+    }
+  - |
+    func mixed(a bool, b bool, c bool, d bool, e bool) bool {
+      if a || b || c || d && e {
+        return true
+      }
+      return false
+    }

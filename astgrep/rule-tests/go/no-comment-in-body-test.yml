@@ -1,0 +1,51 @@
+id: no-comment-in-body
+valid:
+  - |
+    package downloads
+    // SessionWorkflow is the per-(customer, user) download monitor.
+    func SessionWorkflow() error {
+      return run()
+    }
+  - |
+    package downloads
+    // reap deletes the committed storage object of every still-enrolled bundle.
+    func reap() {
+      sweep()
+    }
+  - |
+    package downloads
+    func dispatch() {
+      //nolint:errcheck
+      doThing()
+    }
+  - |
+    package downloads
+    func dispatch() {
+      //lint:ignore SA1019 keeping deprecated call until callers migrate
+      doDeprecatedThing()
+    }
+  - |
+    package downloads
+    //go:generate mockgen
+    func generated() {}
+invalid:
+  - |
+    package downloads
+    func close() {
+      // terminate, not cancel: a stuck workflow never processes a cancel
+      terminate()
+    }
+  - |
+    package downloads
+    func enqueue() {
+      // The bundle was dismissed mid-build, so the dismiss-time delete saw no object id.
+      reclaim()
+    }
+  - |
+    package downloads
+    func loop() {
+      for {
+        // skip a same-id replay of an already-enrolled download
+        receive()
+      }
+    }

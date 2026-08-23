@@ -1,0 +1,21 @@
+id: no-sprintf-url-path
+language: go
+severity: error
+message: >
+  Do not use fmt.Sprintf to build URL paths. Use url.JoinPath or construct
+  a *url.URL struct and call its JoinPath method instead.
+  Example: replace fmt.Sprintf("%s/api/v1/foo", base)
+  with url.JoinPath(base, "api/v1/foo")
+  or u := &url.URL{Scheme: "http", Host: addr}; endpoint := u.JoinPath("api/v1/foo").
+rule:
+  any:
+    - pattern:
+        context: |
+          { fmt.Sprintf($$$) }
+        selector: call_expression
+    - pattern:
+        context: fmt.Sprintf($$$)
+  has:
+    kind: interpreted_string_literal
+    regex: /
+    stopBy: end

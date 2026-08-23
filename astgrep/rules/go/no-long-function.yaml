@@ -1,0 +1,24 @@
+id: no-long-function
+language: go
+severity: error
+message: >
+  Function exceeds 30 statements. Break it into smaller, focused functions
+  that each do one thing. Extract distinct phases into their own functions
+  and compose them from a parent orchestrator.
+ignores:
+  - '**/*_test.go'
+rule:
+  any:
+    - kind: function_declaration
+    - kind: method_declaration
+  has:
+    field: body
+    kind: block
+    has:
+      nthChild:
+        position: 31
+        ofRule:
+          not:
+            kind: comment
+      stopBy: end
+    stopBy: end

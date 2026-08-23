@@ -1,0 +1,61 @@
+id: ts-no-comment-in-body
+valid:
+  - |
+    /** Builds the filtered export request from the active filters. */
+    export function buildParams(): Params {
+      return collect();
+    }
+  - |
+    // SpringBar animates the value toward its target.
+    function SpringBar(): JSX.Element {
+      return render();
+    }
+  - |
+    class Tray {
+      // open toggles the tray into view.
+      open(): void {
+        this.visible = true;
+      }
+    }
+  - |
+    function use(): void {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const x = build();
+    }
+  - |
+    function cast(): unknown {
+      // @ts-expect-error upstream types are wrong
+      return foo();
+    }
+  - |
+    function suppress(): void {
+      // astgrep-allow: ts-no-any -- third-party shape
+      const y = z;
+    }
+  - |
+    const PAD = 'pr-10';
+invalid:
+  - |
+    function DownloadRow(): JSX.Element {
+      // Fallback only applies to non-bundling rows, where the bar is not rendered.
+      const barValue = target ?? 0;
+      return render(barValue);
+    }
+  - |
+    function close(): void {
+      // terminate, not cancel: a stuck workflow never processes a cancel
+      terminate();
+    }
+  - |
+    function f(): void {
+      if (cond) {
+        // this branch handles the empty case
+        bail();
+      }
+    }
+  - |
+    const Row = (): JSX.Element => {
+      // one-icon clearance for the trash button
+      const pad = 'pr-10';
+      return render(pad);
+    };

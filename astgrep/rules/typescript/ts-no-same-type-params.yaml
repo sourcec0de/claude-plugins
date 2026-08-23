@@ -1,0 +1,31 @@
+id: ts-no-same-type-params
+language: tsx
+severity: error
+message: >
+  Multiple consecutive parameters share the same type. This makes it easy
+  to accidentally swap arguments. Use a params object instead.
+utils:
+  has-consecutive-same-type:
+    kind: required_parameter
+    has:
+      field: type
+      pattern: $TYPE
+      stopBy: end
+    follows:
+      kind: required_parameter
+      has:
+        field: type
+        pattern: $TYPE
+        stopBy: end
+      stopBy: end
+rule:
+  any:
+    - kind: function_declaration
+    - kind: method_definition
+    - kind: arrow_function
+  has:
+    kind: formal_parameters
+    has:
+      matches: has-consecutive-same-type
+      stopBy: end
+    stopBy: end

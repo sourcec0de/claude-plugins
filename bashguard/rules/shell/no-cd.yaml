@@ -1,0 +1,17 @@
+id: no-cd
+language: bash
+severity: error
+message: >
+  Do not use cd to change directories — it causes session issues. Use absolute
+  paths instead, or pass the working directory to the command via a flag:
+  terraform -chdir=path plan, git -C path status, make -C path target, etc.
+rule:
+  kind: command
+  has:
+    field: name
+    kind: command_name
+    has:
+      kind: word
+      pattern: cd
+      stopBy: end
+    stopBy: end
