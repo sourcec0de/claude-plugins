@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      # Determinate Nix needs id-token: write to authenticate with FlakeHub
+      # Cache. Without it the cache step fails rather than degrading.
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - uses: DeterminateSystems/flakehub-cache-action@main
+
+      # Builds every check output: go vet and tests, gofmt, the ast-grep rule
+      # suites for both plugins, shellcheck, and manifest JSON validation.
+      - name: nix flake check
+        run: nix flake check -L
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Kept separate from `nix flake check`: the plugin validator catches
+      # marketplace schema errors, duplicate plugin names and source path
+      # traversal that Nix knows nothing about. --strict promotes warnings
+      # such as unrecognized manifest fields to errors.
+      - name: claude plugin validate
+        run: npx --yes @anthropic-ai/claude-code@latest plugin validate . --strict
