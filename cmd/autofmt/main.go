@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/sourcec0de/claude-plugins/hookio"
@@ -25,7 +26,7 @@ func decide(event hookio.Event) hookio.Decision {
 	}
 
 	var problems []string
-	for _, f := range formattersFor(filePath) {
+	for _, f := range formattersFor(event.Cwd, filePath) {
 		if err := f.run(event.Cwd, filePath); err != nil {
 			problems = append(problems, err.Error())
 		}
@@ -71,12 +72,12 @@ func (f formatter) run(cwd, filePath string) error {
 	return fmt.Errorf("%s: %v\n%s", f.Name, runErr, strings.TrimSpace(string(output)))
 }
 
-func formattersFor(filePath string) []formatter {
+func formattersFor(cwd, filePath string) []formatter {
 	switch {
 	case goExtMatch.MatchString(filePath):
 		return []formatter{{Name: "gofmt", Bin: "gofmt", Args: []string{"-w"}}}
 	case tsExtMatch.MatchString(filePath):
-		return nodeFormatters()
+		return nodeFormatters(cwd)
 	default:
 		return nil
 	}
@@ -85,31 +86,51 @@ func formattersFor(filePath string) []formatter {
 // nodeFormatters resolves the project's package runner rather than assuming
 // one. The original implementation hardcoded pnpm, which is correct only in the
 // repository it came from.
-func nodeFormatters() []formatter {
-	runner := detectRunner()
+//
+// ESLint and prettier load configuration and plugins from the project being
+// formatted, which means running them executes that project's JavaScript. The
+// gates below keep that from happening in a directory the user merely has
+// checked out: the runner's lockfile and the tool itself must both be present
+// in the directory the edit landed in.
+func nodeFormatters(cwd string) []formatter {
+	runner := detectRunner(cwd)
 	if runner == "" {
 		return nil
 	}
-	return []formatter{
-		{Name: "eslint", Bin: runner, Args: runnerArgs(runner, "eslint", "--fix")},
-		{Name: "prettier", Bin: runner, Args: runnerArgs(runner, "prettier", "--write")},
+	var out []formatter
+	for _, tool := range []struct{ name, flag string }{
+		{"eslint", "--fix"},
+		{"prettier", "--write"},
+	} {
+		if !installedLocally(cwd, tool.name) {
+			continue
+		}
+		out = append(out, formatter{
+			Name: tool.name,
+			Bin:  runner,
+			Args: runnerArgs(runner, tool.name, tool.flag),
+		})
 	}
+	return out
 }
 
-func detectRunner() string {
+func detectRunner(cwd string) string {
 	for _, candidate := range []string{"pnpm", "yarn", "npm", "bun"} {
-		if _, err := exec.LookPath(candidate); err == nil {
-			if hasLockfile(candidate) {
-				return candidate
-			}
+		if _, err := exec.LookPath(candidate); err != nil {
+			continue
+		}
+		if hasLockfile(cwd, candidate) {
+			return candidate
 		}
 	}
 	return ""
 }
 
 // hasLockfile keeps autofmt from running a package runner in a directory that
-// is not actually a Node project of that flavour.
-func hasLockfile(runner string) bool {
+// is not actually a Node project of that flavour. The path is resolved against
+// the directory the edit happened in, not the hook process's own working
+// directory, which are not always the same.
+func hasLockfile(cwd, runner string) bool {
 	lockfiles := map[string]string{
 		"pnpm": "pnpm-lock.yaml",
 		"yarn": "yarn.lock",
@@ -120,7 +141,15 @@ func hasLockfile(runner string) bool {
 	if !ok {
 		return false
 	}
-	_, err := os.Stat(name)
+	_, err := os.Stat(filepath.Join(cwd, name))
+	return err == nil
+}
+
+// installedLocally reports whether the project has actually installed the tool,
+// so a bare lockfile in an uninstalled checkout does not cause the runner to
+// fetch and execute one.
+func installedLocally(cwd, tool string) bool {
+	_, err := os.Stat(filepath.Join(cwd, "node_modules", ".bin", tool))
 	return err == nil
 }
 

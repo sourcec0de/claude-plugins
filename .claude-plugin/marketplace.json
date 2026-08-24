@@ -17,7 +17,7 @@
       "name": "bashguard",
       "source": "./",
       "strict": false,
-      "description": "Blocks destructive and banned shell commands before they run",
+      "description": "Catches destructive and banned shell commands before they run",
       "skills": ["./skills/bash-rules"],
       "hooks": "./hooks/bashguard.json"
     },

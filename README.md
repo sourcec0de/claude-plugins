@@ -22,6 +22,10 @@ Go must be on `PATH` for the hooks to build themselves, and `ast-grep` for them
 to do anything. Both fail loudly rather than silently when a dependency is
 missing.
 
+**Read [SECURITY.md](SECURITY.md) before installing.** These plugins compile and
+run code on your machine on every edit, and they track this repository's `main`
+by default — installing them is a continuous trust decision, not a one-time one.
+
 ## How the linting works
 
 `astgrep-lint` is a `PreToolUse` hook, so it rejects an edit *before* it lands.
@@ -73,4 +77,6 @@ Two skills exist for working on this repo itself, under `.claude/skills/`:
 documents the suites. They are not part of any plugin.
 
 Rules carry no version field anywhere, so Claude Code resolves the version from
-the commit SHA and users pick up changes as soon as the commit moves.
+the commit SHA and users pick up changes as soon as the commit moves. That is
+convenient during development and is also the project's main security tradeoff —
+see [SECURITY.md](SECURITY.md).

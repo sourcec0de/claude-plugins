@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Actions are what CI trusts most; keep bumps arriving as reviewable diffs
+  # rather than riding a mutable tag.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly

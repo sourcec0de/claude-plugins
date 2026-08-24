@@ -67,13 +67,15 @@ func scanCommand(cwd, command string) ([]Violation, error) {
 		Path: binPath,
 		Args: []string{"ast-grep", "scan", "--config", configPath, "--json=stream", tmp.Name()},
 	}
-	var stdout bytes.Buffer
+	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
 
 	// A nonzero exit means error-severity matches were found, which is the
-	// expected outcome here rather than a failure.
+	// expected outcome here rather than a failure. Anything else carries
+	// ast-grep's own diagnostic, which is the only clue a rule is malformed.
 	if runErr := cmd.Run(); runErr != nil && !isExpectedExit(runErr) {
-		return nil, runErr
+		return nil, errors.Join(runErr, errors.New(stderr.String()))
 	}
 	return parseMatches(stdout.Bytes())
 }

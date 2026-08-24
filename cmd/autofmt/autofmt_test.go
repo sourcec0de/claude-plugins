@@ -29,10 +29,53 @@ func TestTargetFileFallsBackToToolInput(t *testing.T) {
 func TestFormattersForByExtension(t *testing.T) {
 	t.Parallel()
 
-	require.Len(t, formattersFor("a.go"), 1)
-	require.Equal(t, "gofmt", formattersFor("a.go")[0].Name)
-	require.Nil(t, formattersFor("README.md"))
-	require.Nil(t, formattersFor(""))
+	require.Len(t, formattersFor("", "a.go"), 1)
+	require.Equal(t, "gofmt", formattersFor("", "a.go")[0].Name)
+	require.Nil(t, formattersFor("", "README.md"))
+	require.Nil(t, formattersFor("", ""))
+}
+
+// The Node formatters execute the edited project's own eslint/prettier config,
+// so they must key off the directory the edit landed in rather than wherever
+// the hook process happens to be running.
+
+func TestNodeFormattersSkipDirectoryWithoutLockfile(t *testing.T) {
+	t.Parallel()
+
+	require.Nil(t, nodeFormatters(t.TempDir()),
+		"a directory that is not a Node project must not invoke a package runner")
+}
+
+func TestNodeFormattersSkipUninstalledProject(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "pnpm-lock.yaml"), []byte("lockfileVersion: 9\n"), 0o644))
+
+	require.Empty(t, nodeFormatters(dir),
+		"a lockfile alone must not cause the runner to fetch and execute a tool")
+}
+
+func TestHasLockfileResolvesAgainstEditDirectory(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	require.False(t, hasLockfile(dir, "pnpm"))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "pnpm-lock.yaml"), []byte(""), 0o644))
+	require.True(t, hasLockfile(dir, "pnpm"))
+	require.False(t, hasLockfile(dir, "yarn"))
+	require.False(t, hasLockfile(dir, "unknown-runner"))
+}
+
+func TestInstalledLocally(t *testing.T) {
+	t.Parallel()
+
+	dir := t.TempDir()
+	require.False(t, installedLocally(dir, "eslint"))
+	require.NoError(t, os.MkdirAll(filepath.Join(dir, "node_modules", ".bin"), 0o755))
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "node_modules", ".bin", "eslint"), []byte("#!/bin/sh\n"), 0o755))
+	require.True(t, installedLocally(dir, "eslint"))
+	require.False(t, installedLocally(dir, "prettier"))
 }
 
 func TestRunnerArgsNpmUsesDoubleDash(t *testing.T) {

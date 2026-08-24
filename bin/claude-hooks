@@ -17,8 +17,12 @@ usage() {
 }
 
 # stale reports whether the cached binary is missing or older than any Go source
-# in the plugin, so an edited rule or command takes effect without a manual
-# rebuild.
+# in the plugin. Installing or updating a plugin rewrites the source files and
+# so gives them a current mtime, which covers upgrades and downgrades alike.
+#
+# This does not defend against a binary planted in the cache with a future
+# mtime; that needs local write access, at which point the cache is not the
+# weakest thing on the machine. The directory is created 0700 to narrow it.
 stale() {
   local bin="$1" root="$2"
   [[ -x "$bin" ]] || return 0
@@ -47,8 +51,13 @@ if stale "$bin" "$root"; then
     echo "${command_name}: 'go' not found on PATH; this hook is inactive for the session" >&2
     exit 0
   fi
-  mkdir -p "$(dirname -- "$bin")"
-  if ! (cd -- "$root" && go build -o "$bin" "./cmd/${command_name}") >&2; then
+  (umask 077 && mkdir -p "$(dirname -- "$bin")")
+  # Pin the build the same way flake.nix pins it for CI. Without these, Go picks
+  # -mod=vendor only because vendor/ happens to exist: drop it in some future
+  # commit and every user's hook would silently start fetching modules over the
+  # network at edit time, and any cgo import would invoke their C toolchain.
+  if ! (cd -- "$root" && GOFLAGS=-mod=vendor GOPROXY=off CGO_ENABLED=0 \
+        go build -o "$bin" "./cmd/${command_name}") >&2; then
     echo "${command_name}: build failed; this hook is inactive for the session" >&2
     exit 0
   fi
