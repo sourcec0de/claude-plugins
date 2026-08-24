@@ -46,25 +46,13 @@ fmt.Println(payload)
 The rule id must match, the `--` is required, and the justification must be at
 least 10 non-whitespace characters.
 
-## Layout
+## Where things resolve from
 
-```
-hookio/                 Hook payload decoding and decision encoding
-cmd/astgrep-lint/       PreToolUse linter for Write/Edit/MultiEdit
-cmd/bashguard/          PreToolUse guard for Bash
-cmd/autofmt/            PostToolUse formatter
-bin/                    Build-if-stale wrappers; also a PATH entry
-astgrep/                Go and TypeScript rules, tests, snapshots
-bashguard/              Shell rules, tests, snapshots
-skills/                 Skills that ship to users
-hooks/                  Hook configuration per plugin
-.claude/                Tooling for developing this repo; never shipped
-```
-
-Both plugins resolve their `sgconfig.yml` from `${CLAUDE_PLUGIN_ROOT}`. This is
-not optional: a plugin is copied into `~/.claude/plugins/cache` and its hooks
-run with the *user's* project as the working directory, so an implicit ast-grep
-config lookup would silently lint against the user's rules instead of these.
+Both linting plugins resolve their `sgconfig.yml` from `${CLAUDE_PLUGIN_ROOT}`.
+This is not optional: a plugin is copied into `~/.claude/plugins/cache` and its
+hooks run with the *user's* project as the working directory, so an implicit
+ast-grep config lookup would silently lint against the user's rules instead of
+these.
 
 The binaries are built once into `${CLAUDE_PLUGIN_DATA}`, which survives plugin
 updates, and rebuilt only when a source file is newer.

@@ -28,7 +28,7 @@ go test ./...
 (cd bashguard && ast-grep test --config sgconfig.yml)
 
 # Shell wrappers
-shellcheck bin/run.sh bin/astgrep-lint bin/bashguard bin/autofmt
+shellcheck bin/claude-hooks
 
 # Marketplace and plugin manifests
 claude plugin validate . --strict
@@ -44,7 +44,7 @@ The commands read a hook event on stdin and write a decision on stdout:
 export CLAUDE_PLUGIN_ROOT="$PWD"
 
 jq -n '{hook_event_name:"PreToolUse",tool_name:"Bash",cwd:".",
-        tool_input:{command:"rm -rf build"}}' | ./bin/bashguard | jq .
+        tool_input:{command:"rm -rf build"}}' | ./bin/claude-hooks bashguard | jq .
 ```
 
 A denial is a `hookSpecificOutput.permissionDecision` of `deny` on exit 0. An
@@ -54,8 +54,8 @@ Both linters also run as bare commands, which is the faster way to check a
 specific file:
 
 ```bash
-./bin/astgrep-lint path/to/file.go
-./bin/bashguard 'rm -rf build'
+./bin/claude-hooks astgrep-lint path/to/file.go
+./bin/claude-hooks bashguard 'rm -rf build'
 ```
 
 ## Snapshots

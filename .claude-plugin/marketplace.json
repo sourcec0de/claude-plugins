@@ -1,8 +1,8 @@
 {
   "name": "sourcec0de-plugins",
-  "owner": { "name": "James" },
+  "owner": { "name": "James Qualls" },
   "metadata": {
-    "description": "Personal Claude Code plugins: ast-grep enforcement, shell guardrails, and workflow commands."
+    "description": "A set of plugins for Claude to constrain and increase model output quality."
   },
   "plugins": [
     {

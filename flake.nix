@@ -82,7 +82,7 @@
           '';
 
           shellcheck = check "shellcheck" ''
-            shellcheck bin/run.sh bin/astgrep-lint bin/bashguard bin/autofmt
+            shellcheck bin/claude-hooks
           '';
 
           manifests = check "manifests" ''

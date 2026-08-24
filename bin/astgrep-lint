@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# Thin wrapper so `astgrep-lint` is invokable as a bare command: a plugin's
-# bin/ directory is prepended to the Bash tool's PATH while it is enabled.
-set -euo pipefail
-exec "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/run.sh" astgrep-lint "$@"
