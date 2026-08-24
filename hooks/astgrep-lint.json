@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/claude-hooks astgrep-lint",
+            "command": "astgrep-lint",
             "timeout": 20
           }
         ]
@@ -18,19 +18,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/claude-hooks autofmt",
+            "command": "autofmt",
             "timeout": 30
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/claude-hooks astgrep-lint --warm",
-            "timeout": 60
           }
         ]
       }

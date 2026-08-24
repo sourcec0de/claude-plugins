@@ -68,11 +68,11 @@ it catches, then promote it.
 
 ## Checking before you write
 
-The plugin's `bin/` is on the Bash tool's PATH while it is enabled, so the
-same linter is available directly:
+`astgrep-lint` is an ordinary binary on your PATH, so the same linter runs
+directly:
 
 ```bash
-claude-hooks astgrep-lint path/to/file.go path/to/other.ts
+astgrep-lint path/to/file.go path/to/other.ts
 ```
 
 It reports every violation in those files, not just newly introduced ones, and

@@ -5,6 +5,12 @@ Three plugins, one Go module, one ast-grep rule tree.
 
 ## Install
 
+The hooks are ordinary binaries. Install them once, then add the marketplace:
+
+```bash
+nix profile install github:sourcec0de/claude-plugins
+```
+
 ```
 /plugin marketplace add sourcec0de/claude-plugins
 /plugin install astgrep-lint@sourcec0de-plugins
@@ -15,16 +21,25 @@ Three plugins, one Go module, one ast-grep rule tree.
 | Plugin | What it does |
 | :--- | :--- |
 | `astgrep-lint` | Lints every file the model writes or edits against 47 ast-grep rules and rejects edits that introduce a violation. Formats the file afterwards. |
-| `bashguard` | Parses every Bash command with the bash grammar and blocks destructive or banned operations before they run. |
+| `bashguard` | Parses every Bash command with the bash grammar and catches destructive or banned operations before they run. |
 | `workflows` | Slash commands for repetitive tasks. |
 
-Go must be on `PATH` for the hooks to build themselves, and `ast-grep` for them
-to do anything. Both fail loudly rather than silently when a dependency is
-missing.
+Nothing is compiled on your machine and you do not need Go. The binaries carry
+their own `ast-grep`, so there is no runtime dependency to install separately,
+and they are built reproducibly from a pinned `flake.lock`.
 
-**Read [SECURITY.md](SECURITY.md) before installing.** These plugins compile and
-run code on your machine on every edit, and they track this repository's `main`
-by default — installing them is a continuous trust decision, not a one-time one.
+Without Nix, `go install` works too, but then `ast-grep` must be on your PATH
+yourself:
+
+```bash
+go install github.com/sourcec0de/claude-plugins/cmd/astgrep-lint@latest
+go install github.com/sourcec0de/claude-plugins/cmd/bashguard@latest
+go install github.com/sourcec0de/claude-plugins/cmd/autofmt@latest
+```
+
+Binaries update only when you ask — `nix profile upgrade claude-plugins`. The
+plugin's rules track the repository and update with it. See
+[SECURITY.md](SECURITY.md) for why that split matters.
 
 ## How the linting works
 
@@ -50,33 +65,38 @@ fmt.Println(payload)
 The rule id must match, the `--` is required, and the justification must be at
 least 10 non-whitespace characters.
 
-## Where things resolve from
+## Where the rules come from
 
-Both linting plugins resolve their `sgconfig.yml` from `${CLAUDE_PLUGIN_ROOT}`.
-This is not optional: a plugin is copied into `~/.claude/plugins/cache` and its
-hooks run with the *user's* project as the working directory, so an implicit
-ast-grep config lookup would silently lint against the user's rules instead of
-these.
+The rule tree is resolved in three tiers:
 
-The binaries are built once into `${CLAUDE_PLUGIN_DATA}`, which survives plugin
-updates, and rebuilt only when a source file is newer.
+1. `${CLAUDE_PLUGIN_ROOT}`, which Claude Code exports when it runs a hook. This
+   wins, so a plugin update ships new rules to an already-installed binary.
+2. The rules bundled inside the installed package, so the commands work as
+   standalone tools outside a hook.
+3. A `go.mod` walk, for running from a checkout.
+
+Passing `--config` explicitly is not optional at any tier: the plugin is copied
+into `~/.claude/plugins/cache` and its hooks run with the *user's* project as
+the working directory, so letting ast-grep search upward would silently lint
+against the user's own rules instead of these.
 
 ## Development
 
 ```bash
-nix develop          # go, ast-grep, shellcheck, jq, node at the versions CI uses
+nix develop          # go, ast-grep, jq, node at the versions CI uses
 nix flake check -L   # everything CI runs
 ```
 
 Or piecemeal: `go test ./...`, `ast-grep test --config sgconfig.yml` in
-`astgrep/` and `bashguard/`, `shellcheck bin/*`, and
-`claude plugin validate . --strict`.
+`astgrep/` and `bashguard/`, and `claude plugin validate . --strict`.
+
+`nix run .#astgrep-lint -- path/to/file.go` runs a command straight from the
+working tree without installing it.
 
 Two skills exist for working on this repo itself, under `.claude/skills/`:
 `new-rule` scaffolds a rule with its test and snapshot, and `run-tests`
 documents the suites. They are not part of any plugin.
 
-Rules carry no version field anywhere, so Claude Code resolves the version from
-the commit SHA and users pick up changes as soon as the commit moves. That is
-convenient during development and is also the project's main security tradeoff —
-see [SECURITY.md](SECURITY.md).
+Plugins carry no version field, so Claude Code resolves the version from the
+commit SHA and users pick up rule changes as soon as the commit moves. The
+binaries do not follow: those move only on `nix profile upgrade`.

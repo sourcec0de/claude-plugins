@@ -1,11 +1,11 @@
 # Everything here executes on a plugin user's machine or decides what CI trusts.
 # Require review on the surfaces where a small, quiet diff has the largest blast
-# radius: the Go commands, the launcher that builds and execs them, the rules and
-# their snapshots, the dependency tree, and CI itself.
+# radius: the Go commands that ship as binaries, the rules and their snapshots,
+# the dependency tree, the derivation that builds and wraps the binaries, and
+# CI itself.
 
 /cmd/                @sourcec0de
 /hookio/             @sourcec0de
-/bin/                @sourcec0de
 /hooks/              @sourcec0de
 /.claude-plugin/     @sourcec0de
 /astgrep/rules/      @sourcec0de

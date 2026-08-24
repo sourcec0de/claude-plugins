@@ -20,21 +20,28 @@ func Run(handler Handler) {
 	os.Exit(handler(event).Emit(os.Stdout, os.Stderr))
 }
 
-// ErrNoPluginRoot reports that the plugin directory could not be located.
-var ErrNoPluginRoot = fmt.Errorf("cannot locate plugin root: CLAUDE_PLUGIN_ROOT unset and no go.mod found above the working directory")
+// ErrNoRuleRoot reports that the rule tree could not be located.
+var ErrNoRuleRoot = fmt.Errorf("cannot locate rules: neither CLAUDE_PLUGIN_ROOT nor CLAUDE_PLUGINS_RULE_ROOT is set and no go.mod was found above the working directory")
 
-// PluginRoot returns the directory the plugin was installed to.
+// RuleRoot returns the directory holding the ast-grep rule trees, resolved in
+// three tiers.
 //
-// Claude Code exports CLAUDE_PLUGIN_ROOT when it spawns a hook. Resolving
-// config paths against it is mandatory: the plugin is copied into
-// ~/.claude/plugins/cache, and any tool that searches the working directory
-// instead would silently pick up the user's own project config.
+// CLAUDE_PLUGIN_ROOT wins. Claude Code exports it when it spawns a hook, and
+// honouring it is what lets a plugin update ship new rules without reinstalling
+// the binary. Resolving against it is also mandatory for correctness: the
+// plugin is copied into ~/.claude/plugins/cache and the hook runs with the
+// user's project as its working directory, so anything that searched upward
+// from there would silently lint against the user's own config.
 //
-// The go.mod walk is the fallback for `go test` and for bare CLI use from a
-// checkout, where the variable is absent.
-func PluginRoot() (string, error) {
-	if root := os.Getenv("CLAUDE_PLUGIN_ROOT"); root != "" {
-		return root, nil
+// CLAUDE_PLUGINS_RULE_ROOT is set by the Nix wrapper and points at the rules
+// bundled with the binary, so the commands work standalone outside a hook.
+//
+// The go.mod walk is last, covering `go test` and running from a checkout.
+func RuleRoot() (string, error) {
+	for _, key := range []string{"CLAUDE_PLUGIN_ROOT", "CLAUDE_PLUGINS_RULE_ROOT"} {
+		if root := os.Getenv(key); root != "" {
+			return root, nil
+		}
 	}
 	dir, err := os.Getwd()
 	if err != nil {
@@ -46,15 +53,15 @@ func PluginRoot() (string, error) {
 		}
 		parent := filepath.Dir(dir)
 		if parent == dir {
-			return "", ErrNoPluginRoot
+			return "", ErrNoRuleRoot
 		}
 		dir = parent
 	}
 }
 
-// ConfigPath resolves a plugin-relative path against the plugin root.
+// ConfigPath resolves a rule-tree-relative path against the rule root.
 func ConfigPath(parts ...string) (string, error) {
-	root, err := PluginRoot()
+	root, err := RuleRoot()
 	if err != nil {
 		return "", err
 	}

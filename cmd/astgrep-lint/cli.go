@@ -9,12 +9,6 @@ import (
 // newly introduced ones. This is the mode reached by invoking astgrep-lint as a
 // bare command, which lets work be checked before it is written.
 func runCLI(paths []string) int {
-	// The SessionStart hook passes --warm purely to trigger the wrapper's
-	// build-if-stale step, so the first real edit of the session is not slowed
-	// down by a compile. Reaching this point means the build already happened.
-	if len(paths) == 1 && paths[0] == "--warm" {
-		return 0
-	}
 	failed := false
 	for _, path := range paths {
 		violations, err := scanFile(path)

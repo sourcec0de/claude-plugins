@@ -2,24 +2,27 @@
 
 ## What installing these plugins means
 
-These are not passive configuration. Installing `astgrep-lint` or `bashguard`
-means that, on your machine:
+Installing has two halves, and they have different trust properties.
 
-- the repository is copied into `~/.claude/plugins/cache`;
-- `bin/claude-hooks` compiles Go source from that copy with `go build` and
-  executes the result;
-- that binary runs automatically on every `Write`, `Edit`, `MultiEdit` and
-  `Bash` tool call, with your environment and your credentials;
-- there is no version pinning by default. Plugin versions resolve from the git
-  commit, so **you pick up new code as soon as this repository's `main`
-  moves** — without a prompt and without a diff.
+**The binaries** are built from this repository by Nix and installed into your
+profile. Nothing is compiled on your machine, and they change only when you run
+`nix profile upgrade`. A commit to this repository does **not** silently change
+code already running on your machine — you choose when to take a new build.
 
-Installing these plugins is therefore equivalent to continuously trusting this
-repository's `main` branch to run code as you. That is a real decision and you
-should make it deliberately.
+**The plugin** — rules, hook configuration and skills — is copied into
+`~/.claude/plugins/cache` and carries no version, so Claude Code resolves it
+from the git commit and you pick up changes as `main` moves.
 
-If you want a fixed version instead of a moving one, install from a tag rather
-than the branch, and bump it yourself when you have read what changed.
+That split is deliberate. The half that executes is pinned to an explicit act by
+you; the half that auto-updates is data. No ast-grep rule in this repository
+uses `fix:`, and no scan is run with `--update-all`, so rules cannot rewrite
+your code — a malicious or mistaken rule can only produce a message or a
+spurious rejection.
+
+What the binaries do have, once installed, is reach: they run automatically on
+every `Write`, `Edit`, `MultiEdit` and `Bash` tool call, with your environment
+and your credentials. Take upgrades as deliberately as you would for anything
+else with that access, and read what changed.
 
 ## What the plugins are and are not
 
@@ -43,6 +46,10 @@ an untrusted checkout executes that checkout's JavaScript. The lockfile and
 `node_modules/.bin` gates exist to keep that narrow; if you work inside
 repositories you do not trust, do not enable `astgrep-lint`, which is what
 carries `autofmt`.
+
+This is now the sharpest edge in the design, because it is the one place where
+code outside this repository ends up executing as a result of installing these
+plugins.
 
 ## Reporting a vulnerability
 

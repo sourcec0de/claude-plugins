@@ -39,11 +39,11 @@ that admits it is offline.
 
 ## Checking a command yourself
 
-The plugin's `bin/` is on the Bash tool's PATH while it is enabled, so the
-same guard is available directly:
+`bashguard` is an ordinary binary on your PATH, so the same guard runs
+directly:
 
 ```bash
-claude-hooks bashguard 'rm -rf build'
+bashguard 'rm -rf build'
 ```
 
 ## Rules live in

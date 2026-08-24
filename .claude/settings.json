@@ -7,7 +7,6 @@
       "Bash(gofmt:*)",
       "Bash(ast-grep test:*)",
       "Bash(ast-grep scan:*)",
-      "Bash(shellcheck:*)",
       "Bash(claude plugin validate:*)"
     ]
   }

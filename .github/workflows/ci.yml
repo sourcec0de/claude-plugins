@@ -39,8 +39,9 @@ jobs:
       - uses: DeterminateSystems/flakehub-cache-action@main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
-      # Builds every check output: go vet and tests, gofmt, the ast-grep rule
-      # suites for both plugins, shellcheck, and manifest JSON validation.
+      # Builds every check output: the installable package and a smoke test
+      # of the binaries it produces, go vet and tests, gofmt, the ast-grep rule
+      # suites for both plugins, and manifest JSON validation.
       # --no-update-lock-file makes an unlocked or repointed flake input a
       # failure rather than a silent live fetch.
       - name: nix flake check

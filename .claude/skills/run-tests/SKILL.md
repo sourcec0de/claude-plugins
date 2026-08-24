@@ -1,6 +1,6 @@
 ---
 name: run-tests
-description: Runs the test suites for this repository — Go unit tests, ast-grep rule suites, shellcheck, and manifest validation — individually or all at once. Use when verifying a change to this repo before committing.
+description: Runs the test suites for this repository — the Nix package build, Go unit tests, ast-grep rule suites, and manifest validation — individually or all at once. Use when verifying a change to this repo before committing.
 ---
 
 # Running the tests
@@ -14,8 +14,8 @@ nix flake check -L
 ```
 
 This is what CI runs. It covers `go vet` and the Go tests, `gofmt`, both
-ast-grep rule suites, shellcheck over the `bin/` wrappers, and JSON validation
-of the manifests.
+ast-grep rule suites, the installable package plus a smoke test of the
+binaries it produces, and JSON validation of the manifests.
 
 ## Individually, while iterating
 
@@ -26,9 +26,6 @@ go test ./...
 # ast-grep rules
 (cd astgrep   && ast-grep test --config sgconfig.yml)
 (cd bashguard && ast-grep test --config sgconfig.yml)
-
-# Shell wrappers
-shellcheck bin/claude-hooks
 
 # Marketplace and plugin manifests
 claude plugin validate . --strict
@@ -44,7 +41,7 @@ The commands read a hook event on stdin and write a decision on stdout:
 export CLAUDE_PLUGIN_ROOT="$PWD"
 
 jq -n '{hook_event_name:"PreToolUse",tool_name:"Bash",cwd:".",
-        tool_input:{command:"rm -rf build"}}' | ./bin/claude-hooks bashguard | jq .
+        tool_input:{command:"rm -rf build"}}' | nix run .#bashguard | jq .
 ```
 
 A denial is a `hookSpecificOutput.permissionDecision` of `deny` on exit 0. An
@@ -54,8 +51,8 @@ Both linters also run as bare commands, which is the faster way to check a
 specific file:
 
 ```bash
-./bin/claude-hooks astgrep-lint path/to/file.go
-./bin/claude-hooks bashguard 'rm -rf build'
+nix run .#astgrep-lint -- path/to/file.go
+nix run .#bashguard -- 'rm -rf build'
 ```
 
 ## Snapshots

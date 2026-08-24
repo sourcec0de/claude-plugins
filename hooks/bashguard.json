@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/claude-hooks bashguard",
+            "command": "bashguard",
             "timeout": 15
           }
         ]
