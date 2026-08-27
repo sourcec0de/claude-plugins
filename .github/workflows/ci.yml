@@ -39,36 +39,14 @@ jobs:
       - uses: DeterminateSystems/flakehub-cache-action@main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
-      # Builds every check output: the installable package and a smoke test
-      # of the binaries it produces, go vet and tests, gofmt, the ast-grep rule
-      # suites for both plugins, and manifest JSON validation.
+      # Builds every check output: the installable package (whose build runs
+      # go vet and the Go tests) and a smoke test of the binaries it produces,
+      # gofmt, the ast-grep rule suites for both plugins, and manifest JSON
+      # validation.
       # --no-update-lock-file makes an unlocked or repointed flake input a
       # failure rather than a silent live fetch.
       - name: nix flake check
         run: nix flake check -L --no-update-lock-file
-
-  vendor:
-    # The flake builds with -mod=vendor and GOPROXY=off, which checks
-    # vendor/modules.txt against go.mod but never checks vendored content
-    # against go.sum. This job is the only thing verifying that what is in
-    # vendor/ is what go.mod actually resolves to.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          persist-credentials: false
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-
-      - name: verify module checksums
-        run: go mod verify
-
-      - name: vendor/ matches go.mod
-        run: |
-          go mod vendor
-          git diff --exit-code -- vendor/
 
   validate:
     runs-on: ubuntu-latest

@@ -4,3 +4,6 @@ result-*
 
 # Go build output
 /dist/
+
+# Go module cache is fetched by Nix (vendorHash), never committed
+/vendor/

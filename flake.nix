@@ -21,9 +21,6 @@
       goEnv = ''
         export HOME="$TMPDIR"
         export GOCACHE="$TMPDIR/go-cache"
-        export GOMODCACHE="$TMPDIR/go-mod"
-        export GOFLAGS="-mod=vendor"
-        export GOPROXY=off
         export CGO_ENABLED=0
       '';
 
@@ -44,9 +41,11 @@
           version = "0.1.0";
           src = self;
 
-          # vendor/ is committed, so the build needs no network and no hash to
-          # chase when a dependency changes.
-          vendorHash = null;
+          # Dependencies are fetched by Nix into a fixed-output derivation
+          # pinned by this hash, so the build stays offline and reproducible
+          # without a vendor/ tree in the repository. Changing go.mod changes
+          # the hash, which makes a dependency bump a visible diff.
+          vendorHash = "sha256-qpdleQNbcjU1ZJoEAdRcMjXGXSVjMtsk7i/CyS/VVAg=";
 
           subPackages = map (c: "cmd/${c}") commands;
 
@@ -58,6 +57,12 @@
           # buildGoModule runs the test suite, and these tests spawn the real
           # ast-grep against the real rule tree rather than a stub.
           nativeCheckInputs = [ pkgs.ast-grep ];
+
+          # go vet rides along with the tests: both need the module graph, and
+          # this derivation is the only one that has it.
+          preCheck = ''
+            go vet ./...
+          '';
 
           # The rule trees ship inside the package so the binaries work as
           # standalone commands. When Claude Code runs them as hooks it exports
@@ -111,7 +116,9 @@
         in
         {
           # Building the package is itself a check: if the binaries do not
-          # build reproducibly there is nothing to install.
+          # build reproducibly there is nothing to install. It also runs
+          # `go vet` and the Go test suite, which live here rather than in
+          # their own derivation because this is the one with the module graph.
           package = self.packages.${pkgs.system}.default;
 
           # The wrapped binaries must actually run, find ast-grep, and locate
@@ -142,13 +149,6 @@
 
               touch $out
             '';
-
-          gotest = check "gotest" ''
-            ${goEnv}
-            export CLAUDE_PLUGIN_ROOT="$PWD"
-            go vet ./...
-            go test ./...
-          '';
 
           gofmt = check "gofmt" ''
             ${goEnv}

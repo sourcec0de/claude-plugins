@@ -38,8 +38,8 @@ go install github.com/sourcec0de/claude-plugins/cmd/autofmt@latest
 ```
 
 Binaries update only when you ask — `nix profile upgrade claude-plugins`. The
-plugin's rules track the repository and update with it. See
-[SECURITY.md](SECURITY.md) for why that split matters.
+plugin's rules track the repository and update with it, so a rule change reaches
+you without moving any code that executes.
 
 ## How the linting works
 
