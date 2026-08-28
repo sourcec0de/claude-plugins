@@ -1,0 +1,91 @@
+id: ts-no-if-in-switch
+snapshots:
+  ? |
+    function dispatch(action: string, admin: boolean) {
+      switch (action) {
+        case "delete":
+          if (admin) {
+            remove();
+          }
+          break;
+        default:
+          process();
+      }
+    }
+  : labels:
+    - source: |-
+        if (admin) {
+                remove();
+              }
+      style: primary
+      start: 97
+      end: 135
+    - source: |-
+        case "delete":
+              if (admin) {
+                remove();
+              }
+              break;
+      style: secondary
+      start: 76
+      end: 148
+  ? |
+    function handle(x: number, y: number) {
+      switch (x) {
+        case 1:
+          if (y > 0) {
+            doPositive();
+          }
+          break;
+      }
+    }
+  : labels:
+    - source: |-
+        if (y > 0) {
+                doPositive();
+              }
+      style: primary
+      start: 73
+      end: 115
+    - source: |-
+        case 1:
+              if (y > 0) {
+                doPositive();
+              }
+              break;
+      style: secondary
+      start: 59
+      end: 128
+  ? |
+    function nested(x: number) {
+      switch (x) {
+        case 1:
+          if (x > 0) {
+            if (x < 10) {
+              doRange();
+            }
+          }
+          break;
+      }
+    }
+  : labels:
+    - source: |-
+        if (x > 0) {
+                if (x < 10) {
+                  doRange();
+                }
+              }
+      style: primary
+      start: 62
+      end: 135
+    - source: |-
+        case 1:
+              if (x > 0) {
+                if (x < 10) {
+                  doRange();
+                }
+              }
+              break;
+      style: secondary
+      start: 48
+      end: 148

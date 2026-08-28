@@ -1,0 +1,114 @@
+id: no-if-in-switch
+snapshots:
+  ? |
+    func convert(t string, strict bool) int {
+      switch t {
+      case "a":
+        if strict {
+          return validate()
+        }
+        return 1
+      default:
+        return 0
+      }
+    }
+  : labels:
+    - source: |-
+        if strict {
+              return validate()
+            }
+      style: primary
+      start: 71
+      end: 112
+    - source: |
+        case "a":
+            if strict {
+              return validate()
+            }
+            return 1
+      style: secondary
+      start: 57
+      end: 126
+  ? |
+    func dispatch(action string, admin bool) {
+      switch action {
+      case "delete":
+        if admin {
+          remove()
+        }
+      default:
+        process()
+      }
+    }
+  : labels:
+    - source: |-
+        if admin {
+              remove()
+            }
+      style: primary
+      start: 82
+      end: 113
+    - source: |
+        case "delete":
+            if admin {
+              remove()
+            }
+      style: secondary
+      start: 63
+      end: 114
+  ? |
+    func handle(x int, y int) {
+      switch x {
+      case 1:
+        if y > 0 {
+          doPositive()
+        }
+      }
+    }
+  : labels:
+    - source: |-
+        if y > 0 {
+              doPositive()
+            }
+      style: primary
+      start: 55
+      end: 90
+    - source: |
+        case 1:
+            if y > 0 {
+              doPositive()
+            }
+      style: secondary
+      start: 43
+      end: 91
+  ? |
+    func nested(x int) {
+      switch x {
+      case 1:
+        if x > 0 {
+          if x < 10 {
+            doRange()
+          }
+        }
+      }
+    }
+  : labels:
+    - source: |-
+        if x > 0 {
+              if x < 10 {
+                doRange()
+              }
+            }
+      style: primary
+      start: 48
+      end: 108
+    - source: |
+        case 1:
+            if x > 0 {
+              if x < 10 {
+                doRange()
+              }
+            }
+      style: secondary
+      start: 36
+      end: 109

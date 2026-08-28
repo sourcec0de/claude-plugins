@@ -1,0 +1,14 @@
+id: no-else-after-return
+language: go
+severity: error
+message: >
+  Do not use else after a return. Use a guard clause: return early
+  in the if block, then continue at the top level.
+rule:
+  pattern: |
+    if $COND {
+      $$$BODY
+      return $$$RET
+    } else {
+      $$$ELSE
+    }

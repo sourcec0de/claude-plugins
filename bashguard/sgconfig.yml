@@ -1,0 +1,10 @@
+# Rules for the bashguard plugin.
+#
+# Kept in a separate config from astgrep-lint so that shell rules are only ever
+# applied to Bash commands, never to source files, and vice versa.
+ruleDirs:
+  - rules
+
+testConfigs:
+  - testDir: rule-tests/shell
+    snapshotDir: __snapshots__

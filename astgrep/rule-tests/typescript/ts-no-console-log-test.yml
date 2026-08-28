@@ -1,0 +1,36 @@
+id: ts-no-console-log
+valid:
+  - |
+    logger.info("request received");
+  - |
+    logger.error("failed", { error: err });
+  - |
+    throw new Error("something failed");
+  - |
+    const message = "console.log is not allowed";
+  - |
+    function getLogger() { return logger; }
+  - |
+    const output = process.stdout;
+invalid:
+  - |
+    console.log("debug");
+  - |
+    console.log("user:", user);
+  - |
+    console.warn("deprecation warning");
+  - |
+    console.error("something broke");
+  - |
+    console.debug("trace info");
+  - |
+    console.info("starting up");
+  - |
+    console.log({ action: "click", target: el });
+  - |
+    console.trace("call stack");
+  - |
+    function handler() {
+      console.log("entering handler");
+      doWork();
+    }

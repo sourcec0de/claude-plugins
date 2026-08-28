@@ -1,0 +1,34 @@
+id: no-fatal-outside-main
+language: go
+severity: error
+message: >
+  Do not use log.Fatal, log.Fatalf, or os.Exit outside of func main().
+  Return errors and let callers handle them appropriately.
+rule:
+  all:
+    - any:
+        - pattern:
+            context: |
+              { log.Fatal($$$) }
+            selector: call_expression
+        - pattern:
+            context: log.Fatal($$$)
+        - pattern:
+            context: |
+              { log.Fatalf($$$) }
+            selector: call_expression
+        - pattern:
+            context: log.Fatalf($$$)
+        - pattern:
+            context: |
+              { os.Exit($$$) }
+            selector: call_expression
+        - pattern:
+            context: os.Exit($$$)
+    - not:
+        inside:
+          kind: function_declaration
+          has:
+            kind: identifier
+            regex: '^(main|TestMain)$'
+          stopBy: end

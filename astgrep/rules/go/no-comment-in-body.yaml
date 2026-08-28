@@ -1,0 +1,15 @@
+id: no-comment-in-body
+language: go
+severity: error
+ignores:
+  - '**/*_test.go'
+message: >
+  Comment inside a function body. See .claude/rules/commenting.md for the
+  commenting rules and how to fix this.
+rule:
+  kind: comment
+  inside:
+    kind: block
+    stopBy: end
+  not:
+    regex: ^//(go:|nolint|lint:ignore|devx:|sys:|\s*\+build| ?astgrep-allow)

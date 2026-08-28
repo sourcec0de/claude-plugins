@@ -1,0 +1,32 @@
+{
+  "name": "sourcec0de-plugins",
+  "owner": { "name": "James Qualls" },
+  "metadata": {
+    "description": "A set of plugins for Claude to constrain and increase model output quality."
+  },
+  "plugins": [
+    {
+      "name": "astgrep-lint",
+      "source": "./",
+      "strict": false,
+      "description": "ast-grep linting of model edits, enforced as a hook",
+      "skills": ["./skills/lint-rules"],
+      "hooks": "./hooks/astgrep-lint.json"
+    },
+    {
+      "name": "bashguard",
+      "source": "./",
+      "strict": false,
+      "description": "Catches destructive and banned shell commands before they run",
+      "skills": ["./skills/bash-rules"],
+      "hooks": "./hooks/bashguard.json"
+    },
+    {
+      "name": "workflows",
+      "source": "./",
+      "strict": false,
+      "description": "Slash commands for repetitive tasks",
+      "skills": ["./skills/hello"]
+    }
+  ]
+}

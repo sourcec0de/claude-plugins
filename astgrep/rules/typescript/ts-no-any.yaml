@@ -1,0 +1,11 @@
+id: ts-no-any
+language: tsx
+severity: error
+message: >
+  The 'any' type is banned. It disables type checking and hides bugs.
+  Use 'unknown' for truly unknown values, generics for flexible typing,
+  or define a proper type/interface. For external data, parse with zod.
+rule:
+  kind: predefined_type
+  pattern: $A
+  regex: any

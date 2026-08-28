@@ -1,0 +1,86 @@
+id: ts-no-nested-if
+snapshots:
+  ? |
+    function deep(a: boolean, b: boolean) {
+      if (a) {
+        if (b) {
+          console.log("nested");
+        }
+      }
+    }
+  : labels:
+    - source: |-
+        if (a) {
+            if (b) {
+              console.log("nested");
+            }
+          }
+      style: primary
+      start: 42
+      end: 102
+    - source: |-
+        if (b) {
+              console.log("nested");
+            }
+      style: secondary
+      start: 55
+      end: 98
+  ? |
+    function handle(x: number, y: number): string {
+      if (x > 0) {
+        if (y > 0) {
+          return "both";
+        }
+        return "only x";
+      }
+      return "nope";
+    }
+  : labels:
+    - source: |-
+        if (x > 0) {
+            if (y > 0) {
+              return "both";
+            }
+            return "only x";
+          }
+      style: primary
+      start: 50
+      end: 131
+    - source: |-
+        if (y > 0) {
+              return "both";
+            }
+      style: secondary
+      start: 67
+      end: 106
+  ? |
+    function withElse(x: number) {
+      if (x > 0) {
+        if (x < 100) {
+          console.log("in range");
+        } else {
+          console.log("too big");
+        }
+      }
+    }
+  : labels:
+    - source: |-
+        if (x > 0) {
+            if (x < 100) {
+              console.log("in range");
+            } else {
+              console.log("too big");
+            }
+          }
+      style: primary
+      start: 33
+      end: 148
+    - source: |-
+        if (x < 100) {
+              console.log("in range");
+            } else {
+              console.log("too big");
+            }
+      style: secondary
+      start: 50
+      end: 144

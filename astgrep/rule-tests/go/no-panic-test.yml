@@ -1,0 +1,80 @@
+id: no-panic
+valid:
+  - |
+    func process() error {
+      if err != nil {
+        return err
+      }
+      return nil
+    }
+  - |
+    func validate(input string) error {
+      if input == "" {
+        return fmt.Errorf("input required")
+      }
+      return nil
+    }
+  - |
+    func safeDiv(a int, b int) (int, error) {
+      if b == 0 {
+        return 0, fmt.Errorf("division by zero")
+      }
+      return a / b, nil
+    }
+  - |
+    func parseConfig(path string) (*Config, error) {
+      data, err := os.ReadFile(path)
+      if err != nil {
+        return nil, fmt.Errorf("reading config: %w", err)
+      }
+      return unmarshal(data)
+    }
+  - |
+    func (s *Service) Start(ctx context.Context) error {
+      if s.db == nil {
+        return fmt.Errorf("database not configured")
+      }
+      return s.db.Ping(ctx)
+    }
+invalid:
+  - |
+    func process() {
+      panic("something went wrong")
+    }
+  - |
+    func mustParse(s string) int {
+      v, err := strconv.Atoi(s)
+      if err != nil {
+        panic(err)
+      }
+      return v
+    }
+  - |
+    func init() {
+      if db == nil {
+        panic("db not initialized")
+      }
+    }
+  - |
+    func mustConnect() *sql.DB {
+      db, err := sql.Open("postgres", dsn)
+      if err != nil {
+        panic(fmt.Sprintf("connect failed: %v", err))
+      }
+      return db
+    }
+  - |
+    func newService() *Service {
+      cfg := loadConfig()
+      if cfg == nil {
+        panic("nil config")
+      }
+      return &Service{cfg: cfg}
+    }
+  - |
+    func (s *Service) Run() {
+      if s.handler == nil {
+        panic("handler not set")
+      }
+      s.handler.Serve()
+    }

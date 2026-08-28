@@ -1,0 +1,71 @@
+name: ci
+
+# NEVER change this to pull_request_target. Fork code executes in this workflow;
+# pull_request gives it a read-only token and no secrets, which is the only
+# thing keeping an untrusted PR from reaching this repository's credentials.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Least privilege by default. Jobs that need more opt in individually.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      # Determinate Nix needs id-token: write to authenticate with FlakeHub
+      # Cache. Fork PRs never receive it, which is why the cache step below is
+      # gated rather than left to fail.
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # Keep the checkout token out of .git/config; nothing here pushes.
+          persist-credentials: false
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      # Only trusted refs write to the cache. A branch PR could otherwise seed a
+      # store path that a later main build would substitute instead of rebuild,
+      # and fork PRs would red-X here on a step unrelated to their change.
+      - uses: DeterminateSystems/flakehub-cache-action@main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+      # Builds every check output: the installable package (whose build runs
+      # go vet and the Go tests) and a smoke test of the binaries it produces,
+      # gofmt, the ast-grep rule suites for both plugins, and manifest JSON
+      # validation.
+      # --no-update-lock-file makes an unlocked or repointed flake input a
+      # failure rather than a silent live fetch.
+      - name: nix flake check
+        run: nix flake check -L --no-update-lock-file
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Kept separate from `nix flake check`: the plugin validator catches
+      # marketplace schema errors, duplicate plugin names and source path
+      # traversal that Nix knows nothing about. --strict promotes warnings such
+      # as unrecognized manifest fields to errors.
+      #
+      # Pinned exactly rather than @latest: this step executes a freshly
+      # resolved dependency tree, and an unpinned range makes both the supply
+      # chain and the build non-reproducible.
+      - name: claude plugin validate
+        run: npx --yes @anthropic-ai/claude-code@2.1.241 plugin validate . --strict

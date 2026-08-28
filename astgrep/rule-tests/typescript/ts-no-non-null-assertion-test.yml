@@ -1,0 +1,61 @@
+id: ts-no-non-null-assertion
+valid:
+  - |
+    const name: string = user?.name ?? "default";
+  - |
+    if (user) {
+      console.log(user.name);
+    }
+  - |
+    const value = map.get(key) ?? fallback;
+  - |
+    function safe(x: string | undefined) {
+      if (x === undefined) {
+        return;
+      }
+      console.log(x.length);
+    }
+  - |
+    const el = document.getElementById("app");
+    if (!el) {
+      throw new Error("missing #app");
+    }
+    el.classList.add("active");
+  - |
+    function first<T>(items: T[]): T | undefined {
+      return items[0];
+    }
+  - |
+    const result = maybeNull ?? defaultValue;
+  - |
+    function Comp() {
+      return (
+        <span className={cx(
+          'absolute bottom-5 left-1/2 z-10 flex size-14 -translate-x-1/2 items-center justify-center rounded-full bg-alpha-black/20 text-fg-white backdrop-blur-xs',
+          childrenClassName,
+        )}>
+          {children}
+        </span>
+      )
+    }
+invalid:
+  - |
+    const name = user!.name;
+  - |
+    const el = document.getElementById("app")!;
+  - |
+    function process(x: string | undefined) {
+      console.log(x!.length);
+    }
+  - |
+    const items = map.get(key)!;
+  - |
+    function render() {
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillRect(0, 0, 100, 100);
+    }
+  - |
+    const first = arr[0]!;
+  - |
+    const ref = inputRef.current!;
+    ref.focus();

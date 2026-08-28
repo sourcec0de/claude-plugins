@@ -1,0 +1,62 @@
+id: use-list-not-get-for-slices
+snapshots:
+  ? |
+    func (r *Repo) GetItems() []Item {
+      return nil
+    }
+  : labels:
+    - source: |-
+        func (r *Repo) GetItems() []Item {
+          return nil
+        }
+      style: primary
+      start: 0
+      end: 49
+    - source: GetItems
+      style: secondary
+      start: 15
+      end: 23
+    - source: '[]Item'
+      style: secondary
+      start: 26
+      end: 32
+  ? |
+    func (s *UserService) GetActiveUsers() []User {
+      return nil
+    }
+  : labels:
+    - source: |-
+        func (s *UserService) GetActiveUsers() []User {
+          return nil
+        }
+      style: primary
+      start: 0
+      end: 62
+    - source: GetActiveUsers
+      style: secondary
+      start: 22
+      end: 36
+    - source: '[]User'
+      style: secondary
+      start: 39
+      end: 45
+  ? |
+    func (s *UserService) GetUsers() []string {
+      return nil
+    }
+  : labels:
+    - source: |-
+        func (s *UserService) GetUsers() []string {
+          return nil
+        }
+      style: primary
+      start: 0
+      end: 58
+    - source: GetUsers
+      style: secondary
+      start: 22
+      end: 30
+    - source: '[]string'
+      style: secondary
+      start: 33
+      end: 41

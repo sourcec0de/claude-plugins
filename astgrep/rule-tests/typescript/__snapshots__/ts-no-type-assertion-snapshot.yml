@@ -1,0 +1,39 @@
+id: ts-no-type-assertion
+snapshots:
+  ? |
+    const data = (await response.json()) as UserResponse;
+  : labels:
+    - source: (await response.json()) as UserResponse
+      style: primary
+      start: 13
+      end: 52
+  ? |
+    const x = "hello" as number;
+  : labels:
+    - source: '"hello" as number'
+      style: primary
+      start: 10
+      end: 27
+  ? |
+    const y = {} as Record<string, unknown>;
+  : labels:
+    - source: '{} as Record<string, unknown>'
+      style: primary
+      start: 10
+      end: 39
+  ? |
+    const z = value as MyType;
+  : labels:
+    - source: value as MyType
+      style: primary
+      start: 10
+      end: 25
+  ? |
+    function process(input: unknown) {
+      const user = input as User;
+    }
+  : labels:
+    - source: input as User
+      style: primary
+      start: 50
+      end: 63

@@ -1,0 +1,77 @@
+id: no-sed
+snapshots:
+  ? |
+    cat file.txt | sed 's/old/new/'
+  : labels:
+    - source: sed 's/old/new/'
+      style: primary
+      start: 15
+      end: 31
+    - source: sed
+      style: secondary
+      start: 15
+      end: 18
+    - source: sed
+      style: secondary
+      start: 15
+      end: 18
+  ? |
+    sed 's/foo/bar/' input.txt > output.txt
+  : labels:
+    - source: sed 's/foo/bar/' input.txt
+      style: primary
+      start: 0
+      end: 26
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3
+  ? |
+    sed -e 's/pattern/replacement/' file.go
+  : labels:
+    - source: sed -e 's/pattern/replacement/' file.go
+      style: primary
+      start: 0
+      end: 39
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3
+  ? |
+    sed -i 's/old/new/g' file.txt
+  : labels:
+    - source: sed -i 's/old/new/g' file.txt
+      style: primary
+      start: 0
+      end: 29
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3
+  ? |
+    sed -n '5,10p' file.txt
+  : labels:
+    - source: sed -n '5,10p' file.txt
+      style: primary
+      start: 0
+      end: 23
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3
+    - source: sed
+      style: secondary
+      start: 0
+      end: 3

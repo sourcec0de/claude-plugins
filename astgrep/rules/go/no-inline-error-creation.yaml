@@ -1,0 +1,34 @@
+id: no-inline-error-creation
+language: go
+severity: error
+message: >
+  Do not create errors inline in return statements. Inline errors cannot be
+  compared with errors.Is. Declare errors as package-level vars
+  (var ErrX = errors.New(...)) or use apperror in a DTO package, then return
+  the declared error. Use errors.Join to combine multiple errors.
+rule:
+  all:
+    - any:
+        - pattern:
+            context: |
+              { return fmt.Errorf($$$) }
+            selector: call_expression
+        - pattern:
+            context: |
+              { return fmt.Error($$$) }
+            selector: call_expression
+        - pattern:
+            context: |
+              { return errors.New($$$) }
+            selector: call_expression
+        - pattern:
+            context: |
+              { return errors.Error($$$) }
+            selector: call_expression
+        - pattern:
+            context: |
+              { return errors.Errorf($$$) }
+            selector: call_expression
+    - inside:
+        kind: return_statement
+        stopBy: end

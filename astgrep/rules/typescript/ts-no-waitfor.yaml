@@ -1,0 +1,21 @@
+id: ts-no-waitfor
+language: tsx
+severity: error
+message: >
+  .waitFor() is banned in tests. Use expect(locator).toBeVisible() instead.
+  waitFor() is a raw Playwright primitive that lacks assertion semantics.
+  expect().toBeVisible() provides better error messages, auto-retries,
+  and integrates with the test runner's assertion tracking.
+rule:
+  kind: await_expression
+  has:
+    kind: call_expression
+    has:
+      kind: member_expression
+      has:
+        field: property
+        kind: property_identifier
+        regex: ^waitFor$
+        stopBy: end
+      stopBy: end
+    stopBy: end

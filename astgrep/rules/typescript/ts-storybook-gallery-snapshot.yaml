@@ -1,0 +1,76 @@
+id: ts-storybook-gallery-snapshot
+language: tsx
+severity: warning
+message: >
+  This story file snapshots multiple static (non-play) state stories. Each one
+  is a separate Chromatic snapshot. Consolidate the static states into one or
+  more gallery stories whose `render` composes them into one DOM tree using the
+  shared StoryGallery/GallerySection/GalleryCell helpers from
+  frontend/web/app/ui/common/story-gallery (see
+  app/ui/atoms/form-controls/input-date/input-date.stories.tsx for the pattern),
+  so a handful of states cost one snapshot instead of many. Split into several
+  gallery stories when one grid gets unwieldy (~6+ cells) — any story rendering
+  `StoryGallery` is exempt, so the count of galleries does not matter. Keep any stories that have a `play` function as
+  they are — interaction tests are allowed to snapshot.
+utils:
+  is-story-export:
+    kind: export_statement
+    has:
+      kind: lexical_declaration
+      has:
+        kind: variable_declarator
+        has:
+          field: type
+          has:
+            kind: type_identifier
+            regex: Story
+            stopBy: end
+          stopBy: end
+        stopBy: end
+rule:
+  matches: is-story-export
+  all:
+    - has:
+        kind: variable_declarator
+        has:
+          field: name
+          pattern: $NAME
+          stopBy: end
+        stopBy: end
+    - has:
+        kind: object
+        stopBy: end
+    - not:
+        has:
+          any:
+            - kind: pair
+              has:
+                field: key
+                regex: "^play$"
+                stopBy: end
+            - kind: method_definition
+              has:
+                field: name
+                regex: "^play$"
+                stopBy: end
+          stopBy: end
+    - not:
+        has:
+          kind: pair
+          has:
+            field: key
+            regex: "^disableSnapshot$"
+            stopBy: end
+          stopBy: end
+    - not:
+        has:
+          kind: identifier
+          regex: "^StoryGallery$"
+          stopBy: end
+    - follows:
+        matches: is-story-export
+        stopBy: end
+constraints:
+  NAME:
+    not:
+      regex: "^Gallery$"

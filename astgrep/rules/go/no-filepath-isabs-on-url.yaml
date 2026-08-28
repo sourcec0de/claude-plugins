@@ -1,0 +1,23 @@
+id: no-filepath-isabs-on-url
+language: go
+severity: error
+message: >
+  Do not use filepath.IsAbs to validate a URL, redirect target, or callback path.
+  filepath.IsAbs is a filesystem predicate — on Unix it is only
+  strings.HasPrefix(path, "/"), so it accepts "//evil.com/x", "///evil.com/x" and
+  "/\evil.com/x", every one of which a browser resolves to a different host.
+  A leading-slash check is not a same-origin check.
+  Validate the value as a same-origin path instead: parse it with url.Parse and
+  require an empty Scheme, Host and Opaque, or resolve it through
+  BootConfig.BaseURL().JoinPath(...) so the origin cannot be attacker-controlled.
+rule:
+  any:
+    - pattern:
+        context: |
+          { filepath.IsAbs($X) }
+        selector: call_expression
+    - pattern:
+        context: filepath.IsAbs($X)
+constraints:
+  X:
+    regex: (?i)(url|redirect|onsuccess|on_success|onerror|on_error|callback|returnto|return_to|destination)

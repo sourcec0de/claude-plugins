@@ -1,0 +1,61 @@
+id: no-raw-test-errors
+valid:
+  - |
+    package foo
+    import "testing"
+    func TestFoo(t *testing.T) {
+        require.Equal(t, 1, 1)
+    }
+  - |
+    package foo
+    func TestSkip(t *testing.T) {
+        t.Skip("not implemented")
+    }
+  - |
+    package foo
+    func TestHelper(t *testing.T) {
+        t.Helper()
+        t.Run("sub", func(t *testing.T) {})
+    }
+  - |
+    package foo
+    func TestContext(t *testing.T) {
+        ctx := t.Context()
+        _ = ctx
+    }
+  - |
+    package foo
+    func TestCleanup(t *testing.T) {
+        t.Cleanup(func() {})
+    }
+  - |
+    package foo
+    func TestFailNow(t *testing.T) {
+        t.FailNow()
+    }
+  - |
+    package foo
+    func TestSkipf(t *testing.T) {
+        t.Skipf("skipping: %v", "reason")
+    }
+invalid:
+  - |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Error("something failed")
+    }
+  - |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Errorf("expected %d, got %d", 1, 2)
+    }
+  - |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Fatal("fatal error")
+    }
+  - |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Fatalf("expected %q", "foo")
+    }

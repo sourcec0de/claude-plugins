@@ -1,0 +1,27 @@
+id: no-rm-rf
+valid:
+  - |
+    rm file.txt
+  - |
+    rm -f single_file.txt
+  - |
+    rmdir empty_dir
+  - |
+    git clean -fd
+  - |
+    go clean -cache
+invalid:
+  - |
+    rm -rf /
+  - |
+    rm -rf node_modules
+  - |
+    rm -rf ./build
+  - |
+    rm -rf /tmp/test_dir
+  - |
+    rm -rf src/generated
+  - |
+    rm -Rf old_backup
+  - |
+    rm -rfi protected_dir

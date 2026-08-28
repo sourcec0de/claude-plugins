@@ -1,0 +1,40 @@
+id: no-npx-ast-grep
+snapshots:
+  ? |
+    npx @ast-grep/cli scan --config sgconfig.yml
+  : labels:
+    - source: npx @ast-grep/cli scan --config sgconfig.yml
+      style: primary
+      start: 0
+      end: 44
+    - source: npx
+      style: secondary
+      start: 0
+      end: 3
+    - source: npx
+      style: secondary
+      start: 0
+      end: 3
+    - source: '@ast-grep/cli'
+      style: secondary
+      start: 4
+      end: 17
+  ? |
+    npx @ast-grep/cli test --filter my-rule
+  : labels:
+    - source: npx @ast-grep/cli test --filter my-rule
+      style: primary
+      start: 0
+      end: 39
+    - source: npx
+      style: secondary
+      start: 0
+      end: 3
+    - source: npx
+      style: secondary
+      start: 0
+      end: 3
+    - source: '@ast-grep/cli'
+      style: secondary
+      start: 4
+      end: 17

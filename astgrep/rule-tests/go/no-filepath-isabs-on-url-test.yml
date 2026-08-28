@@ -1,0 +1,102 @@
+id: no-filepath-isabs-on-url
+valid:
+  # Genuine filesystem paths — filepath.IsAbs is the right tool here.
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(configPath) {
+        return errBadPath
+      }
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      if filepath.IsAbs(dir) {
+        return nil
+      }
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      ok := filepath.IsAbs(p.OutputFile)
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      ok := filepath.IsAbs(tmpDir)
+    }
+  # "security" contains the substring "uri" — guard against that false positive.
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      ok := filepath.IsAbs(securityDir)
+    }
+  # The fix: a same-origin validator, not a filesystem predicate.
+  - |
+    package main
+    func main() {
+      if err := validateSameOriginPath(sameOriginPathParams{Path: state.OnSuccess}); err != nil {
+        return err
+      }
+    }
+  - |
+    package main
+    import "net/url"
+    func main() {
+      u, err := url.Parse(state.OnSuccess)
+      if err != nil || u.Host != "" {
+        return errOffOrigin
+      }
+    }
+invalid:
+  # The real vulnerability: a leading-slash check standing in for same-origin
+  # validation on a value that becomes a redirect or form action.
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(state.OnSuccess) {
+        err = spec.ErrInvalidOnSuccessURL
+      }
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(state.OnError) {
+        err = spec.ErrInvalidOnErrorURL
+      }
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(redirectURL) {
+        return errBad
+      }
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      if !filepath.IsAbs(req.CallbackURL) {
+        return errBad
+      }
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      ok := filepath.IsAbs(nextURL)
+    }
+  - |
+    package main
+    import "path/filepath"
+    func main() {
+      ok := filepath.IsAbs(returnTo)
+    }

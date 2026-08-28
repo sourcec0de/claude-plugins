@@ -1,0 +1,31 @@
+id: no-address-of-literal
+snapshots:
+  ? |
+    package main
+    func main() {
+      p := (&MyStruct{Field: "value"})
+    }
+  : labels:
+    - source: '(&MyStruct{Field: "value"})'
+      style: primary
+      start: 34
+      end: 61
+    - source: '&MyStruct{Field: "value"}'
+      style: secondary
+      start: 35
+      end: 60
+  ? |
+    package main
+    import "net/url"
+    func main() {
+      u := (&url.URL{Scheme: "http", Host: addr}).String()
+    }
+  : labels:
+    - source: '(&url.URL{Scheme: "http", Host: addr})'
+      style: primary
+      start: 51
+      end: 89
+    - source: '&url.URL{Scheme: "http", Host: addr}'
+      style: secondary
+      start: 52
+      end: 88

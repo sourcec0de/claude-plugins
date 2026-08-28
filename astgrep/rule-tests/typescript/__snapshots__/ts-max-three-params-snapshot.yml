@@ -1,0 +1,61 @@
+id: ts-max-three-params
+snapshots:
+  ? |
+    class Service {
+      alsoTooMany(ctx: Context, a: string, b: number, c: boolean) {}
+    }
+  : labels:
+    - source: 'alsoTooMany(ctx: Context, a: string, b: number, c: boolean) {}'
+      style: primary
+      start: 18
+      end: 80
+    - source: '(ctx: Context, a: string, b: number, c: boolean)'
+      style: secondary
+      start: 29
+      end: 77
+  ? |
+    class Service {
+      badMethod(a: string, b: number, c: boolean, d: string) {}
+    }
+  : labels:
+    - source: 'badMethod(a: string, b: number, c: boolean, d: string) {}'
+      style: primary
+      start: 18
+      end: 75
+    - source: '(a: string, b: number, c: boolean, d: string)'
+      style: secondary
+      start: 27
+      end: 72
+  ? |
+    const arrow = (a: string, b: number, c: boolean, d: string) => {}
+  : labels:
+    - source: '(a: string, b: number, c: boolean, d: string) => {}'
+      style: primary
+      start: 14
+      end: 65
+    - source: '(a: string, b: number, c: boolean, d: string)'
+      style: secondary
+      start: 14
+      end: 59
+  ? |
+    function fiveParams(a: string, b: number, c: boolean, d: string, e: number) {}
+  : labels:
+    - source: 'function fiveParams(a: string, b: number, c: boolean, d: string, e: number) {}'
+      style: primary
+      start: 0
+      end: 78
+    - source: '(a: string, b: number, c: boolean, d: string, e: number)'
+      style: secondary
+      start: 19
+      end: 75
+  ? |
+    function fourParams(a: string, b: number, c: boolean, d: string) {}
+  : labels:
+    - source: 'function fourParams(a: string, b: number, c: boolean, d: string) {}'
+      style: primary
+      start: 0
+      end: 67
+    - source: '(a: string, b: number, c: boolean, d: string)'
+      style: secondary
+      start: 19
+      end: 64

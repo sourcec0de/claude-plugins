@@ -1,0 +1,11 @@
+id: no-string-concat
+language: go
+severity: error
+message: >
+  Do not use + for string concatenation. Use fmt.Sprintf instead.
+  Example: replace "hello " + name with fmt.Sprintf("hello %s", name).
+rule:
+  pattern: $A + $B
+  has:
+    kind: interpreted_string_literal
+    stopBy: end

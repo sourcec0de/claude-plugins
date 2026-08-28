@@ -1,0 +1,14 @@
+id: no-lo-toptr
+language: go
+severity: error
+message: >
+  Do not use lo.ToPtr(). Go 1.26+ supports expressions in new().
+  Replace lo.ToPtr(expr) with new(expr).
+rule:
+  any:
+    - pattern:
+        context: |
+          { lo.ToPtr($$$) }
+        selector: call_expression
+    - pattern:
+        context: lo.ToPtr($$$)

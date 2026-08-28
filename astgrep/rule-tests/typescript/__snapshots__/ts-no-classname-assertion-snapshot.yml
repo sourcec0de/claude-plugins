@@ -1,0 +1,37 @@
+id: ts-no-classname-assertion
+snapshots:
+  ? |
+    expect(button.getAttribute('class')).toContain('rounded-full');
+  : labels:
+    - source: button.getAttribute('class')
+      style: primary
+      start: 7
+      end: 35
+  ? |
+    expect(el).toHaveClass('flex');
+  : labels:
+    - source: expect(el).toHaveClass('flex')
+      style: primary
+      start: 0
+      end: 30
+  ? |
+    expect(el).toHaveClass('pr-10', 'items-center');
+  : labels:
+    - source: expect(el).toHaveClass('pr-10', 'items-center')
+      style: primary
+      start: 0
+      end: 47
+  ? |
+    expect(el.getAttribute("class")).not.toContain('pr-20');
+  : labels:
+    - source: el.getAttribute("class")
+      style: primary
+      start: 7
+      end: 31
+  ? |
+    expect(layer?.getAttribute('class')).toContain('pr-10');
+  : labels:
+    - source: layer?.getAttribute('class')
+      style: primary
+      start: 7
+      end: 35

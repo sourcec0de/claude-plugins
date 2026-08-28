@@ -1,0 +1,29 @@
+id: ts-no-inline-function-in-return-object
+language: tsx
+severity: error
+ignores:
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
+  - '**/*.stories.ts'
+  - '**/*.stories.tsx'
+  - '**/.storybook/**'
+message: >
+  Inline arrow or function expression as an object property value in a
+  `return` statement. Extract the function to a named `const` above the return,
+  then reference it by name in the returned object. If the object is a bag of
+  methods, use method shorthand (`handler() { ... }`) instead.
+rule:
+  kind: pair
+  has:
+    field: value
+    any:
+      - kind: arrow_function
+      - kind: function_expression
+  inside:
+    kind: object
+    inside:
+      any:
+        - kind: return_statement
+        - kind: parenthesized_expression
+          inside:
+            kind: return_statement

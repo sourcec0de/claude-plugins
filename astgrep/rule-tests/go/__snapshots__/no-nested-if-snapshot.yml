@@ -1,0 +1,86 @@
+id: no-nested-if
+snapshots:
+  ? |
+    func Deep(a bool, b bool, c bool) {
+      if a {
+        if b {
+          fmt.Println("nested")
+        }
+      }
+    }
+  : labels:
+    - source: |-
+        if a {
+            if b {
+              fmt.Println("nested")
+            }
+          }
+      style: primary
+      start: 38
+      end: 93
+    - source: |-
+        if b {
+              fmt.Println("nested")
+            }
+      style: secondary
+      start: 49
+      end: 89
+  ? |
+    func Handle(x int, y int) string {
+      if x > 0 {
+        if y > 0 {
+          return "both"
+        }
+        return "only x"
+      }
+      return "nope"
+    }
+  : labels:
+    - source: |-
+        if x > 0 {
+            if y > 0 {
+              return "both"
+            }
+            return "only x"
+          }
+      style: primary
+      start: 37
+      end: 112
+    - source: |-
+        if y > 0 {
+              return "both"
+            }
+      style: secondary
+      start: 52
+      end: 88
+  ? |
+    func WithElse(x int) {
+      if x > 0 {
+        if x < 100 {
+          fmt.Println("in range")
+        } else {
+          fmt.Println("too big")
+        }
+      }
+    }
+  : labels:
+    - source: |-
+        if x > 0 {
+            if x < 100 {
+              fmt.Println("in range")
+            } else {
+              fmt.Println("too big")
+            }
+          }
+      style: primary
+      start: 25
+      end: 134
+    - source: |-
+        if x < 100 {
+              fmt.Println("in range")
+            } else {
+              fmt.Println("too big")
+            }
+      style: secondary
+      start: 40
+      end: 130

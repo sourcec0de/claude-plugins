@@ -1,0 +1,24 @@
+id: no-git-attribution
+language: bash
+severity: error
+message: >
+  Use conventional commit format. Never include attribution (Co-Authored-By,
+  Claude, Anthropic) in commit messages. Messages should be concise and
+  relevant only to the content being committed.
+rule:
+  kind: command
+  all:
+    - has:
+        field: name
+        kind: command_name
+        has:
+          kind: word
+          regex: '^(git|but)$'
+          stopBy: end
+        stopBy: end
+    - has:
+        any:
+          - kind: string
+          - kind: raw_string
+        regex: '[Cc]laude|[Aa]nthropic|Co-[Aa]uthored'
+        stopBy: end

@@ -1,0 +1,16 @@
+id: ts-no-console-log
+language: tsx
+severity: error
+message: >
+  console methods are banned in production code. Use a structured logger
+  instead. If you need to debug, use the browser devtools or a breakpoint.
+rule:
+  kind: call_expression
+  has:
+    kind: member_expression
+    has:
+      field: object
+      kind: identifier
+      pattern: console
+      stopBy: end
+    stopBy: end

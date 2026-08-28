@@ -1,0 +1,65 @@
+id: ts-no-if-in-switch
+valid:
+  - |
+    function handle(x: number) {
+      switch (x) {
+        case 1:
+          doOne();
+          break;
+        case 2:
+          doTwo();
+          break;
+        default:
+          doDefault();
+      }
+    }
+  - |
+    function dispatch(action: string) {
+      switch (action) {
+        case "create":
+          return create();
+        case "update":
+          return update();
+      }
+    }
+  - |
+    function standalone(x: number) {
+      if (x > 0) {
+        doSomething();
+      }
+    }
+invalid:
+  - |
+    function handle(x: number, y: number) {
+      switch (x) {
+        case 1:
+          if (y > 0) {
+            doPositive();
+          }
+          break;
+      }
+    }
+  - |
+    function dispatch(action: string, admin: boolean) {
+      switch (action) {
+        case "delete":
+          if (admin) {
+            remove();
+          }
+          break;
+        default:
+          process();
+      }
+    }
+  - |
+    function nested(x: number) {
+      switch (x) {
+        case 1:
+          if (x > 0) {
+            if (x < 10) {
+              doRange();
+            }
+          }
+          break;
+      }
+    }

@@ -1,0 +1,43 @@
+id: no-same-type-params
+language: go
+severity: error
+message: >
+  Multiple consecutive parameters share the same type. This makes it easy
+  to accidentally swap arguments. Use distinct types or a params struct.
+utils:
+  is-func-or-method:
+    any:
+      - kind: function_declaration
+      - kind: method_declaration
+  has-grouped-params:
+    kind: parameter_declaration
+    has:
+      nthChild: 2
+      kind: identifier
+      stopBy: end
+  has-consecutive-same-type:
+    kind: parameter_declaration
+    has:
+      field: type
+      pattern: $TYPE
+      stopBy: end
+    follows:
+      kind: parameter_declaration
+      has:
+        field: type
+        pattern: $TYPE
+        stopBy: end
+      stopBy: end
+rule:
+  matches: is-func-or-method
+  has:
+    field: parameters
+    kind: parameter_list
+    any:
+      - has:
+          matches: has-grouped-params
+          stopBy: end
+      - has:
+          matches: has-consecutive-same-type
+          stopBy: end
+    stopBy: end

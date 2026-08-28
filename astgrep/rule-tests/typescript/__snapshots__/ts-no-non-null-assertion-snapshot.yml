@@ -1,0 +1,57 @@
+id: ts-no-non-null-assertion
+snapshots:
+  ? |
+    const el = document.getElementById("app")!;
+  : labels:
+    - source: document.getElementById("app")!
+      style: primary
+      start: 11
+      end: 42
+  ? |
+    const first = arr[0]!;
+  : labels:
+    - source: arr[0]!
+      style: primary
+      start: 14
+      end: 21
+  ? |
+    const items = map.get(key)!;
+  : labels:
+    - source: map.get(key)!
+      style: primary
+      start: 14
+      end: 27
+  ? |
+    const name = user!.name;
+  : labels:
+    - source: user!
+      style: primary
+      start: 13
+      end: 18
+  ? |
+    const ref = inputRef.current!;
+    ref.focus();
+  : labels:
+    - source: inputRef.current!
+      style: primary
+      start: 12
+      end: 29
+  ? |
+    function process(x: string | undefined) {
+      console.log(x!.length);
+    }
+  : labels:
+    - source: x!
+      style: primary
+      start: 56
+      end: 58
+  ? |
+    function render() {
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillRect(0, 0, 100, 100);
+    }
+  : labels:
+    - source: canvas.getContext("2d")!
+      style: primary
+      start: 34
+      end: 58

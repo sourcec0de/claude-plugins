@@ -1,0 +1,80 @@
+id: ts-no-comment-in-body
+snapshots:
+  ? |
+    const Row = (): JSX.Element => {
+      // one-icon clearance for the trash button
+      const pad = 'pr-10';
+      return render(pad);
+    };
+  : labels:
+    - source: // one-icon clearance for the trash button
+      style: primary
+      start: 35
+      end: 77
+    - source: |-
+        {
+          // one-icon clearance for the trash button
+          const pad = 'pr-10';
+          return render(pad);
+        }
+      style: secondary
+      start: 31
+      end: 124
+  ? |
+    function DownloadRow(): JSX.Element {
+      // Fallback only applies to non-bundling rows, where the bar is not rendered.
+      const barValue = target ?? 0;
+      return render(barValue);
+    }
+  : labels:
+    - source: // Fallback only applies to non-bundling rows, where the bar is not rendered.
+      style: primary
+      start: 40
+      end: 117
+    - source: |-
+        {
+          // Fallback only applies to non-bundling rows, where the bar is not rendered.
+          const barValue = target ?? 0;
+          return render(barValue);
+        }
+      style: secondary
+      start: 36
+      end: 178
+  ? |
+    function close(): void {
+      // terminate, not cancel: a stuck workflow never processes a cancel
+      terminate();
+    }
+  : labels:
+    - source: '// terminate, not cancel: a stuck workflow never processes a cancel'
+      style: primary
+      start: 27
+      end: 94
+    - source: |-
+        {
+          // terminate, not cancel: a stuck workflow never processes a cancel
+          terminate();
+        }
+      style: secondary
+      start: 23
+      end: 111
+  ? |
+    function f(): void {
+      if (cond) {
+        // this branch handles the empty case
+        bail();
+      }
+    }
+  : labels:
+    - source: // this branch handles the empty case
+      style: primary
+      start: 39
+      end: 76
+    - source: |-
+        {
+            // this branch handles the empty case
+            bail();
+          }
+      style: secondary
+      start: 33
+      end: 92

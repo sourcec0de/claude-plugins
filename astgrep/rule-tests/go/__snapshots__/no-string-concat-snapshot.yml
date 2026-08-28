@@ -1,0 +1,73 @@
+id: no-string-concat
+snapshots:
+  ? |
+    package main
+    func main() {
+      msg := "foo" + "bar"
+    }
+  : labels:
+    - source: '"foo" + "bar"'
+      style: primary
+      start: 36
+      end: 49
+    - source: '"foo"'
+      style: secondary
+      start: 36
+      end: 41
+  ? |
+    package main
+    func main() {
+      msg := "hello " + name
+    }
+  : labels:
+    - source: '"hello " + name'
+      style: primary
+      start: 36
+      end: 51
+    - source: '"hello "'
+      style: secondary
+      start: 36
+      end: 44
+  ? |
+    package main
+    func main() {
+      msg := "hello " + name + "!"
+    }
+  : labels:
+    - source: '"hello " + name + "!"'
+      style: primary
+      start: 36
+      end: 57
+    - source: '"hello "'
+      style: secondary
+      start: 36
+      end: 44
+  ? |
+    package main
+    func main() {
+      msg := name + " world"
+    }
+  : labels:
+    - source: name + " world"
+      style: primary
+      start: 36
+      end: 51
+    - source: '" world"'
+      style: secondary
+      start: 43
+      end: 51
+  ? |
+    package main
+    import "log"
+    func main() {
+      log.Println("error: " + err.Error())
+    }
+  : labels:
+    - source: '"error: " + err.Error()'
+      style: primary
+      start: 54
+      end: 77
+    - source: '"error: "'
+      style: secondary
+      start: 54
+      end: 63

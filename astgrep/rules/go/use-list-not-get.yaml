@@ -1,0 +1,16 @@
+id: use-list-not-get-for-slices
+language: go
+severity: error
+message: >
+  Method returning a slice should use 'List' prefix instead of 'Get'.
+rule:
+  kind: method_declaration
+  all:
+    - has:
+        field: name
+        regex: ^Get
+        stopBy: end
+    - has:
+        field: result
+        kind: slice_type
+        stopBy: end

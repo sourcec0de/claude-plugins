@@ -1,0 +1,11 @@
+id: ts-no-nested-if
+language: tsx
+severity: error
+message: >
+  Nested if statement detected. Use guard clauses with early returns
+  instead of nesting conditionals.
+rule:
+  kind: if_statement
+  has:
+    kind: if_statement
+    stopBy: end

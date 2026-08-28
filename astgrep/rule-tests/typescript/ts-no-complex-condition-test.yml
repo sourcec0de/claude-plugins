@@ -1,0 +1,87 @@
+id: ts-no-complex-condition
+valid:
+  - |
+    function charge() {
+      if (isSummer()) {
+        return summerCharge();
+      }
+      return regularCharge();
+    }
+  - |
+    function process(err: Error | null) {
+      if (err) {
+        return;
+      }
+    }
+  - |
+    function check(x: number): boolean {
+      return x > 0;
+    }
+  - |
+    function validate(name: string) {
+      if (!name) {
+        throw new Error("empty");
+      }
+    }
+  - |
+    function toggle(enabled: boolean) {
+      if (!enabled) {
+        return;
+      }
+    }
+  - |
+    function charge() {
+      if (!aDate.isBefore(plan.summerStart) && !aDate.isAfter(plan.summerEnd)) {
+        return quantity * plan.summerRate;
+      }
+      return quantity * plan.regularRate;
+    }
+  - |
+    function eligible(age: number, citizen: boolean): boolean {
+      if (age >= 18 && citizen) {
+        return true;
+      }
+      return false;
+    }
+  - |
+    async function verifyRow(u: User) {
+      if (u.name && u.name.length > 0) {
+        await expectRowText(r, u.name)
+      }
+    }
+  - |
+    function access(user: User): boolean {
+      if (user.isAdmin || user.isSuperAdmin || user.hasPermission("write")) {
+        return true;
+      }
+      return false;
+    }
+  - |
+    function complex(a: boolean, b: boolean, c: boolean) {
+      if (a && b || c) {
+        return true;
+      }
+      return false;
+    }
+invalid:
+  - |
+    function validate(req: Request) {
+      if (req.name !== "" && req.email !== "" && req.age > 0 && req.phone !== "") {
+        return;
+      }
+      throw new Error("invalid");
+    }
+  - |
+    function check(a: boolean, b: boolean, c: boolean, d: boolean) {
+      if (a && b && c && d) {
+        return true;
+      }
+      return false;
+    }
+  - |
+    function mixed(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean) {
+      if (a || b || c || d && e) {
+        return true;
+      }
+      return false;
+    }

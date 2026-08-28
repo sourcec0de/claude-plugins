@@ -1,0 +1,22 @@
+id: no-git-write-ops
+language: bash
+severity: error
+message: >
+  Do not use git for write operations. Use `but` (GitButler CLI) instead for
+  all mutations: but commit, but push, but branch new, etc. Read-only git
+  commands (status, log, diff, show) are allowed.
+rule:
+  kind: command
+  all:
+    - has:
+        field: name
+        kind: command_name
+        has:
+          kind: word
+          pattern: git
+          stopBy: end
+        stopBy: end
+    - has:
+        kind: word
+        regex: '^(commit|push|add|stash|checkout|branch|reset|rebase|merge|pull|clean|cherry-pick|bisect)$'
+        stopBy: end

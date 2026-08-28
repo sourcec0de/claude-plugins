@@ -1,0 +1,190 @@
+id: no-git-attribution
+snapshots:
+  ? |
+    but commit -m "$(cat <<'EOF'
+    chore: init
+
+    Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+    EOF
+    )"
+  : labels:
+    - source: |-
+        but commit -m "$(cat <<'EOF'
+        chore: init
+
+        Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+        EOF
+        )"
+      style: primary
+      start: 0
+      end: 117
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: |-
+        "$(cat <<'EOF'
+        chore: init
+
+        Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+        EOF
+        )"
+      style: secondary
+      start: 14
+      end: 117
+  ? |
+    but commit -m "Co-Authored-By: Claude <noreply@anthropic.com>"
+  : labels:
+    - source: 'but commit -m "Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: primary
+      start: 0
+      end: 62
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: '"Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: secondary
+      start: 14
+      end: 62
+  ? |
+    but commit -m "feat: snapshot support by Claude"
+  : labels:
+    - source: 'but commit -m "feat: snapshot support by Claude"'
+      style: primary
+      start: 0
+      end: 48
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: '"feat: snapshot support by Claude"'
+      style: secondary
+      start: 14
+      end: 48
+  ? |
+    but commit -m 'feat: claude integration'
+  : labels:
+    - source: 'but commit -m ''feat: claude integration'''
+      style: primary
+      start: 0
+      end: 40
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: '''feat: claude integration'''
+      style: secondary
+      start: 14
+      end: 40
+  ? |
+    git commit -m "Co-Authored-By: Claude <noreply@anthropic.com>"
+  : labels:
+    - source: 'git commit -m "Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: primary
+      start: 0
+      end: 62
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: '"Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: secondary
+      start: 14
+      end: 62
+  ? |
+    git commit -m "chore: init" -m "Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+  : labels:
+    - source: 'git commit -m "chore: init" -m "Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"'
+      style: primary
+      start: 0
+      end: 101
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: '"Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"'
+      style: secondary
+      start: 31
+      end: 101
+  ? |
+    git commit -m "feat: add snapshot support by Claude"
+  : labels:
+    - source: 'git commit -m "feat: add snapshot support by Claude"'
+      style: primary
+      start: 0
+      end: 52
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: '"feat: add snapshot support by Claude"'
+      style: secondary
+      start: 14
+      end: 52
+  ? |
+    git commit -m "fix: anthropic suggested fix"
+  : labels:
+    - source: 'git commit -m "fix: anthropic suggested fix"'
+      style: primary
+      start: 0
+      end: 44
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: '"fix: anthropic suggested fix"'
+      style: secondary
+      start: 14
+      end: 44
+  ? |
+    git commit -m 'fix: anthropic api call'
+  : labels:
+    - source: 'git commit -m ''fix: anthropic api call'''
+      style: primary
+      start: 0
+      end: 39
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: '''fix: anthropic api call'''
+      style: secondary
+      start: 14
+      end: 39

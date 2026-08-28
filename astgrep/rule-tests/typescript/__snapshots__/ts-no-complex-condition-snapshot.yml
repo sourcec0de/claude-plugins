@@ -1,0 +1,131 @@
+id: ts-no-complex-condition
+snapshots:
+  ? |
+    function check(a: boolean, b: boolean, c: boolean, d: boolean) {
+      if (a && b && c && d) {
+        return true;
+      }
+      return false;
+    }
+  : labels:
+    - source: |-
+        if (a && b && c && d) {
+            return true;
+          }
+      style: primary
+      start: 67
+      end: 111
+    - source: '&&'
+      style: secondary
+      start: 83
+      end: 85
+    - source: '&&'
+      style: secondary
+      start: 78
+      end: 80
+    - source: '&&'
+      style: secondary
+      start: 73
+      end: 75
+    - source: a && b
+      style: secondary
+      start: 71
+      end: 77
+    - source: a && b && c
+      style: secondary
+      start: 71
+      end: 82
+    - source: a && b && c && d
+      style: secondary
+      start: 71
+      end: 87
+    - source: a && b && c && d
+      style: secondary
+      start: 71
+      end: 87
+  ? |
+    function mixed(a: boolean, b: boolean, c: boolean, d: boolean, e: boolean) {
+      if (a || b || c || d && e) {
+        return true;
+      }
+      return false;
+    }
+  : labels:
+    - source: |-
+        if (a || b || c || d && e) {
+            return true;
+          }
+      style: primary
+      start: 79
+      end: 128
+    - source: '||'
+      style: secondary
+      start: 95
+      end: 97
+    - source: '||'
+      style: secondary
+      start: 90
+      end: 92
+    - source: '||'
+      style: secondary
+      start: 85
+      end: 87
+    - source: a || b
+      style: secondary
+      start: 83
+      end: 89
+    - source: a || b || c
+      style: secondary
+      start: 83
+      end: 94
+    - source: a || b || c || d && e
+      style: secondary
+      start: 83
+      end: 104
+    - source: a || b || c || d && e
+      style: secondary
+      start: 83
+      end: 104
+  ? |
+    function validate(req: Request) {
+      if (req.name !== "" && req.email !== "" && req.age > 0 && req.phone !== "") {
+        return;
+      }
+      throw new Error("invalid");
+    }
+  : labels:
+    - source: |-
+        if (req.name !== "" && req.email !== "" && req.age > 0 && req.phone !== "") {
+            return;
+          }
+      style: primary
+      start: 36
+      end: 129
+    - source: '&&'
+      style: secondary
+      start: 91
+      end: 93
+    - source: '&&'
+      style: secondary
+      start: 76
+      end: 78
+    - source: '&&'
+      style: secondary
+      start: 56
+      end: 58
+    - source: req.name !== "" && req.email !== ""
+      style: secondary
+      start: 40
+      end: 75
+    - source: req.name !== "" && req.email !== "" && req.age > 0
+      style: secondary
+      start: 40
+      end: 90
+    - source: req.name !== "" && req.email !== "" && req.age > 0 && req.phone !== ""
+      style: secondary
+      start: 40
+      end: 110
+    - source: req.name !== "" && req.email !== "" && req.age > 0 && req.phone !== ""
+      style: secondary
+      start: 40
+      end: 110

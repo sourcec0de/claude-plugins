@@ -1,0 +1,61 @@
+id: no-comment-in-body
+snapshots:
+  ? |
+    package downloads
+    func close() {
+      // terminate, not cancel: a stuck workflow never processes a cancel
+      terminate()
+    }
+  : labels:
+    - source: '// terminate, not cancel: a stuck workflow never processes a cancel'
+      style: primary
+      start: 35
+      end: 102
+    - source: |-
+        {
+          // terminate, not cancel: a stuck workflow never processes a cancel
+          terminate()
+        }
+      style: secondary
+      start: 31
+      end: 118
+  ? |
+    package downloads
+    func enqueue() {
+      // The bundle was dismissed mid-build, so the dismiss-time delete saw no object id.
+      reclaim()
+    }
+  : labels:
+    - source: // The bundle was dismissed mid-build, so the dismiss-time delete saw no object id.
+      style: primary
+      start: 37
+      end: 120
+    - source: |-
+        {
+          // The bundle was dismissed mid-build, so the dismiss-time delete saw no object id.
+          reclaim()
+        }
+      style: secondary
+      start: 33
+      end: 134
+  ? |
+    package downloads
+    func loop() {
+      for {
+        // skip a same-id replay of an already-enrolled download
+        receive()
+      }
+    }
+  : labels:
+    - source: // skip a same-id replay of an already-enrolled download
+      style: primary
+      start: 44
+      end: 100
+    - source: |-
+        {
+            // skip a same-id replay of an already-enrolled download
+            receive()
+          }
+      style: secondary
+      start: 38
+      end: 118

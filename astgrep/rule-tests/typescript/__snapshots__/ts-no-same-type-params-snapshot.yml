@@ -1,0 +1,139 @@
+id: ts-no-same-type-params
+snapshots:
+  ? |
+    class Service {
+      bad(a: string, b: string) {}
+    }
+  : labels:
+    - source: 'bad(a: string, b: string) {}'
+      style: primary
+      start: 18
+      end: 46
+    - source: ': string'
+      style: secondary
+      start: 34
+      end: 42
+    - source: ': string'
+      style: secondary
+      start: 23
+      end: 31
+    - source: 'a: string'
+      style: secondary
+      start: 22
+      end: 31
+    - source: 'b: string'
+      style: secondary
+      start: 33
+      end: 42
+    - source: '(a: string, b: string)'
+      style: secondary
+      start: 21
+      end: 43
+  ? |
+    const arrow = (x: string, y: string) => {}
+  : labels:
+    - source: '(x: string, y: string) => {}'
+      style: primary
+      start: 14
+      end: 42
+    - source: ': string'
+      style: secondary
+      start: 27
+      end: 35
+    - source: ': string'
+      style: secondary
+      start: 16
+      end: 24
+    - source: 'x: string'
+      style: secondary
+      start: 15
+      end: 24
+    - source: 'y: string'
+      style: secondary
+      start: 26
+      end: 35
+    - source: '(x: string, y: string)'
+      style: secondary
+      start: 14
+      end: 36
+  ? |
+    function bad(name: string, other: string) {}
+  : labels:
+    - source: 'function bad(name: string, other: string) {}'
+      style: primary
+      start: 0
+      end: 44
+    - source: ': string'
+      style: secondary
+      start: 32
+      end: 40
+    - source: ': string'
+      style: secondary
+      start: 17
+      end: 25
+    - source: 'name: string'
+      style: secondary
+      start: 13
+      end: 25
+    - source: 'other: string'
+      style: secondary
+      start: 27
+      end: 40
+    - source: '(name: string, other: string)'
+      style: secondary
+      start: 12
+      end: 41
+  ? |
+    function badBool(a: boolean, b: boolean) {}
+  : labels:
+    - source: 'function badBool(a: boolean, b: boolean) {}'
+      style: primary
+      start: 0
+      end: 43
+    - source: ': boolean'
+      style: secondary
+      start: 30
+      end: 39
+    - source: ': boolean'
+      style: secondary
+      start: 18
+      end: 27
+    - source: 'a: boolean'
+      style: secondary
+      start: 17
+      end: 27
+    - source: 'b: boolean'
+      style: secondary
+      start: 29
+      end: 39
+    - source: '(a: boolean, b: boolean)'
+      style: secondary
+      start: 16
+      end: 40
+  ? |
+    function badNum(a: number, b: number) {}
+  : labels:
+    - source: 'function badNum(a: number, b: number) {}'
+      style: primary
+      start: 0
+      end: 40
+    - source: ': number'
+      style: secondary
+      start: 28
+      end: 36
+    - source: ': number'
+      style: secondary
+      start: 17
+      end: 25
+    - source: 'a: number'
+      style: secondary
+      start: 16
+      end: 25
+    - source: 'b: number'
+      style: secondary
+      start: 27
+      end: 36
+    - source: '(a: number, b: number)'
+      style: secondary
+      start: 15
+      end: 37

@@ -1,0 +1,22 @@
+id: ts-no-long-function
+language: tsx
+severity: error
+message: >
+  Function exceeds 30 statements. Break it into smaller, focused functions
+  that each do one thing. Extract distinct phases into their own functions
+  and compose them from a parent orchestrator.
+rule:
+  any:
+    - kind: function_declaration
+    - kind: arrow_function
+    - kind: method_definition
+  has:
+    kind: statement_block
+    has:
+      nthChild:
+        position: 31
+        ofRule:
+          not:
+            kind: comment
+      stopBy: end
+    stopBy: end

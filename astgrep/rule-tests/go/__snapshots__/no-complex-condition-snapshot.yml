@@ -1,0 +1,119 @@
+id: no-complex-condition
+snapshots:
+  ? |
+    func check(a bool, b bool, c bool, d bool) bool {
+      if a && b && c && d {
+        return true
+      }
+      return false
+    }
+  : labels:
+    - source: |-
+        if a && b && c && d {
+            return true
+          }
+      style: primary
+      start: 52
+      end: 93
+    - source: '&&'
+      style: secondary
+      start: 67
+      end: 69
+    - source: '&&'
+      style: secondary
+      start: 62
+      end: 64
+    - source: '&&'
+      style: secondary
+      start: 57
+      end: 59
+    - source: a && b
+      style: secondary
+      start: 55
+      end: 61
+    - source: a && b && c
+      style: secondary
+      start: 55
+      end: 66
+    - source: a && b && c && d
+      style: secondary
+      start: 55
+      end: 71
+  ? |
+    func mixed(a bool, b bool, c bool, d bool, e bool) bool {
+      if a || b || c || d && e {
+        return true
+      }
+      return false
+    }
+  : labels:
+    - source: |-
+        if a || b || c || d && e {
+            return true
+          }
+      style: primary
+      start: 60
+      end: 106
+    - source: '||'
+      style: secondary
+      start: 75
+      end: 77
+    - source: '||'
+      style: secondary
+      start: 70
+      end: 72
+    - source: '||'
+      style: secondary
+      start: 65
+      end: 67
+    - source: a || b
+      style: secondary
+      start: 63
+      end: 69
+    - source: a || b || c
+      style: secondary
+      start: 63
+      end: 74
+    - source: a || b || c || d && e
+      style: secondary
+      start: 63
+      end: 84
+  ? |
+    func validate(req Request) error {
+      if req.Name != "" && req.Email != "" && req.Age > 0 && req.Phone != "" {
+        return nil
+      }
+      return fmt.Errorf("invalid")
+    }
+  : labels:
+    - source: |-
+        if req.Name != "" && req.Email != "" && req.Age > 0 && req.Phone != "" {
+            return nil
+          }
+      style: primary
+      start: 37
+      end: 128
+    - source: '&&'
+      style: secondary
+      start: 89
+      end: 91
+    - source: '&&'
+      style: secondary
+      start: 74
+      end: 76
+    - source: '&&'
+      style: secondary
+      start: 55
+      end: 57
+    - source: req.Name != "" && req.Email != ""
+      style: secondary
+      start: 40
+      end: 73
+    - source: req.Name != "" && req.Email != "" && req.Age > 0
+      style: secondary
+      start: 40
+      end: 88
+    - source: req.Name != "" && req.Email != "" && req.Age > 0 && req.Phone != ""
+      style: secondary
+      start: 40
+      end: 107

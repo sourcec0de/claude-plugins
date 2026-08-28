@@ -1,0 +1,39 @@
+id: no-address-of-literal
+valid:
+  - |
+    package main
+    import "net/url"
+    func main() {
+      u := new(url.URL{Scheme: "http", Host: addr}).String()
+    }
+  - |
+    package main
+    func main() {
+      p := new(MyStruct{Field: "value"})
+    }
+  - |
+    package main
+    func main() {
+      x := new(int(42))
+    }
+  - |
+    package main
+    func main() {
+      x := &MyStruct{Field: "value"}
+    }
+  - |
+    package main
+    import "net/url"
+    var name = &url.URL{}
+invalid:
+  - |
+    package main
+    import "net/url"
+    func main() {
+      u := (&url.URL{Scheme: "http", Host: addr}).String()
+    }
+  - |
+    package main
+    func main() {
+      p := (&MyStruct{Field: "value"})
+    }

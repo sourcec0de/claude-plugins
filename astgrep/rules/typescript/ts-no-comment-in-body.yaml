@@ -1,0 +1,18 @@
+id: ts-no-comment-in-body
+language: tsx
+severity: error
+ignores:
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
+  - '**/*.stories.ts'
+  - '**/*.stories.tsx'
+message: >
+  Comment inside a function/method body. See .claude/rules/commenting.md for the
+  commenting rules and how to fix this.
+rule:
+  kind: comment
+  inside:
+    kind: statement_block
+    stopBy: end
+  not:
+    regex: (eslint|@ts-|@vitest|prettier|biome|istanbul|c8 ignore|v8 ignore|astgrep-allow)

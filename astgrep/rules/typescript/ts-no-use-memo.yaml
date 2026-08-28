@@ -1,0 +1,9 @@
+id: ts-no-use-memo
+language: tsx
+severity: error
+message: >
+  useMemo is banned. This codebase uses the React Compiler which
+  automatically memoizes values. Manual useMemo is unnecessary
+  and adds complexity. Just compute the value directly.
+rule:
+  pattern: useMemo($$$ARGS)

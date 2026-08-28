@@ -1,0 +1,11 @@
+id: no-address-of-literal
+language: go
+severity: error
+message: >
+  Do not use (&expr). Use new(expr) instead (Go 1.26+).
+  Example: replace (&url.URL{Scheme: "http", Host: addr}) with new(url.URL{Scheme: "http", Host: addr}).
+rule:
+  pattern: (&$EXPR)
+  has:
+    kind: unary_expression
+    stopBy: end

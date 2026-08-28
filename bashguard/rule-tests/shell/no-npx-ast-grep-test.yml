@@ -1,0 +1,13 @@
+id: no-npx-ast-grep
+valid:
+  - |
+    ast-grep scan --config sgconfig.yml
+  - |
+    ast-grep test --filter my-rule
+  - |
+    npx some-other-package run
+invalid:
+  - |
+    npx @ast-grep/cli scan --config sgconfig.yml
+  - |
+    npx @ast-grep/cli test --filter my-rule

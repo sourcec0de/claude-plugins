@@ -1,0 +1,44 @@
+id: ts-no-todo-comments
+valid:
+  - |
+    function process(): void {
+      handle();
+    }
+  - |
+    function validate(input: string): void {
+      if (!input) {
+        throw new Error("input required");
+      }
+    }
+  - |
+    const todoItems: string[] = [];
+  - |
+    function listTodos(): Todo[] {
+      return [];
+    }
+  - |
+    const fixMe = repairWidget();
+invalid:
+  - |
+    // TODO: implement this
+    function process(): void {}
+  - |
+    // FIXME: this is broken
+    function broken(): void {}
+  - |
+    // HACK: temporary workaround
+    function workaround(): void {}
+  - |
+    // XXX: needs refactoring
+    function messy(): void {}
+  - |
+    function partial(): void {
+      // TODO: handle error case
+      doThing();
+    }
+  - |
+    // TODO(jqualls): come back to this
+    function deferred(): void {}
+  - |
+    /* FIXME: this entire component needs a rewrite */
+    function Widget(): JSX.Element { return <div />; }

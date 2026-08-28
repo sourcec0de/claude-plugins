@@ -1,0 +1,24 @@
+id: no-default-then-reassign
+language: go
+severity: error
+message: >
+  Do not declare a default value then reassign in an if block.
+  Extract to a function with guard clause returns instead.
+  Example: replace wsScheme := "ws"; if cond { wsScheme = "wss" }
+  with wsScheme := selectWebSocketScheme(base.Scheme) where the function uses
+  guard returns: func selectWebSocketScheme(s string) string { if s == "https" { return "wss" }; return "ws" }.
+rule:
+  all:
+    - pattern:
+        context: 'func wrapper() { $VAR := $DEFAULT }'
+        selector: short_var_declaration
+    - precedes:
+        stopBy: end
+        pattern:
+          context: 'func wrapper() { if $COND { $$$BODY } }'
+          selector: if_statement
+        has:
+          stopBy: end
+          pattern:
+            context: 'func wrapper() { $VAR = $NEWVAL }'
+            selector: assignment_statement

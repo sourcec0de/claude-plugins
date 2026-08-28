@@ -1,0 +1,79 @@
+id: ts-storybook-gallery-snapshot
+valid:
+  # single story export — no sibling to follow, never flagged
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: { label: 'x' } }
+  # all stories have a play function — they keep snapshotting, never flagged
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {}, play: async () => {} }
+    export const Disabled: Story = { args: { disabled: true }, play: async () => {} }
+  # play written as method shorthand is still a play story — never flagged
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {}, async play() {} }
+    export const Disabled: Story = { args: { disabled: true }, async play() {} }
+  # already migrated: one Gallery + play stories
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Gallery: Story = { render: () => null }
+    export const Base: Story = { args: {}, play: async () => {} }
+  # multiple gallery stories named freely — exempt because they render StoryGallery
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const BaseStates: Story = {
+      render: () => (
+        <StoryGallery>
+          <GalleryCell label="a"><Thing /></GalleryCell>
+        </StoryGallery>
+      ),
+    }
+    export const EdgeCases: Story = {
+      render: () => (
+        <StoryGallery>
+          <GalleryCell label="b"><Thing big /></GalleryCell>
+        </StoryGallery>
+      ),
+    }
+  # static sibling already opted out of snapshots
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {} }
+    export const Disabled: Story = {
+      args: { disabled: true },
+      parameters: { chromatic: { disableSnapshot: true } },
+    }
+  # the Gallery itself is never flagged even with static siblings present
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {} }
+    export const Gallery: Story = { render: () => null }
+invalid:
+  # second static story in a multi-story file → flagged
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {} }
+    export const Disabled: Story = { args: { disabled: true } }
+  # third static story flagged even when a play story exists earlier
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {}, play: async () => {} }
+    export const Disabled: Story = { args: { disabled: true } }
+    export const Invalid: Story = { args: { invalid: true } }
+  # static render-based variant (no play, not Gallery) → flagged
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const Base: Story = { args: {} }
+    export const Big: Story = { render: () => null }
+  # a raw single-state story alongside a real StoryGallery story is still flagged
+  - |
+    type Story = StoryObj<typeof Thing>
+    export const BaseStates: Story = {
+      render: () => (
+        <StoryGallery>
+          <GalleryCell label="a"><Thing /></GalleryCell>
+        </StoryGallery>
+      ),
+    }
+    export const Lonely: Story = { args: { disabled: true } }

@@ -1,0 +1,85 @@
+id: no-if-in-switch
+valid:
+  - |
+    func handle(x int) {
+      switch x {
+      case 1:
+        doOne()
+      case 2:
+        doTwo()
+      default:
+        doDefault()
+      }
+    }
+  - |
+    func dispatch(action string) {
+      switch action {
+      case "create":
+        create()
+      case "update":
+        update()
+      case "delete":
+        remove()
+      }
+    }
+  - |
+    func convert(t string) int {
+      switch t {
+      case "a":
+        return 1
+      case "b":
+        return 2
+      default:
+        return 0
+      }
+    }
+  - |
+    func standalone(x int) {
+      if x > 0 {
+        doSomething()
+      }
+    }
+invalid:
+  - |
+    func handle(x int, y int) {
+      switch x {
+      case 1:
+        if y > 0 {
+          doPositive()
+        }
+      }
+    }
+  - |
+    func dispatch(action string, admin bool) {
+      switch action {
+      case "delete":
+        if admin {
+          remove()
+        }
+      default:
+        process()
+      }
+    }
+  - |
+    func convert(t string, strict bool) int {
+      switch t {
+      case "a":
+        if strict {
+          return validate()
+        }
+        return 1
+      default:
+        return 0
+      }
+    }
+  - |
+    func nested(x int) {
+      switch x {
+      case 1:
+        if x > 0 {
+          if x < 10 {
+            doRange()
+          }
+        }
+      }
+    }

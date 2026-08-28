@@ -1,0 +1,9 @@
+id: ts-no-non-null-assertion
+language: tsx
+severity: error
+message: >
+  Non-null assertions (!) are banned. They tell the compiler to trust you
+  instead of proving the value exists. Use narrowing instead:
+  if (value) { value.prop } or value ?? fallback or throw if missing.
+rule:
+  kind: non_null_expression

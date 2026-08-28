@@ -1,0 +1,18 @@
+id: ts-no-classname-constants
+language: tsx
+severity: error
+message: >
+  Do not define `const *_CLASSES` string constants for Tailwind class strings.
+  Use `ele.{tag}([...])` or `ele.{tag}.variant(base, config)` via `styledElements()`
+  from `frontend/web/app/lib/styled-element/styled-element` instead. The helper
+  handles className merging, variants, and keeps styling colocated with the component.
+rule:
+  pattern: const $NAME = $VALUE
+constraints:
+  NAME:
+    regex: _CLASSES$
+  VALUE:
+    any:
+      - kind: string
+      - kind: template_string
+      - kind: array

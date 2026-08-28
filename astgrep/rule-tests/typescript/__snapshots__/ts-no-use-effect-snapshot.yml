@@ -1,0 +1,48 @@
+id: ts-no-use-effect
+snapshots:
+  ? |
+    import { useEffect } from "react";
+    function Component() {
+      useEffect(() => {
+        fetchData();
+      }, []);
+    }
+  : labels:
+    - source: |-
+        useEffect(() => {
+            fetchData();
+          }, [])
+      style: primary
+      start: 60
+      end: 103
+  ? |
+    import { useEffect } from "react";
+    function Component() {
+      useEffect(() => {
+        setLoading(true);
+      }, [id]);
+    }
+  : labels:
+    - source: |-
+        useEffect(() => {
+            setLoading(true);
+          }, [id])
+      style: primary
+      start: 60
+      end: 110
+  ? |
+    import { useEffect, useState } from "react";
+    function Component() {
+      const [data, setData] = useState(null);
+      useEffect(() => {
+        fetch("/api").then(r => r.json()).then(setData);
+      }, []);
+    }
+  : labels:
+    - source: |-
+        useEffect(() => {
+            fetch("/api").then(r => r.json()).then(setData);
+          }, [])
+      style: primary
+      start: 112
+      end: 191

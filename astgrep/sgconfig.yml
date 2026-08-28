@@ -1,0 +1,21 @@
+# Rules for the astgrep-lint plugin.
+#
+# Every path here is relative to this file, because the plugin is copied into
+# ~/.claude/plugins/cache and must never resolve against the user's project.
+ruleDirs:
+  - rules
+
+testConfigs:
+  - testDir: rule-tests/go
+    snapshotDir: __snapshots__
+  - testDir: rule-tests/typescript
+    snapshotDir: __snapshots__
+
+# TSX and TypeScript need distinct parsers, and a rule cannot be shared across
+# languages. Routing every TS/JS extension through the Tsx parser lets one
+# rules/typescript tree with `language: tsx` cover them all.
+languageGlobs:
+  tsx:
+    - '*.ts'
+    - '*.tsx'
+    - '*.jsx'

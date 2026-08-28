@@ -1,0 +1,72 @@
+id: no-inline-error-creation
+snapshots:
+  ? |
+    package main
+    func doWork() error {
+      return errors.Error("bad")
+    }
+  : labels:
+    - source: errors.Error("bad")
+      style: primary
+      start: 44
+      end: 63
+    - source: return errors.Error("bad")
+      style: secondary
+      start: 37
+      end: 63
+  ? |
+    package main
+    func doWork() error {
+      return errors.Errorf("bad input: %v", x)
+    }
+  : labels:
+    - source: 'errors.Errorf("bad input: %v", x)'
+      style: primary
+      start: 44
+      end: 77
+    - source: 'return errors.Errorf("bad input: %v", x)'
+      style: secondary
+      start: 37
+      end: 77
+  ? |
+    package main
+    func doWork() error {
+      return errors.New("not found")
+    }
+  : labels:
+    - source: errors.New("not found")
+      style: primary
+      start: 44
+      end: 67
+    - source: return errors.New("not found")
+      style: secondary
+      start: 37
+      end: 67
+  ? |
+    package main
+    func doWork() error {
+      return fmt.Errorf("something failed")
+    }
+  : labels:
+    - source: fmt.Errorf("something failed")
+      style: primary
+      start: 44
+      end: 74
+    - source: return fmt.Errorf("something failed")
+      style: secondary
+      start: 37
+      end: 74
+  ? |
+    package main
+    func doWork() error {
+      return fmt.Errorf("wrap: %w", ErrNotFound)
+    }
+  : labels:
+    - source: 'fmt.Errorf("wrap: %w", ErrNotFound)'
+      style: primary
+      start: 44
+      end: 79
+    - source: 'return fmt.Errorf("wrap: %w", ErrNotFound)'
+      style: secondary
+      start: 37
+      end: 79

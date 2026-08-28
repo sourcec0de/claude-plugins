@@ -1,0 +1,35 @@
+id: ts-no-complex-condition
+language: tsx
+severity: error
+message: >
+  Decompose this conditional. Complex boolean expressions in if statements
+  are hard to read and test. Extract the condition into a named function
+  that describes the intent:
+  if (isSummer()) { return summerCharge(); }
+  function isSummer() { return !date.isBefore(start) && !date.isAfter(end); }
+  This makes each branch testable and the control flow self-documenting.
+rule:
+  kind: if_statement
+  has:
+    field: condition
+    has:
+      kind: binary_expression
+      all:
+        - has:
+            field: operator
+            regex: (&&|\|\|)
+        - has:
+            kind: binary_expression
+            all:
+              - has:
+                  field: operator
+                  regex: (&&|\|\|)
+              - has:
+                  kind: binary_expression
+                  has:
+                    field: operator
+                    regex: (&&|\|\|)
+                  stopBy: end
+            stopBy: end
+      stopBy: end
+    stopBy: end

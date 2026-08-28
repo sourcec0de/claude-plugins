@@ -1,0 +1,140 @@
+id: ts-no-console-log
+snapshots:
+  ? |
+    console.debug("trace info");
+  : labels:
+    - source: console.debug("trace info")
+      style: primary
+      start: 0
+      end: 27
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.debug
+      style: secondary
+      start: 0
+      end: 13
+  ? |
+    console.error("something broke");
+  : labels:
+    - source: console.error("something broke")
+      style: primary
+      start: 0
+      end: 32
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.error
+      style: secondary
+      start: 0
+      end: 13
+  ? |
+    console.info("starting up");
+  : labels:
+    - source: console.info("starting up")
+      style: primary
+      start: 0
+      end: 27
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.info
+      style: secondary
+      start: 0
+      end: 12
+  ? |
+    console.log("debug");
+  : labels:
+    - source: console.log("debug")
+      style: primary
+      start: 0
+      end: 20
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.log
+      style: secondary
+      start: 0
+      end: 11
+  ? |
+    console.log("user:", user);
+  : labels:
+    - source: console.log("user:", user)
+      style: primary
+      start: 0
+      end: 26
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.log
+      style: secondary
+      start: 0
+      end: 11
+  ? |
+    console.log({ action: "click", target: el });
+  : labels:
+    - source: 'console.log({ action: "click", target: el })'
+      style: primary
+      start: 0
+      end: 44
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.log
+      style: secondary
+      start: 0
+      end: 11
+  ? |
+    console.trace("call stack");
+  : labels:
+    - source: console.trace("call stack")
+      style: primary
+      start: 0
+      end: 27
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.trace
+      style: secondary
+      start: 0
+      end: 13
+  ? |
+    console.warn("deprecation warning");
+  : labels:
+    - source: console.warn("deprecation warning")
+      style: primary
+      start: 0
+      end: 35
+    - source: console
+      style: secondary
+      start: 0
+      end: 7
+    - source: console.warn
+      style: secondary
+      start: 0
+      end: 12
+  ? |
+    function handler() {
+      console.log("entering handler");
+      doWork();
+    }
+  : labels:
+    - source: console.log("entering handler")
+      style: primary
+      start: 23
+      end: 54
+    - source: console
+      style: secondary
+      start: 23
+      end: 30
+    - source: console.log
+      style: secondary
+      start: 23
+      end: 34

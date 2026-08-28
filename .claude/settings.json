@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go build:*)",
+      "Bash(go test:*)",
+      "Bash(go vet:*)",
+      "Bash(gofmt:*)",
+      "Bash(ast-grep test:*)",
+      "Bash(ast-grep scan:*)",
+      "Bash(claude plugin validate:*)"
+    ]
+  }
+}

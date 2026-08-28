@@ -1,0 +1,40 @@
+id: ts-no-classname-constants
+snapshots:
+  ? |
+    const LINK_CLASSES = `relative flex px-2 py-1`
+  : labels:
+    - source: const LINK_CLASSES = `relative flex px-2 py-1`
+      style: primary
+      start: 0
+      end: 46
+  ? |
+    const OVERLAY_CLASSES =
+      'absolute inset-y-0 right-2 flex items-center gap-1'
+  : labels:
+    - source: |-
+        const OVERLAY_CLASSES =
+          'absolute inset-y-0 right-2 flex items-center gap-1'
+      style: primary
+      start: 0
+      end: 78
+  ? |
+    const PLACEHOLDER_CLASSES = 'mr-2 flex items-center'
+  : labels:
+    - source: const PLACEHOLDER_CLASSES = 'mr-2 flex items-center'
+      style: primary
+      start: 0
+      end: 52
+  ? |
+    const STOCK_CLASSES = [
+      'col-span-1 flex items-center',
+      'text-sm text-slate-700',
+    ]
+  : labels:
+    - source: |-
+        const STOCK_CLASSES = [
+          'col-span-1 flex items-center',
+          'text-sm text-slate-700',
+        ]
+      style: primary
+      start: 0
+      end: 87

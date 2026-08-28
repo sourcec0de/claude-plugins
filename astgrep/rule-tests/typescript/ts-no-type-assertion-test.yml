@@ -1,0 +1,42 @@
+id: ts-no-type-assertion
+valid:
+  - |
+    import { thing as other } from "module";
+  - |
+    function isString(value: unknown): value is string {
+      return typeof value === "string";
+    }
+  - |
+    function isFish(pet: Fish | Bird): pet is Fish {
+      return (pet as Fish).swim !== undefined;
+    }
+  - |
+    const x: string = "hello";
+  - |
+    const data = schema.parse(await response.json());
+  - |
+    if (typeof value === "string") {
+      console.log(value.toUpperCase());
+    }
+  - |
+    const testCardNumbers = {
+      visa: "4111111111111111",
+      mastercard: "5500000000000004",
+    } as const;
+  - |
+    const ROLES = ["admin", "user", "guest"] as const;
+  - |
+    const CONFIG = { timeout: 30, retries: 3 } as const;
+invalid:
+  - |
+    const x = "hello" as number;
+  - |
+    const y = {} as Record<string, unknown>;
+  - |
+    const z = value as MyType;
+  - |
+    const data = (await response.json()) as UserResponse;
+  - |
+    function process(input: unknown) {
+      const user = input as User;
+    }

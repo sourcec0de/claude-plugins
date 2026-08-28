@@ -1,0 +1,77 @@
+id: ts-no-inline-function-in-return-object
+valid:
+  - |
+    function useThing() {
+      const handleClick = () => doSomething()
+      return { onClick: handleClick }
+    }
+  - |
+    function useThing(handler: () => void) {
+      return { onClick: handler }
+    }
+  - |
+    function useThing() {
+      return {
+        onClick() {
+          doSomething()
+        },
+      }
+    }
+  - |
+    function useThing() {
+      return {
+        get value() {
+          return 42
+        },
+      }
+    }
+  - |
+    function C() {
+      useQuery({ onSuccess: () => doSomething() })
+      return null
+    }
+  - |
+    function C() {
+      return <Button onClick={() => save()} />
+    }
+  - |
+    function useThing() {
+      return { count: 42, name: 'foo' }
+    }
+invalid:
+  - |
+    function useThing() {
+      return { onClick: () => doSomething() }
+    }
+  - |
+    function useThing() {
+      return {
+        handler: (x: number) => {
+          return x + 1
+        },
+      }
+    }
+  - |
+    function useThing() {
+      return {
+        handler: function (x: number) {
+          return x + 1
+        },
+      }
+    }
+  - |
+    function useThing() {
+      return { load: async () => await fetchData() }
+    }
+  - |
+    function useThing() {
+      return {
+        value: 42,
+        reference: existingHandler,
+        handler: () => doSomething(),
+      }
+    }
+  - |
+    function useThing() {
+      return ({ onClick: () => doSomething() })
+    }

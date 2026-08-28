@@ -1,0 +1,25 @@
+id: no-go-build-output
+language: bash
+severity: error
+message: >
+  go build with specific package paths creates binary files. Use
+  'go build ./...' for broad compilation checks, or
+  'go build -o /dev/null ./path/to/pkg' to verify a specific package
+  without producing output. Never use 'go build ./specific/path/...'
+  as it still creates binaries for main packages.
+rule:
+  kind: command
+  all:
+    - has:
+        field: name
+        kind: command_name
+        has:
+          kind: word
+          pattern: go
+          stopBy: end
+        stopBy: end
+    - regex: go\s+build\b
+    - not:
+        regex: go\s+build\s+(-\S+\s+)*-o\s+/dev/null
+    - not:
+        regex: "go\\s+build\\s+\\./\\.\\.\\.\\s*$"

@@ -1,0 +1,62 @@
+id: no-lo-toptr
+snapshots:
+  ? |
+    package main
+    func main() {
+      lo.ToPtr(123)
+    }
+  : labels:
+    - source: lo.ToPtr(123)
+      style: primary
+      start: 29
+      end: 42
+  ? |
+    package main
+    func main() {
+      lo.ToPtr(123, 123)
+    }
+  : labels:
+    - source: lo.ToPtr(123, 123)
+      style: primary
+      start: 29
+      end: 47
+  ? |
+    package main
+    func main() {
+      lo.ToPtr(345)
+    }
+  : labels:
+    - source: lo.ToPtr(345)
+      style: primary
+      start: 29
+      end: 42
+  ? |
+    package main
+    func main() {
+      var s = lo.ToPtr(123, 123)
+    }
+  : labels:
+    - source: lo.ToPtr(123, 123)
+      style: primary
+      start: 37
+      end: 55
+  ? |
+    package main
+    var name = lo.ToPtr(345)
+  : labels:
+    - source: lo.ToPtr(345)
+      style: primary
+      start: 24
+      end: 37
+  ? |
+    package main
+    var version = struct {
+      thing *int
+    }{
+      thing: lo.ToPtr(123),
+    }
+  : labels:
+    - source: lo.ToPtr(123)
+      style: primary
+      start: 61
+      end: 74

@@ -1,0 +1,56 @@
+id: no-nested-if
+valid:
+  - |
+    func Handle(x int, y int) string {
+      if x <= 0 {
+        return "nope"
+      }
+      if y > 0 {
+        return "both positive"
+      }
+      return "only x"
+    }
+  - |
+    func Validate(err error) {
+      if err != nil {
+        return
+      }
+    }
+  - |
+    func Switch(x int) {
+      switch {
+      case x > 0:
+        if x > 10 {
+          return
+        }
+      }
+    }
+invalid:
+  - |
+    func Handle(x int, y int) string {
+      if x > 0 {
+        if y > 0 {
+          return "both"
+        }
+        return "only x"
+      }
+      return "nope"
+    }
+  - |
+    func Deep(a bool, b bool, c bool) {
+      if a {
+        if b {
+          fmt.Println("nested")
+        }
+      }
+    }
+  - |
+    func WithElse(x int) {
+      if x > 0 {
+        if x < 100 {
+          fmt.Println("in range")
+        } else {
+          fmt.Println("too big")
+        }
+      }
+    }

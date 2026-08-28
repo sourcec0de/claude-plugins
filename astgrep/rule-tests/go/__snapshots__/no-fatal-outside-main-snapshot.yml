@@ -1,0 +1,42 @@
+id: no-fatal-outside-main
+snapshots:
+  ? |
+    package main
+    func cleanup() {
+      os.Exit(1)
+    }
+  : labels:
+    - source: os.Exit(1)
+      style: primary
+      start: 32
+      end: 42
+  ? |
+    package main
+    func handler() {
+      log.Fatalf("error: %v", err)
+    }
+  : labels:
+    - source: 'log.Fatalf("error: %v", err)'
+      style: primary
+      start: 32
+      end: 60
+  ? |
+    package main
+    func init() {
+      log.Fatal("init failed")
+    }
+  : labels:
+    - source: log.Fatal("init failed")
+      style: primary
+      start: 29
+      end: 53
+  ? |
+    package main
+    func setup() {
+      log.Fatal("bad")
+    }
+  : labels:
+    - source: log.Fatal("bad")
+      style: primary
+      start: 30
+      end: 46

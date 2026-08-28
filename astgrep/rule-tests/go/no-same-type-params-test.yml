@@ -1,0 +1,41 @@
+id: no-same-type-params
+valid:
+  - |
+    func Greet(name string, age int) {}
+  - |
+    func Process(ctx context.Context, id string) {}
+  - |
+    func Mix(a string, b int, c bool) {}
+  - |
+    func Single(name string) {}
+  - |
+    func NoParams() {}
+  - |
+    func (s *Service) Method(ctx context.Context, id int) {}
+  - |
+    func (s *Service) DiffTypes(a string, b int, c bool) {}
+  - |
+    func MultilineDiff(
+    	ctx context.Context,
+    	id string,
+    ) {}
+invalid:
+  - |
+    func Greet(name, othername string) {}
+  - |
+    func Process(id string, name string) {}
+  - |
+    func Counts(a int, b int) {}
+  - |
+    func Mixed(a string, b string, c int) {}
+  - |
+    func (s *Service) BadMethod(id string, name string) {}
+  - |
+    func (s *Service) AlsoBad(a, b int) {}
+  - |
+    func DoubleCtx(a context.Context, b context.Context) {}
+  - |
+    func MultilineDouble(
+    	a context.Context,
+    	b context.Context,
+    ) {}

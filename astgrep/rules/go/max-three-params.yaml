@@ -1,0 +1,16 @@
+id: max-three-params
+language: go
+severity: error
+message: >
+  Function has more than 3 parameters. Use a params struct instead.
+  Example: func Greet(ctx context.Context, params GreetParams) {}
+rule:
+  kind: parameter_list
+  has:
+    any:
+      - kind: parameter_declaration
+        nthChild: 4
+      - kind: parameter_declaration
+        has:
+          kind: identifier
+          nthChild: 4

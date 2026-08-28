@@ -1,0 +1,62 @@
+id: no-else-after-return
+snapshots:
+  ? |
+    func AlsoBad(err error) string {
+      if err != nil {
+        return err.Error()
+      } else {
+        fmt.Println("ok")
+        return "success"
+      }
+    }
+  : labels:
+    - source: |-
+        if err != nil {
+            return err.Error()
+          } else {
+            fmt.Println("ok")
+            return "success"
+          }
+      style: primary
+      start: 35
+      end: 131
+  ? |
+    func Bad(x int) string {
+      if x < 0 {
+        return "negative"
+      } else {
+        return "non-negative"
+      }
+    }
+  : labels:
+    - source: |-
+        if x < 0 {
+            return "negative"
+          } else {
+            return "non-negative"
+          }
+      style: primary
+      start: 27
+      end: 100
+  ? |
+    func WithWork(x int) string {
+      if x < 0 {
+        return "negative"
+      } else {
+        doSomething()
+        doMore()
+        return "done"
+      }
+    }
+  : labels:
+    - source: |-
+        if x < 0 {
+            return "negative"
+          } else {
+            doSomething()
+            doMore()
+            return "done"
+          }
+      style: primary
+      start: 32
+      end: 128

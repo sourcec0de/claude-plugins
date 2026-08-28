@@ -1,0 +1,90 @@
+id: no-raw-test-errors
+snapshots:
+  ? |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Error("something failed")
+    }
+  : labels:
+    - source: t.Error("something failed")
+      style: primary
+      start: 45
+      end: 72
+    - source: t
+      style: secondary
+      start: 45
+      end: 46
+    - source: Error
+      style: secondary
+      start: 47
+      end: 52
+    - source: t.Error
+      style: secondary
+      start: 45
+      end: 52
+  ? |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Errorf("expected %d, got %d", 1, 2)
+    }
+  : labels:
+    - source: t.Errorf("expected %d, got %d", 1, 2)
+      style: primary
+      start: 45
+      end: 82
+    - source: t
+      style: secondary
+      start: 45
+      end: 46
+    - source: Errorf
+      style: secondary
+      start: 47
+      end: 53
+    - source: t.Errorf
+      style: secondary
+      start: 45
+      end: 53
+  ? |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Fatal("fatal error")
+    }
+  : labels:
+    - source: t.Fatal("fatal error")
+      style: primary
+      start: 45
+      end: 67
+    - source: t
+      style: secondary
+      start: 45
+      end: 46
+    - source: Fatal
+      style: secondary
+      start: 47
+      end: 52
+    - source: t.Fatal
+      style: secondary
+      start: 45
+      end: 52
+  ? |
+    package foo
+    func TestFoo(t *testing.T) {
+        t.Fatalf("expected %q", "foo")
+    }
+  : labels:
+    - source: t.Fatalf("expected %q", "foo")
+      style: primary
+      start: 45
+      end: 75
+    - source: t
+      style: secondary
+      start: 45
+      end: 46
+    - source: Fatalf
+      style: secondary
+      start: 47
+      end: 53
+    - source: t.Fatalf
+      style: secondary
+      start: 45
+      end: 53
