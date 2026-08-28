@@ -1,0 +1,23 @@
+id: no-model-attribution
+valid:
+  - |
+    but commit -m "chore: init"
+  - |
+    echo "Co-Authored-By: Jane Doe <jane@example.com>" >> msg.txt
+  - |
+    git log --author=claude
+  - |
+    git clone https://github.com/sourcec0de/claude-plugins
+  - |
+    echo "this repo is about claude and anthropic"
+invalid:
+  - |
+    echo "Co-Authored-By: Claude <noreply@anthropic.com>" >> msg.txt
+  - |
+    printf 'Co-authored-by: Claude Opus 5 <noreply@anthropic.com>\n' >> msg.txt
+  - |
+    echo "co-authored-by:Claude" | tee -a COMMIT_EDITMSG
+  - |
+    but commit -m "chore: init" --trailer "Co-Authored-By: Claude <noreply@anthropic.com>"
+  - |
+    echo "signed: noreply@anthropic.com"

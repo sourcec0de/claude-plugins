@@ -7,6 +7,13 @@ description: Runs the test suites for this repository — the Nix package build,
 
 This skill is for developing *this* repository. It never ships to users.
 
+The repository turns the plugins on itself: `.claude/settings.json` registers
+`astgrep-lint`, `bashguard` and `autofmt` as project hooks through
+`.claude/hooks/run-hook.sh`. So `sed`, `cd` and `git commit` are rejected while
+working here, and an edit that introduces a violation is rejected before it
+lands. Nothing extra needs running to get that — it is on for every session in
+this checkout.
+
 ## Everything at once
 
 ```bash

@@ -94,10 +94,25 @@ func scanExisting(event hookio.Event) ([]Violation, string, error) {
 	return violations, content, err
 }
 
-// scanViolations runs the plugin's rules over content. The content is written
+// scanViolations runs every rule that applies to the file. The text rules
+// apply to all of them, so a Markdown or YAML edit is still checked for
+// attribution; the ast-grep rules only apply to the languages that have them.
+func scanViolations(p scanParams) ([]Violation, error) {
+	violations := scanText(p)
+	if !isLintable(p.FilePath) {
+		return violations, nil
+	}
+	parsed, err := scanAstGrep(p)
+	if err != nil {
+		return nil, err
+	}
+	return append(violations, parsed...), nil
+}
+
+// scanAstGrep runs the plugin's rules over content. The content is written
 // to a scratch file that keeps the original extension, so ast-grep selects the
 // same parser it would for the real file.
-func scanViolations(p scanParams) ([]Violation, error) {
+func scanAstGrep(p scanParams) ([]Violation, error) {
 	binPath, err := exec.LookPath("ast-grep")
 	if err != nil {
 		return nil, errors.Join(ErrAstGrepNotFound, err)

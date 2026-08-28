@@ -21,10 +21,12 @@ func main() {
 }
 
 // decide lints the file as it would exist after the pending edit and denies the
-// call when the edit introduces a violation that was not already there.
+// call when the edit introduces a violation that was not already there. Every
+// file is checked, not only the ones a grammar exists for, because the text
+// rules have to hold everywhere.
 func decide(event hookio.Event) hookio.Decision {
 	filePath := event.ToolInput.FilePath
-	if filePath == "" || !isLintable(filePath) {
+	if filePath == "" {
 		return hookio.Noop()
 	}
 

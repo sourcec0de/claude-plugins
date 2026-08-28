@@ -1,0 +1,19 @@
+id: no-model-attribution
+language: bash
+severity: error
+message: >
+  Do not attribute authorship to the model. A co-author trailer naming Claude
+  or Anthropic must not be written into a commit message, a changelog, or any
+  other file. Commit as the human author. Unlike no-git-attribution this rule
+  covers every command, because echo, printf and tee reach a commit message
+  just as well as the commit itself does.
+rule:
+  kind: command
+  has:
+    any:
+      - kind: string
+      - kind: raw_string
+      - kind: word
+      - kind: concatenation
+    regex: '(?i)co-authored-by\s*:[^\n]*(claude|anthropic)|noreply@anthropic\.com'
+    stopBy: end

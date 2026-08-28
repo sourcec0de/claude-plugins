@@ -25,8 +25,25 @@ no-rm-rf: rm -rf build
 | `no-sed` | In-place `sed` rewriting | Use the Edit tool, which is reviewable |
 | `no-git-write-ops` | `commit`, `push`, `reset`, and friends | Ask before mutating history or remotes |
 | `no-git-attribution` | Rewriting commit authorship | Leave attribution alone |
+| `no-model-attribution` | A co-author trailer naming the model, in *any* command | Commit as the human author |
+| `no-session-url` | A Claude session link, in *any* command | Keep the link in chat |
 | `no-go-build-output` | Build artifacts written into the tree | Build to a temp dir |
 | `no-npx-ast-grep` | `npx ast-grep` | Use the `ast-grep` already on PATH |
+
+## Why two attribution rules
+
+`no-git-attribution` looks only at `git` and `but`, and rejects any mention of
+the model in their arguments. That covers the commit itself and nothing else.
+
+`no-model-attribution` and `no-session-url` look at *every* command, because
+the commit is not the only way in: `echo`, `printf` and `tee` write a message
+file, `gh pr create --body` writes a pull request, and a heredoc writes
+whatever it likes. They are narrower in what they match — a trailer or a
+session link, not the word "Claude" — precisely because they are wider in where
+they look. `git clone` of a repository with `claude` in its name still works.
+
+The file-writing half of the same ban lives in `astgrep-lint`, under the same
+two rule ids, so the two guards cannot disagree about what is forbidden.
 
 ## Fail-open by design
 

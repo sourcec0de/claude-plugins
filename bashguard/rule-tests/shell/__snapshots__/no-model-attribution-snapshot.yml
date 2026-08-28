@@ -1,0 +1,57 @@
+id: no-model-attribution
+snapshots:
+  ? |
+    but commit -m "chore: init" --trailer "Co-Authored-By: Claude <noreply@anthropic.com>"
+  : labels:
+    - source: 'but commit -m "chore: init" --trailer "Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: primary
+      start: 0
+      end: 86
+    - source: '"Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: secondary
+      start: 38
+      end: 86
+  ? |
+    echo "Co-Authored-By: Claude <noreply@anthropic.com>" >> msg.txt
+  : labels:
+    - source: 'echo "Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: primary
+      start: 0
+      end: 53
+    - source: '"Co-Authored-By: Claude <noreply@anthropic.com>"'
+      style: secondary
+      start: 5
+      end: 53
+  ? |
+    echo "co-authored-by:Claude" | tee -a COMMIT_EDITMSG
+  : labels:
+    - source: echo "co-authored-by:Claude"
+      style: primary
+      start: 0
+      end: 28
+    - source: '"co-authored-by:Claude"'
+      style: secondary
+      start: 5
+      end: 28
+  ? |
+    echo "signed: noreply@anthropic.com"
+  : labels:
+    - source: 'echo "signed: noreply@anthropic.com"'
+      style: primary
+      start: 0
+      end: 36
+    - source: '"signed: noreply@anthropic.com"'
+      style: secondary
+      start: 5
+      end: 36
+  ? |
+    printf 'Co-authored-by: Claude Opus 5 <noreply@anthropic.com>\n' >> msg.txt
+  : labels:
+    - source: 'printf ''Co-authored-by: Claude Opus 5 <noreply@anthropic.com>\n'''
+      style: primary
+      start: 0
+      end: 64
+    - source: '''Co-authored-by: Claude Opus 5 <noreply@anthropic.com>\n'''
+      style: secondary
+      start: 7
+      end: 64

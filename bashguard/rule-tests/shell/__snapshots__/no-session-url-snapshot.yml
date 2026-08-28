@@ -1,0 +1,74 @@
+id: no-session-url
+snapshots:
+  ? |
+    but commit -m "$(cat <<'EOF'
+    chore: init
+
+    Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu
+    EOF
+    )"
+  : labels:
+    - source: |-
+        but commit -m "$(cat <<'EOF'
+        chore: init
+
+        Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu
+        EOF
+        )"
+      style: primary
+      start: 0
+      end: 112
+    - source: |-
+        "$(cat <<'EOF'
+        chore: init
+
+        Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu
+        EOF
+        )"
+      style: secondary
+      start: 14
+      end: 112
+  ? |
+    echo "Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu" >> msg.txt
+  : labels:
+    - source: 'echo "Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu"'
+      style: primary
+      start: 0
+      end: 70
+    - source: '"Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu"'
+      style: secondary
+      start: 5
+      end: 70
+  ? |
+    echo Claude-Session:https://claude.ai/code/session_01UGQfHLtXYnF8xu
+  : labels:
+    - source: echo Claude-Session:https://claude.ai/code/session_01UGQfHLtXYnF8xu
+      style: primary
+      start: 0
+      end: 67
+    - source: Claude-Session:https://claude.ai/code/session_01UGQfHLtXYnF8xu
+      style: secondary
+      start: 5
+      end: 67
+  ? |
+    gh pr create --body "Context: https://claude.ai/code/session_01UGQfHLtXYnF8xu"
+  : labels:
+    - source: 'gh pr create --body "Context: https://claude.ai/code/session_01UGQfHLtXYnF8xu"'
+      style: primary
+      start: 0
+      end: 78
+    - source: '"Context: https://claude.ai/code/session_01UGQfHLtXYnF8xu"'
+      style: secondary
+      start: 20
+      end: 78
+  ? |
+    printf 'https://claude.ai/code/session_01UGQfHLtXYnF8xu\n' | tee -a NOTES.md
+  : labels:
+    - source: printf 'https://claude.ai/code/session_01UGQfHLtXYnF8xu\n'
+      style: primary
+      start: 0
+      end: 58
+    - source: '''https://claude.ai/code/session_01UGQfHLtXYnF8xu\n'''
+      style: secondary
+      start: 7
+      end: 58

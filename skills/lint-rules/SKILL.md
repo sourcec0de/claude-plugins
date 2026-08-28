@@ -9,6 +9,10 @@ description: Explains the ast-grep rules the astgrep-lint hook enforces on Go an
 It reconstructs the file as it would exist after the pending edit, scans it, and
 denies the call if the edit **introduces** a violation.
 
+Two kinds of rule run over that content. The ast-grep rules are parsed with a
+grammar and apply to Go and TS/JS. The **text rules** are line-matched and
+apply to every file, whatever its extension.
+
 Pre-existing violations never block you. The hook scans the file before and
 after and compares the two, keyed on rule plus matched text, so moving code
 around does not look like a new violation. You are only ever asked to fix what
@@ -44,6 +48,30 @@ Three things are enforced:
 
 A blank line between the directive and the violation breaks it. Both `//` and
 `#` comment syntax work.
+
+## Text rules
+
+| Rule | What it bans |
+| :--- | :--- |
+| `no-session-url` | A Claude session link or session trailer, in any file |
+| `no-model-attribution` | A co-author trailer naming Claude or Anthropic, in any file |
+
+These cannot be ast-grep rules. A rule there is bound to one grammar, and these
+have to hold for Markdown, YAML, JSON, commit message files and plain text as
+much as for Go — anything that can reach a commit. So they live in
+`cmd/astgrep-lint/attribution.go` as regexes and run beside the ast-grep pass.
+
+They behave like every other rule: `severity: error`, reported only when your
+edit introduces them, and suppressible with the directive below. A rule fixture
+that has to contain the banned string is exactly what the directive is for.
+
+Their patterns are written with escapes (`claude\.ai`, not `claude[.]ai`) so
+that `attribution.go` is not a violation of its own rule. A test asserts this,
+so a well-meant simplification of a pattern fails the suite rather than making
+the file unmaintainable.
+
+`bashguard` carries shell rules under the same two ids, covering the commands
+that write files without going through `Write`.
 
 ## Where the rules live
 

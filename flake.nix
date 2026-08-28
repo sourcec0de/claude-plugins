@@ -147,6 +147,21 @@
               grep -q no-rm-rf bash.txt || {
                 echo "expected no-rm-rf; got:" >&2; cat bash.txt >&2; exit 1; }
 
+              # The text rules have to reach a file no grammar covers, and they
+              # have to reach it from the shipped binary rather than a checkout.
+              # astgrep-allow: no-session-url -- fixture proving the shipped binary rejects it
+              printf 'context: https://claude.ai/code/session_smoke\n' > notes.md
+              astgrep-lint notes.md 2>text.txt && {
+                echo "expected the session link to be reported" >&2; exit 1; }
+              grep -q no-session-url text.txt || {
+                echo "expected no-session-url; got:" >&2; cat text.txt >&2; exit 1; }
+
+              # astgrep-allow: no-model-attribution -- fixture proving the shipped binary rejects it
+              bashguard 'echo "Co-Authored-By: Claude <noreply@anthropic.com>" >> msg.txt' 2>attr.txt && {
+                echo "expected the co-author trailer to be flagged" >&2; exit 1; }
+              grep -q no-model-attribution attr.txt || {
+                echo "expected no-model-attribution; got:" >&2; cat attr.txt >&2; exit 1; }
+
               touch $out
             '';
 
@@ -166,7 +181,7 @@
           '';
 
           manifests = check "manifests" ''
-            for f in .claude-plugin/marketplace.json hooks/*.json; do
+            for f in .claude-plugin/marketplace.json hooks/*.json .claude/settings.json; do
               jq -e . "$f" > /dev/null || { echo "invalid JSON: $f" >&2; exit 1; }
             done
           '';

@@ -1,0 +1,28 @@
+id: no-session-url
+valid:
+  - |
+    echo "see https://claude.com/claude-code"
+  - |
+    curl -s https://claude.ai/code
+  - |
+    but commit -m "chore: init"
+  - |
+    grep -rn "session" README.md
+  - |
+    git log --oneline
+invalid:
+  - |
+    echo "Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu" >> msg.txt
+  - |
+    echo Claude-Session:https://claude.ai/code/session_01UGQfHLtXYnF8xu
+  - |
+    printf 'https://claude.ai/code/session_01UGQfHLtXYnF8xu\n' | tee -a NOTES.md
+  - |
+    gh pr create --body "Context: https://claude.ai/code/session_01UGQfHLtXYnF8xu"
+  - |
+    but commit -m "$(cat <<'EOF'
+    chore: init
+
+    Claude-Session: https://claude.ai/code/session_01UGQfHLtXYnF8xu
+    EOF
+    )"

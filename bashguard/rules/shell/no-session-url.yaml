@@ -1,0 +1,22 @@
+id: no-session-url
+language: bash
+severity: error
+message: >
+  A Claude session link must never be written by a command. It points at a
+  private transcript and has no business in a commit message, a file, a pull
+  request body, or anything pushed to a remote. Drop the link and the session
+  trailer that carries it.
+# The pattern is deliberately looser than the file-level rule of the same
+# name: it stops at the session path and does not require an id after it,
+# because a command builds the id by expansion just as often as it spells
+# it out, and `$SESSION` is not something a regex can read.
+rule:
+  kind: command
+  has:
+    any:
+      - kind: string
+      - kind: raw_string
+      - kind: word
+      - kind: concatenation
+    regex: '(?i)claude\.ai/[a-z0-9/_-]*session[_-]|claude-session\s*:'
+    stopBy: end

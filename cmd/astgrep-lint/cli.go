@@ -7,7 +7,8 @@ import (
 
 // runCLI scans the named files and reports every violation found, not just the
 // newly introduced ones. This is the mode reached by invoking astgrep-lint as a
-// bare command, which lets work be checked before it is written.
+// bare command, which lets work be checked before it is written. Files of a
+// language with no rules still go through the text rules.
 func runCLI(paths []string) int {
 	failed := false
 	for _, path := range paths {
@@ -30,9 +31,6 @@ func runCLI(paths []string) int {
 }
 
 func scanFile(path string) ([]Violation, error) {
-	if !isLintable(path) {
-		return nil, nil
-	}
 	content, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

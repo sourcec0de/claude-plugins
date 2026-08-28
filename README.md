@@ -23,8 +23,8 @@ which newer versions still accept as a deprecated alias.
 
 | Plugin | What it does |
 | :--- | :--- |
-| `astgrep-lint` | Lints every file the model writes or edits against 47 ast-grep rules and rejects edits that introduce a violation. Formats the file afterwards. |
-| `bashguard` | Parses every Bash command with the bash grammar and catches destructive or banned operations before they run. |
+| `astgrep-lint` | Lints every file the model writes or edits against 47 ast-grep rules and rejects edits that introduce a violation. Bans model attribution in files of any type. Formats the file afterwards. |
+| `bashguard` | Parses every Bash command with the bash grammar and catches destructive, banned, or attribution-leaking operations before they run. |
 | `workflows` | Slash commands for repetitive tasks. |
 
 Nothing is compiled on your machine and you do not need Go. The binaries carry
@@ -68,6 +68,47 @@ fmt.Println(payload)
 The rule id must match, the `--` is required, and the justification must be at
 least 10 non-whitespace characters.
 
+## Attribution never leaks
+
+Two strings must not reach a commit, a pull request, or any file: the session
+link Claude Code appends to what it writes, and a co-author trailer naming the
+model. Three things stop them, and each covers a path the others miss.
+
+`includeCoAuthoredBy` is `false` in `.claude/settings.json`, so Claude Code
+does not add either one in the first place. That is the setting, and a setting
+is only as good as the session that honours it.
+
+`astgrep-lint` carries two **text rules** — `no-session-url` and
+`no-model-attribution` — that run on *every* file, not just the languages a
+grammar exists for. A rule written in ast-grep is bound to one parser; these
+have to hold for Markdown, YAML, JSON, a commit message file and plain text
+alike, so they run as a line scan beside the ast-grep pass. The same
+before/after comparison applies: only what your edit introduces is rejected,
+and the `astgrep-allow` directive suppresses a line that genuinely needs one,
+which is how this repository's own rule fixtures are allowed to exist.
+
+`bashguard` carries shell rules under the same two ids, because the `Write`
+tool is not the only way to write a file. `echo`, `printf` and `tee` reach a
+commit message just as well, and a `--body` flag reaches a pull request.
+`no-git-attribution` already covered `git` and `but`; these cover every other
+command.
+
+The shell pattern is looser than the file pattern on purpose: a command
+composes the session id by expansion at least as often as it spells it out, and
+`$SESSION` is not something a regex can read.
+
+## This repository is bound by its own plugins
+
+`.claude/settings.json` wires the three commands in as project hooks, so a
+session developing these rules is subject to them. `.claude/hooks/run-hook.sh`
+prefers an installed binary and falls back to `go run`, and it pins
+`CLAUDE_PLUGIN_ROOT` to the checkout either way — a rule change has to take
+effect here before it is published.
+
+The practical consequence is that `sed`, `cd` and `git commit` are unavailable
+while working on this repository, and a heredoc containing a co-author trailer
+is rejected before it runs. That is the point.
+
 ## Where the rules come from
 
 The rule tree is resolved in three tiers:
@@ -98,7 +139,9 @@ working tree without installing it.
 
 Two skills exist for working on this repo itself, under `.claude/skills/`:
 `new-rule` scaffolds a rule with its test and snapshot, and `run-tests`
-documents the suites. They are not part of any plugin.
+documents the suites. They are not part of any plugin, and neither is
+`.claude/hooks/run-hook.sh`, which is only how the repository turns the
+plugins on itself.
 
 Plugins carry no version field, so Claude Code resolves the version from the
 commit SHA and users pick up rule changes as soon as the commit moves. The
