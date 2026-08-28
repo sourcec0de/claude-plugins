@@ -8,8 +8,11 @@ Three plugins, one Go module, one ast-grep rule tree.
 The hooks are ordinary binaries. Install them once, then add the marketplace:
 
 ```bash
-nix profile install github:sourcec0de/claude-plugins
+nix profile add github:sourcec0de/claude-plugins
 ```
+
+On Nix older than 2.30, `add` does not exist yet — use `nix profile install`,
+which newer versions still accept as a deprecated alias.
 
 ```
 /plugin marketplace add sourcec0de/claude-plugins
