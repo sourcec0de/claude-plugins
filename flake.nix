@@ -74,7 +74,7 @@
           # dependency is declared, not hoped for.
           postInstall = ''
             mkdir -p $out/share/claude-plugins
-            cp -r astgrep bashguard $out/share/claude-plugins/
+            cp -r astgrep bashguard gitbutler $out/share/claude-plugins/
 
             for command in ${builtins.concatStringsSep " " commands}; do
               wrapProgram $out/bin/$command \
@@ -162,6 +162,16 @@
               grep -q no-model-attribution attr.txt || {
                 echo "expected no-model-attribution; got:" >&2; cat attr.txt >&2; exit 1; }
 
+              # The gitbutler rules must reach the same binary only when asked
+              # for, or installing bashguard alone would silently carry them.
+              bashguard 'git push' || {
+                echo "bashguard alone must not police git writes" >&2; exit 1; }
+
+              bashguard --rules gitbutler 'git push' 2>git.txt && {
+                echo "expected git push to be flagged under the gitbutler tree" >&2; exit 1; }
+              grep -q no-git-write-ops git.txt || {
+                echo "expected no-git-write-ops; got:" >&2; cat git.txt >&2; exit 1; }
+
               touch $out
             '';
 
@@ -178,6 +188,7 @@
           astgrep-rules = check "astgrep-rules" ''
             (cd astgrep   && ast-grep test --config sgconfig.yml)
             (cd bashguard && ast-grep test --config sgconfig.yml)
+            (cd gitbutler && ast-grep test --config sgconfig.yml)
           '';
 
           manifests = check "manifests" ''

@@ -33,19 +33,26 @@ type astGrepMatch struct {
 	Severity string `json:"severity"`
 }
 
-// sgconfigPath resolves the plugin's own shell rules. As with astgrep-lint,
-// passing --config explicitly keeps ast-grep from walking up from the user's
-// working directory and finding their project config instead.
-func sgconfigPath() (string, error) {
-	return hookio.ConfigPath("bashguard", "sgconfig.yml")
+// scanParams selects which rules to run and what to run them against.
+type scanParams struct {
+	RuleTree string
+	Cwd      string
+	Command  string
 }
 
-func scanCommand(cwd, command string) ([]Violation, error) {
+// sgconfigPath resolves a rule tree's own shell rules. As with astgrep-lint,
+// passing --config explicitly keeps ast-grep from walking up from the user's
+// working directory and finding their project config instead.
+func sgconfigPath(ruleTree string) (string, error) {
+	return hookio.ConfigPath(ruleTree, "sgconfig.yml")
+}
+
+func scanCommand(p scanParams) ([]Violation, error) {
 	binPath, err := exec.LookPath("ast-grep")
 	if err != nil {
 		return nil, errors.Join(ErrAstGrepNotFound, err)
 	}
-	configPath, err := sgconfigPath()
+	configPath, err := sgconfigPath(p.RuleTree)
 	if err != nil {
 		return nil, err
 	}
@@ -56,14 +63,14 @@ func scanCommand(cwd, command string) ([]Violation, error) {
 	}
 	defer os.Remove(tmp.Name())
 
-	if _, err := tmp.WriteString(command); err != nil {
+	if _, err := tmp.WriteString(p.Command); err != nil {
 		tmp.Close()
 		return nil, errors.Join(ErrScratchFile, err)
 	}
 	tmp.Close()
 
 	cmd := &exec.Cmd{
-		Dir:  cwd,
+		Dir:  p.Cwd,
 		Path: binPath,
 		Args: []string{"ast-grep", "scan", "--config", configPath, "--json=stream", tmp.Name()},
 	}

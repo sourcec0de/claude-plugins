@@ -8,7 +8,11 @@ import (
 )
 
 func runDecide(command string) hookio.Decision {
-	return decide(hookio.Event{
+	return decideWith(defaultRuleTree, command)
+}
+
+func decideWith(ruleTree, command string) hookio.Decision {
+	return decide(ruleTree, hookio.Event{
 		HookEventName: "PreToolUse",
 		ToolName:      "Bash",
 		ToolInput:     hookio.ToolInput{Command: command},
@@ -41,11 +45,9 @@ func TestDecideDeniesDestructiveCommands(t *testing.T) {
 	t.Parallel()
 
 	cases := map[string]string{
-		"rm -rf build":  "no-rm-rf",
-		"rm -rf /":      "no-rm-rf",
-		"cd /tmp":       "no-cd",
-		"git push":      "no-git-write-ops",
-		"git commit -m": "no-git-write-ops",
+		"rm -rf build": "no-rm-rf",
+		"rm -rf /":     "no-rm-rf",
+		"cd /tmp":      "no-cd",
 	}
 	for command, wantRule := range cases {
 		t.Run(command, func(t *testing.T) {
@@ -55,6 +57,61 @@ func TestDecideDeniesDestructiveCommands(t *testing.T) {
 			require.Contains(t, got.Reason(), wantRule)
 		})
 	}
+}
+
+// The gitbutler tree is a separate plugin, so its rule must not reach a user
+// who installed bashguard alone. These two tests are the split: the same
+// command is allowed under one tree and denied under the other.
+func TestDecideLeavesGitWritesToTheGitbutlerTree(t *testing.T) {
+	t.Parallel()
+
+	for _, command := range []string{"git push", "git commit -m wip", "git rebase main"} {
+		t.Run(command, func(t *testing.T) {
+			require.True(t, runDecide(command).IsNoop(),
+				"bashguard alone must not police git writes: %s", command)
+		})
+	}
+}
+
+func TestDecideDeniesGitWritesUnderTheGitbutlerTree(t *testing.T) {
+	t.Parallel()
+
+	for _, command := range []string{"git push", "git commit -m wip", "git rebase main"} {
+		t.Run(command, func(t *testing.T) {
+			got := decideWith("gitbutler", command)
+			require.Equal(t, hookio.PermissionDeny, got.PermissionDecision())
+			require.Contains(t, got.Reason(), "no-git-write-ops")
+		})
+	}
+}
+
+func TestParseArgsSelectsTheRuleTree(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		Args     []string
+		Commands []string
+		RuleTree string
+	}{
+		{Args: nil, Commands: nil, RuleTree: defaultRuleTree},
+		{Args: []string{"rm -rf x"}, Commands: []string{"rm -rf x"}, RuleTree: defaultRuleTree},
+		{Args: []string{"--rules", "gitbutler"}, Commands: []string{}, RuleTree: "gitbutler"},
+		{Args: []string{"--rules=gitbutler"}, Commands: []string{}, RuleTree: "gitbutler"},
+		{Args: []string{"--rules=gitbutler", "git push"}, Commands: []string{"git push"}, RuleTree: "gitbutler"},
+	}
+	for _, tc := range cases {
+		commands, ruleTree, err := parseArgs(tc.Args)
+		require.NoError(t, err)
+		require.Equal(t, tc.RuleTree, ruleTree)
+		require.Equal(t, tc.Commands, commands)
+	}
+}
+
+func TestParseArgsRejectsRulesWithoutAName(t *testing.T) {
+	t.Parallel()
+
+	_, _, err := parseArgs([]string{"--rules"})
+	require.ErrorIs(t, err, ErrMissingRuleTree)
 }
 
 func TestDecideFailsOpenLoudlyWhenAstGrepMissing(t *testing.T) {
@@ -70,7 +127,7 @@ func TestDecideFailsOpenLoudlyWhenAstGrepMissing(t *testing.T) {
 func TestScanCommandReportsRuleAndMessage(t *testing.T) {
 	t.Parallel()
 
-	got, err := scanCommand("", "rm -rf node_modules")
+	got, err := scanCommand(scanParams{RuleTree: defaultRuleTree, Command: "rm -rf node_modules"})
 	require.NoError(t, err)
 	require.NotEmpty(t, got)
 	require.Equal(t, "no-rm-rf", got[0].RuleID)

@@ -23,12 +23,18 @@ no-rm-rf: rm -rf build
 | `no-rm-rf` | Recursive forced deletion | Delete specific paths with plain `rm`, or ask first |
 | `no-cd` | `cd` in a tool call | Pass an absolute path, or use a subshell the rule allows |
 | `no-sed` | In-place `sed` rewriting | Use the Edit tool, which is reviewable |
-| `no-git-write-ops` | `commit`, `push`, `reset`, and friends | Ask before mutating history or remotes |
 | `no-git-attribution` | Rewriting commit authorship | Leave attribution alone |
 | `no-model-attribution` | A co-author trailer naming the model, in *any* command | Commit as the human author |
 | `no-session-url` | A Claude session link, in *any* command | Keep the link in chat |
 | `no-go-build-output` | Build artifacts written into the tree | Build to a temp dir |
 | `no-npx-ast-grep` | `npx ast-grep` | Use the `ast-grep` already on PATH |
+
+## What is not here
+
+`no-git-write-ops`, which routes `git` writes through the GitButler CLI, moved
+to its own `gitbutler` plugin. It is a workflow opinion rather than a safety
+rule: correct only on a machine where `but` is installed, and crippling
+anywhere else. Installing `bashguard` no longer brings it along.
 
 ## Why two attribution rules
 
@@ -61,6 +67,13 @@ directly:
 
 ```bash
 bashguard 'rm -rf build'
+```
+
+`--rules <tree>` selects a different rule tree, which is how one binary serves
+every shell-rule plugin:
+
+```bash
+bashguard --rules gitbutler 'git push'
 ```
 
 ## Rules live in

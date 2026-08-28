@@ -1,0 +1,11 @@
+# Rules for the gitbutler plugin.
+#
+# Separate from bashguard because this is a workflow opinion, not a safety
+# rule: it is only correct on a machine where GitButler is actually installed.
+# Keeping it in its own tree is what lets a user take bashguard without it.
+ruleDirs:
+  - rules
+
+testConfigs:
+  - testDir: rule-tests/shell
+    snapshotDir: __snapshots__

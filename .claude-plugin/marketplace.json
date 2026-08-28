@@ -1,6 +1,8 @@
 {
   "name": "sourcec0de-plugins",
-  "owner": { "name": "James Qualls" },
+  "owner": {
+    "name": "James Qualls"
+  },
   "metadata": {
     "description": "A set of plugins for Claude to constrain and increase model output quality."
   },
@@ -10,7 +12,9 @@
       "source": "./",
       "strict": false,
       "description": "ast-grep linting of model edits, enforced as a hook",
-      "skills": ["./skills/lint-rules"],
+      "skills": [
+        "./skills/lint-rules"
+      ],
       "hooks": "./hooks/astgrep-lint.json"
     },
     {
@@ -18,15 +22,29 @@
       "source": "./",
       "strict": false,
       "description": "Catches destructive and banned shell commands before they run",
-      "skills": ["./skills/bash-rules"],
+      "skills": [
+        "./skills/bash-rules"
+      ],
       "hooks": "./hooks/bashguard.json"
+    },
+    {
+      "name": "gitbutler",
+      "source": "./",
+      "strict": false,
+      "description": "Routes git write operations through the GitButler CLI. Install only where `but` is installed",
+      "skills": [
+        "./skills/gitbutler-rules"
+      ],
+      "hooks": "./hooks/gitbutler.json"
     },
     {
       "name": "workflows",
       "source": "./",
       "strict": false,
       "description": "Slash commands for repetitive tasks",
-      "skills": ["./skills/hello"]
+      "skills": [
+        "./skills/hello"
+      ]
     }
   ]
 }

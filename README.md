@@ -21,10 +21,18 @@ which newer versions still accept as a deprecated alias.
 /plugin install workflows@sourcec0de-plugins
 ```
 
+`gitbutler` is deliberately left out of that list. Install it only if the
+GitButler CLI is on your PATH, because it takes `git` away:
+
+```
+/plugin install gitbutler@sourcec0de-plugins
+```
+
 | Plugin | What it does |
 | :--- | :--- |
 | `astgrep-lint` | Lints every file the model writes or edits against 47 ast-grep rules and rejects edits that introduce a violation. Bans model attribution in files of any type. Formats the file afterwards. |
 | `bashguard` | Parses every Bash command with the bash grammar and catches destructive, banned, or attribution-leaking operations before they run. |
+| `gitbutler` | Routes every `git` write operation through the GitButler CLI. Optional, and only correct where `but` is installed. |
 | `workflows` | Slash commands for repetitive tasks. |
 
 Nothing is compiled on your machine and you do not need Go. The binaries carry
@@ -105,9 +113,13 @@ prefers an installed binary and falls back to `go run`, and it pins
 `CLAUDE_PLUGIN_ROOT` to the checkout either way — a rule change has to take
 effect here before it is published.
 
-The practical consequence is that `sed`, `cd` and `git commit` are unavailable
-while working on this repository, and a heredoc containing a co-author trailer
-is rejected before it runs. That is the point.
+The practical consequence is that `sed` and `cd` are unavailable while working
+on this repository, and a heredoc containing a co-author trailer is rejected
+before it runs. That is the point.
+
+`gitbutler` is not wired in here. A hosted container has no `but`, so enabling
+it would leave a session unable to commit at all — which is exactly why it is
+a separate plugin rather than a rule inside `bashguard`.
 
 ## Where the rules come from
 

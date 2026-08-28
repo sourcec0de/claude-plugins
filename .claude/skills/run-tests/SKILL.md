@@ -9,9 +9,9 @@ This skill is for developing *this* repository. It never ships to users.
 
 The repository turns the plugins on itself: `.claude/settings.json` registers
 `astgrep-lint`, `bashguard` and `autofmt` as project hooks through
-`.claude/hooks/run-hook.sh`. So `sed`, `cd` and `git commit` are rejected while
-working here, and an edit that introduces a violation is rejected before it
-lands. Nothing extra needs running to get that — it is on for every session in
+`.claude/hooks/run-hook.sh`. So `sed` and `cd` are rejected while working here,
+and an edit that introduces a violation is rejected before it lands. The
+`gitbutler` plugin is not wired in, so `git` writes still work. Nothing extra needs running to get that — it is on for every session in
 this checkout.
 
 ## Everything at once
@@ -33,6 +33,7 @@ go test ./...
 # ast-grep rules
 (cd astgrep   && ast-grep test --config sgconfig.yml)
 (cd bashguard && ast-grep test --config sgconfig.yml)
+(cd gitbutler && ast-grep test --config sgconfig.yml)
 
 # Marketplace and plugin manifests
 claude plugin validate . --strict
