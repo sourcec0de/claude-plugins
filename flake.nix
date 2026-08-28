@@ -32,7 +32,7 @@
     in
     {
       # The hooks are these binaries. Users install them once —
-      #   nix profile install github:sourcec0de/claude-plugins
+      #   nix profile add github:sourcec0de/claude-plugins
       # — and the plugin's hook configuration invokes them by name off PATH.
       # Nothing is compiled on a user's machine and nothing needs Go installed.
       packages = forAllSystems (pkgs: rec {
@@ -123,7 +123,7 @@
 
           # The wrapped binaries must actually run, find ast-grep, and locate
           # their bundled rules with no CLAUDE_PLUGIN_ROOT set. That is exactly
-          # the standalone path a user gets after `nix profile install`.
+          # the standalone path a user gets after `nix profile add`.
           packaged-binaries =
             pkgs.runCommand "packaged-binaries"
               { nativeBuildInputs = [ self.packages.${pkgs.system}.default ]; } ''

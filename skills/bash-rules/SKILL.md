@@ -23,7 +23,7 @@ no-rm-rf: rm -rf build
 | `no-rm-rf` | Recursive forced deletion | Delete specific paths with plain `rm`, or ask first |
 | `no-cd` | `cd` in a tool call | Pass an absolute path, or use a subshell the rule allows |
 | `no-sed` | In-place `sed` rewriting | Use the Edit tool, which is reviewable |
-| `no-git-attribution` | Rewriting commit authorship | Leave attribution alone |
+| `no-git-attribution` | Crediting the model in git metadata | Write the commit as the human author |
 | `no-model-attribution` | A co-author trailer naming the model, in *any* command | Commit as the human author |
 | `no-session-url` | A Claude session link, in *any* command | Keep the link in chat |
 | `no-go-build-output` | Build artifacts written into the tree | Build to a temp dir |
@@ -38,8 +38,17 @@ anywhere else. Installing `bashguard` no longer brings it along.
 
 ## Why two attribution rules
 
-`no-git-attribution` looks only at `git` and `but`, and rejects any mention of
-the model in their arguments. That covers the commit itself and nothing else.
+`no-git-attribution` looks only at `git` and `but`, and rejects attribution in
+their arguments: a `Co-Authored-By` style trailer, an `--author` that rewrites
+authorship, a message crediting the model with "by" or "with", or the vendor
+no-reply address. That covers the commit itself and nothing else.
+
+It does **not** reject a vendor name used as an ordinary word. `git clone` of a
+repository named after one, a commit message describing a path under
+`.claude/`, a feature branch called `claude/something`, and `git log --author`
+searching for the commits a model wrote all still work. `--author` is only
+attribution on a subcommand that writes an author; on `log`, `shortlog` and
+`blame` the same flag is a read-only filter.
 
 `no-model-attribution` and `no-session-url` look at *every* command, because
 the commit is not the only way in: `echo`, `printf` and `tee` write a message

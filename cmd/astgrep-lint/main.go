@@ -64,7 +64,7 @@ func decide(event hookio.Event) hookio.Decision {
 func failClosed(hookEventName string, err error) hookio.Decision {
 	return hookio.Deny(hookEventName, fmt.Sprintf(
 		"Static analysis could not run, so this edit is rejected (fail-closed): %v\n"+
-			"  Install ast-grep (nix profile install nixpkgs#ast-grep, or npm i -g @ast-grep/cli) and retry.",
+			"  Install ast-grep (nix profile add nixpkgs#ast-grep, or npm i -g @ast-grep/cli) and retry.",
 		err))
 }
 

@@ -1,6 +1,25 @@
 id: no-git-attribution
 snapshots:
   ? |
+    but commit --trailer=Co-authored-by:Claude -m "chore: init"
+  : labels:
+    - source: 'but commit --trailer=Co-authored-by:Claude -m "chore: init"'
+      style: primary
+      start: 0
+      end: 59
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: --trailer=Co-authored-by:Claude
+      style: secondary
+      start: 11
+      end: 42
+  ? |
     but commit -m "$(cat <<'EOF'
     chore: init
 
@@ -56,6 +75,25 @@ snapshots:
       start: 14
       end: 62
   ? |
+    but commit -m "chore: generated with Anthropic tooling"
+  : labels:
+    - source: 'but commit -m "chore: generated with Anthropic tooling"'
+      style: primary
+      start: 0
+      end: 55
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: but
+      style: secondary
+      start: 0
+      end: 3
+    - source: '"chore: generated with Anthropic tooling"'
+      style: secondary
+      start: 14
+      end: 55
+  ? |
     but commit -m "feat: snapshot support by Claude"
   : labels:
     - source: 'but commit -m "feat: snapshot support by Claude"'
@@ -93,6 +131,25 @@ snapshots:
       style: secondary
       start: 14
       end: 40
+  ? |
+    git commit --author="Claude <noreply@anthropic.com>" -m "chore: init"
+  : labels:
+    - source: 'git commit --author="Claude <noreply@anthropic.com>" -m "chore: init"'
+      style: primary
+      start: 0
+      end: 69
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: git
+      style: secondary
+      start: 0
+      end: 3
+    - source: --author="Claude <noreply@anthropic.com>"
+      style: secondary
+      start: 11
+      end: 52
   ? |
     git commit -m "Co-Authored-By: Claude <noreply@anthropic.com>"
   : labels:

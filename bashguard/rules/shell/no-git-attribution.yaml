@@ -2,9 +2,43 @@ id: no-git-attribution
 language: bash
 severity: error
 message: >
-  Use conventional commit format. Never include attribution (Co-Authored-By,
-  Claude, Anthropic) in commit messages. Messages should be concise and
-  relevant only to the content being committed.
+  Do not credit the model in git metadata. A trailer, an --author flag, or a
+  message crediting the assistant belongs to nobody: write the commit as the
+  human author. Naming a vendor as an ordinary word is fine — a path, a
+  dependency, or a feature called after one is not attribution.
+utils:
+  # Every argument kind a message or flag can arrive as. Bare words are
+  # included because an inline trailer flag arrives as exactly one word:
+  # astgrep-allow: no-model-attribution -- naming the shape this rule has to catch
+  # `--trailer=Co-authored-by:Claude` carries no quotes and no spaces.
+  argument:
+    any:
+      - kind: string
+      - kind: raw_string
+      - kind: word
+      - kind: concatenation
+
+  # A commit trailer naming the model.
+  attribution-trailer:
+    matches: argument
+    regex: '(?i)(co-authored-by|signed-off-by|authored-by)[^\n]*(claude|anthropic)'
+
+  # Rewriting authorship outright.
+  attribution-flag:
+    matches: argument
+    regex: '(?i)--author[=\s][^\n]*(claude|anthropic)'
+
+  # Crediting the model in the message body: "by Claude", "generated with
+  # Anthropic". The connecting word is required, which is what keeps an
+  # ordinary mention from matching.
+  attribution-credit:
+    matches: argument
+    regex: '(?i)\b(by|with)\s+(claude|anthropic)\b'
+
+  # The vendor no-reply address, wherever it appears.
+  attribution-address:
+    matches: argument
+    regex: 'noreply@anthropic\.com'
 rule:
   kind: command
   all:
@@ -16,9 +50,22 @@ rule:
           regex: '^(git|but)$'
           stopBy: end
         stopBy: end
-    - has:
-        any:
-          - kind: string
-          - kind: raw_string
-        regex: '[Cc]laude|[Aa]nthropic|Co-[Aa]uthored'
-        stopBy: end
+    - any:
+        - has:
+            any:
+              - matches: attribution-trailer
+              - matches: attribution-credit
+              - matches: attribution-address
+            stopBy: end
+
+        # --author only rewrites authorship on a subcommand that writes one.
+        # On log, shortlog or blame the same flag is a read-only filter, and
+        # searching for the commits a model authored is how you find them.
+        - all:
+            - has:
+                kind: word
+                regex: '^(commit|am|cherry-pick|rebase|revert|tag|notes)$'
+                stopBy: end
+            - has:
+                matches: attribution-flag
+                stopBy: end

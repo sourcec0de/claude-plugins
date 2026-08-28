@@ -12,13 +12,23 @@ valid:
     echo "claude is great"
   - |
     but commit -m "chore: update IAM bindings"
+  - |
+    git ls-remote --heads origin 'claude/*'
+  - |
+    but commit -m "docs: describe .claude/settings.json"
+  - |
+    git clone https://github.com/sourcec0de/claude-plugins
+  - |
+    but commit -m 'feat: claude integration'
+  - |
+    git commit -m 'fix: anthropic api call'
+  - |
+    git log --author=claude
 invalid:
   - |
     git commit -m "Co-Authored-By: Claude <noreply@anthropic.com>"
   - |
     git commit -m "feat: add snapshot support by Claude"
-  - |
-    git commit -m "fix: anthropic suggested fix"
   - |
     git commit -m "chore: init" -m "Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
   - |
@@ -26,9 +36,11 @@ invalid:
   - |
     but commit -m "Co-Authored-By: Claude <noreply@anthropic.com>"
   - |
-    but commit -m 'feat: claude integration'
+    but commit --trailer=Co-authored-by:Claude -m "chore: init"
   - |
-    git commit -m 'fix: anthropic api call'
+    git commit --author="Claude <noreply@anthropic.com>" -m "chore: init"
+  - |
+    but commit -m "chore: generated with Anthropic tooling"
   - |
     but commit -m "$(cat <<'EOF'
     chore: init
